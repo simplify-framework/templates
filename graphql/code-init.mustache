@@ -1,9 +1,9 @@
 'use strict';
 /** 
- * Simplify Framework - CodeGen {{generatorVersion}}
+ * Simplify Framework - GraphQL {{GeneratorVersion}}
  * GitHub URL   : https://github.com/simplify-framework
- * ProjectName  : {{projectNamePascal}}
- * ProjectId    : {{projectId}}
+ * ProjectName  : {{ProjectNamePascal}}
+ * ProjectId    : {{ProjectId}}
  * License      : Apache-2.0 (Free)
  */
 const fs = require('fs')
@@ -11,15 +11,15 @@ const path = require('path')
 const simplify = require('simplify-sdk')
 const opName = `DeploymentInit`
 var nodeArgs = process.argv.slice(2);
-var configInputFile = process.env.DEPLOYMENT_INPUT || "deployment.json"
+var configInputFile = process.env.DEPLOYMENT_INPUT || "deployment-input.json"
 if (nodeArgs.length > 1) {
     configInputFile = (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") ? nodeArgs[1] : configInputFile
 }
 try {
     var config = simplify.getInputConfig(path.join(__dirname, configInputFile))
     var stackData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
-    Object.keys(config.Deployment.Functions).forEach(function(f) {
-        const fInputPath = path.join(__dirname, config.Deployment.Functions[f].FunctionInput)
+    Object.keys(config.Deployment.Servers).forEach(function(f) {
+        const fInputPath = path.join(__dirname, config.Deployment.Servers[f].FunctionInput)
         var fConfig = JSON.parse(fs.readFileSync(fInputPath))
         stackData.Outputs.map(function(o) {
             if (o.OutputKey == `${f}FunctionRole`) {

@@ -1,16 +1,16 @@
 'use strict';
 /** 
- * Simplify Framework - CodeGen {{generatorVersion}}
+ * Simplify Framework - GraphQL {{GeneratorVersion}}
  * GitHub URL   : https://github.com/simplify-framework
- * ProjectName  : {{projectNamePascal}}
- * ProjectId    : {{projectId}}
+ * ProjectName  : {{ProjectNamePascal}}
+ * ProjectId    : {{ProjectId}}
  * License      : Apache-2.0 (Free)
  */
-const {{projectName}} = require('debug')('{{projectName}}')
+const {{ProjectName}} = require('debug')('{{ProjectName}}')
 
-exports.info = {{projectName}}.extend('INFO')
-exports.warn = {{projectName}}.extend('WARNING')
-exports.error = {{projectName}}.extend('ERROR')
-exports.debug = {{projectName}}.extend('DEBUG')
+exports.info = {{ProjectName}}.extend('INFO')
+exports.warn = {{ProjectName}}.extend('WARNING')
+exports.error = {{ProjectName}}.extend('ERROR')
+exports.debug = {{ProjectName}}.extend('DEBUG')
 
-require('debug').enable(process.env.DEBUG || '{{projectName}}:INFO,{{projectName}}:WARNING,{{projectName}}:ERROR')
+require('debug').enable(process.env.DEBUG || '{{ProjectName}}:INFO,{{ProjectName}}:WARNING,{{ProjectName}}:ERROR')
