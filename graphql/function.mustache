@@ -1,0 +1,34 @@
+'use strict';
+{{#RemoteExecutionMode}}
+const AWS = require('aws-sdk');
+const lambda = new AWS.Lambda();
+{{/RemoteExecutionMode}}
+
+module.exports.handler = function(event, context, callback) {
+    {{#RemoteExecutionMode}}
+    var params = {
+        FunctionName: "{{Run.Name}}LambdaFunction", 
+        Payload: "<Binary String>"
+    };
+    lambda.invoke(params, function(err, data) {
+        callback(err, data)
+    });
+    {{/RemoteExecutionMode}}
+    {{^RemoteExecutionMode}}
+    callback(null, [{
+        title: "First Book",
+        author: {
+            id: "1234567891",
+            name: "Star",
+            type: "JOURNALIST"
+        }
+    }, {
+        title: "Second Book",
+        author: {
+            id: "1234567890",
+            name: "War",
+            type: "SCIENTIST"
+        }
+    }])
+    {{/RemoteExecutionMode}}
+}

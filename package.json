@@ -1,0 +1,24 @@
+{
+  "name": "simplify-templates",
+  "version": "0.1.1",
+  "description": "Simplify graphql-templates for code generation",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simplify-framework/templates.git"
+  },
+  "keywords": [
+    "graphql",
+    "templates",
+    "openapi",
+    "python",
+    "node"
+  ],
+  "author": "Duong Dinh Cuong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simplify-framework/templates/issues"
+  },
+  "homepage": "https://github.com/simplify-framework/templates#README",
+  "dependencies": {}
+}

@@ -1,0 +1,11 @@
+'use strict';
+var fs = require('fs');
+var files = fs.readdirSync(__dirname);
+let functionIndexes = {}
+files.map(f => {
+    if (f !== "index.js") {
+        const fName = f.replace(/.js/g,'')
+        functionIndexes[fName] = require(`./${fName}`)
+    }
+})
+module.exports = functionIndexes

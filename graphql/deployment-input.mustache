@@ -1,0 +1,23 @@
+{
+    "Profile": "{{DeploymentProfile}}",
+    "Region": "{{DeploymentRegion}}",
+    "Bucket": {
+        "Name": "{{BucketName}}-{{ProjectId}}",
+        "Key": "stacks/${DATE_TODAY}"
+    },
+    "OutputFile": "{{ProjectName}}-meta.json",
+    "Deployment": {
+        "Name": "{{ProjectName}}{{DeploymentName}}",
+        "Definition": "deployment.yaml",
+        "Authorizer": "{{AuthorizerId}}",
+        "Servers": {
+            {{#Servers}}
+            "{{Name}}": {
+                "FunctionInput": "./{{Name}}/server-input.json",
+                "CustomResourceArn": "NO",
+                "ResourcePermission": "NO"
+            }{{#hasMore}}, {{/hasMore}}
+            {{/Servers}}
+        }
+    }
+}

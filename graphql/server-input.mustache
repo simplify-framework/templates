@@ -1,0 +1,36 @@
+{
+    "Profile": "{{DeploymentProfile}}",
+    "Region": "{{DeploymentRegion}}",
+    "Bucket": {
+        "Name": "{{BucketName}}-{{ProjectId}}",
+        "Key": "servers/${DATE_TODAY}/dist"
+    },
+    "OutputFile": "server-meta.json",
+    "LayerConfig": {
+        "CompatibleRuntimes": [
+            "{{Runtime}}"
+        ],
+        "LayerName": "{{NameSnake}}"
+    },
+    "Server": {
+        "FunctionName": "{{Name}}",
+        "Handler": "index.handler",
+        "MemorySize": 128,
+        "Publish": true,
+        "Role": "${Function{{NamePascal}}RoleArn}",
+        "Runtime": "{{Runtime}}",
+        "Tags": {
+            "GroupName": "{{ProjectName}}-{{DeploymentStage}}"
+        },
+        "Timeout": 15,
+        "TracingConfig": {
+            "Mode": "PassThrough"
+        },
+        "Environment": {
+            "Variables": {
+                "DEPLOYMENT_STAGE": "${DEPLOYMENT_STAGE}",
+                "ENFORCEMENT_PACKAGE": "${ENFORCEMENT_PACKAGE}"
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+version: '3.3'
+services:
+  {{#Servers}}
+  {{Name}}:
+    build:
+      context: ./{{Name}}/
+    environment:
+      - LOG_LEVEL=info
+    restart: always
+  {{/Servers}}
+  graphQLGatewayEndpoint:
+    image: nginx
+    ports:
+      - 80:8080
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/gateway.conf
+    restart: always
+    depends_on:
+    {{#Servers}}
+    - {{Name}}
+    {{/Servers}}
