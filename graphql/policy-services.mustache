@@ -1,0 +1,34 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [        
+        {
+            "Sid": "IAMRolePolicy{{ProjectNamePascal}}",
+            "Effect": "Allow",
+            "Action": [
+                "iam:*Role",
+                "iam:*RolePolicy",
+                "iam:*PolicyVersions",
+                "secretsmanager:*",
+                "iam:*Policy",
+                "logs:*",
+                "events:*",
+                "lambda:*"
+            ],
+            "Resource": [
+                {{#Servers}}
+                "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:{{Name}}Secret-*",
+                "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}-{{Name}}Schedule*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}-{{Name}}Lambda*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:policy/{{ProjectName}}-{{Name}}Lambda*-*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}-{{Name}}Lambda*-*:log-stream:*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}-{{Name}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}-{{Name}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}-*:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}"{{#hasMore}},{{/hasMore}}
+                {{/Servers}}
+            ]
+        }
+    ]
+}

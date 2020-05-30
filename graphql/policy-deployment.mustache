@@ -1,0 +1,70 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DeploymentStorage{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::{{BucketName}}-{{ProjectId}}",
+                "arn:aws:s3:::{{BucketName}}-{{ProjectId}}/*"
+            ]
+        },
+        {
+            "Sid": "DescribeLogGroups{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups"
+            ],
+            "Resource": [
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group::log-stream:*"
+            ]
+        },
+        {
+            "Sid": "APIGatewayDenyAction{{DeploymentAccount}}",
+            "Effect": "Deny",
+            "Action": [
+                "apigateway:*"
+            ],
+            "Resource": [
+                "arn:aws:apigateway:{{DeploymentRegion}}::/account",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/account/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/clientcertificates",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/clientcertificates/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/domainnames",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/domainnames/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/vpclinks",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/vpclinks/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/apis",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/apis/*"
+            ]
+        },
+        {
+            "Sid": "APIGatewayManageAction{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "apigateway:*"
+            ],
+            "Resource": [
+                "arn:aws:apigateway:{{DeploymentRegion}}::/restapis",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/restapis/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/usageplans",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/usageplans/*",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/apikeys",
+                "arn:aws:apigateway:{{DeploymentRegion}}::/apikeys/*"
+            ]
+        },
+        {
+            "Sid": "CloudFormationSpecificBucket{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:*"
+            ],
+            "Resource": [
+                "arn:aws:cloudformation:{{DeploymentRegion}}:{{DeploymentAccount}}:stack/{{ProjectName}}/*"
+            ]
+        }
+    ]
+}

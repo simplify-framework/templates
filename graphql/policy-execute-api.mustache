@@ -1,0 +1,23 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {{#Servers}}
+        {
+            "Sid": "APiGatewayExecution{{NamePascal}}",
+            "Effect": "Allow",
+            "Action": [
+                "execute-api:Invoke"
+            ],
+            "Resource": [
+                {{#Definitions}}
+                {{#Paths}}
+                "arn:aws:execute-api:{{DeploymentRegion}}:{{deploymentAccount}}:*/latest/POST{{Path}}",
+                "arn:aws:execute-api:{{DeploymentRegion}}:{{deploymentAccount}}:*/latest/POST{{Path}}/*"{{#hasMore}},{{/hasMore}}
+                {{/Paths}}
+                {{#hasMore}},{{/hasMore}}
+                {{/Definitions}}
+            ]
+        }{{#hasMore}},{{/hasMore}}
+        {{/Servers}}
+    ]
+}
