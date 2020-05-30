@@ -17,7 +17,7 @@
         { "input": "deployment-package.mustache", "output": "package.json" },
         { "input": "code-push.mustache", "output": "AWSDeploy/code-push.sh" },
         { "input": "code-init.mustache", "output": "AWSDeploy/code-init.js" },
-        { "input": "design.mustache", "output": "design.txt" }
+        { "input": "verbal-design.mustache", "output": "verbal-design.txt" }
     ],
     "GraphQLServers": [
         { "input": ".babelrc.mustache", "output": "{{serverName}}/.babelrc" },
