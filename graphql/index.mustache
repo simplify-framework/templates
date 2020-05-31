@@ -7,10 +7,10 @@
  * License      : Apache-2.0 (Free)
  */
 const awsServerlessExpress = require('aws-serverless-express');
-const app = require('./app');
-const server = awsServerlessExpress.createServer(app);
+const server = awsServerlessExpress.createServer(require('./app'));
 
 exports.handler = (event, context, callback) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
+    event.path = event.resource = '/graphql';
     awsServerlessExpress.proxy(server, event, context);
 };

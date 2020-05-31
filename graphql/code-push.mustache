@@ -11,7 +11,7 @@ FUNC_OPS=${2:-"push"}
 
 export $(egrep -v '^#' ${ENV_FILE} | xargs)
 
-node code-init.js --input deployment-input.json
+node .simplify-graphql/code-init.js --input deployment-input.json
 
 declare -a DEPLOYMENT_PACKAGES=(
 {{#Servers}}
@@ -31,7 +31,7 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
         echo "Pushing ${DeploymentPackageName} with blank DEPLOYMENT_STAGE is not satified!"
         continue
     fi
-    cd ${INITIAL_DIR}/{{projectName}}/${DeploymentPackageName} && npm install
+    cd ${INITIAL_DIR}/${DeploymentPackageName} && npm install
     if [ "${FUNC_OPS}" == "update" ]; then
         npm run push-update
         if [ $? -ne 0 ]; then
@@ -41,12 +41,13 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
         fi
     else
         if [ "${DEPLOYMENT_STAGE}" == "latest" ]; then
-        npm run build-code && npm run push-code
-        if [ $? -ne 0 ]; then
-            echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
-            cd ${INITIAL_DIR}
-            exit 255
-        fi
+            npm run build-code && npm run push-code
+            npm run build-deps && npm run push-deps
+            if [ $? -ne 0 ]; then
+                echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
+                cd ${INITIAL_DIR}
+                exit 255
+            fi
         elif [ "${DEPLOYMENT_STAGE}" == "stable" ]; then
             npm run build-code && npm run push-code
             if [ $? -ne 0 ]; then

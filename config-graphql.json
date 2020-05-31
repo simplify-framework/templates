@@ -26,32 +26,33 @@
         { "input": "docker-entrypoint.mustache", "output": "{{serverName}}/docker-entrypoint.sh" },
         { "input": "Dockerfile.mustache", "output": "{{serverName}}/Dockerfile" },
         { "input": "server-input.mustache", "output": "{{serverName}}/.simplify-graphql/server-input.json" },
-        { "input": "server-push.mustache", "output": "{{serverName}}/.simplify-graphql/server-push.js" },
+        { "input": "function-push.mustache", "output": "{{serverName}}/.simplify-graphql/function-push.js" },
         { "input": "layer-push.mustache", "output": "{{serverName}}/.simplify-graphql/layer-push.js" },
         { "input": "webpack.config.mustache", "output": "{{serverName}}/webpack.config.js" },
         { "input": "webpack.config.layer.mustache", "output": "{{serverName}}/webpack.config.layer.js" },
         { "input": "package.mustache", "output": "{{serverName}}/package.json" },
-        { "input": "logger.mustache", "output": "{{serverName}}/Utilities/logger.js" },
-        { "input": "api-utils.mustache", "output": "{{serverName}}/Utilities/api-utils.js" },
-        { "input": "sigV4Client.mustache", "output": "{{serverName}}/Utilities/sigV4Client.js" },
-        { "input": "schema.mustache", "output": "{{serverName}}/schema.graphql" },
-        { "input": "index.mustache", "output": "{{serverName}}/index.js" },
-        { "input": "function-index.mustache", "output": "{{serverName}}/Functions/_index.js" },
-        { "input": "app.mustache", "output": "{{serverName}}/app.js" }
+        { "input": "package-src.mustache", "output": "{{serverName}}/src/package.json" },
+        { "input": "logger.mustache", "output": "{{serverName}}/src/Utilities/logger.js" },
+        { "input": "api-utils.mustache", "output": "{{serverName}}/src/Utilities/api-utils.js" },
+        { "input": "sigV4Client.mustache", "output": "{{serverName}}/src/Utilities/sigV4Client.js" },
+        { "input": "schema.mustache", "output": "{{serverName}}/src/schema.graphql" },
+        { "input": "index.mustache", "output": "{{serverName}}/src/index.js" },
+        { "input": "function-index.mustache", "output": "{{serverName}}/src/Functions/_index.js" },
+        { "input": "app.mustache", "output": "{{serverName}}/src/app.js" }
     ],
     "GraphQLDataInputs": [
-        { "input": "input.mustache", "output": "{{serverName}}/Schemas/Inputs/{{dataName}}.js" }
+        { "input": "input.mustache", "output": "{{serverName}}/src/Schemas/Inputs/{{dataName}}.js" }
     ],
     "GraphQLDataObjects": [
-        { "input": "model.mustache", "output": "{{serverName}}/Schemas/Models/{{dataName}}.js" }
+        { "input": "model.mustache", "output": "{{serverName}}/src/Schemas/Models/{{dataName}}.js" }
     ],
     "GraphQLEnumObjects": [
-        { "input": "enum.mustache", "output": "{{serverName}}/Schemas/Models/{{dataName}}.js" }
+        { "input": "enum.mustache", "output": "{{serverName}}/src/Schemas/Models/{{dataName}}.js" }
     ],
     "GraphQLResolvers": [
-        { "input": "resolver.mustache", "output": "{{serverName}}/Resolvers/{{stateName}}.js" }
+        { "input": "resolver.mustache", "output": "{{serverName}}/src/Resolvers/{{stateName}}.js" }
     ],
     "GraphQLFunctions": [
-        { "input": "function.mustache", "output": "{{serverName}}/Functions/{{functionName}}.js" }
+        { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}.js" }
     ]
 }

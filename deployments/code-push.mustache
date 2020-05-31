@@ -28,14 +28,14 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
     export ENFORCEMENT_PACKAGE="${!EnforcementPackageName}"
     DeploymentLayerName="ENV_${DeploymentPackageName}_DEPLOYMENT_LAYER"
     if [ -z "${DEPLOYMENT_STAGE}" ]; then
-        echo "Pushing {{serviceName}} with blank DEPLOYMENT_STAGE is not satified!"
+        echo "Pushing ${DeploymentPackageName} with blank DEPLOYMENT_STAGE is not satified!"
         continue
     fi
     cd ${INITIAL_DIR}/{{projectName}}/${DeploymentPackageName} && npm install
     if [ "${FUNC_OPS}" == "update" ]; then
         npm run push-update
         if [ $? -ne 0 ]; then
-            echo "Update {{serviceName}} (${DEPLOYMENT_STAGE}) has failed!"
+            echo "Update ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) has failed!"
             cd ${INITIAL_DIR}
             exit 255
         fi
@@ -43,20 +43,20 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
         if [ "${DEPLOYMENT_STAGE}" == "latest" ]; then
         npm run build-code && npm run push-code
         if [ $? -ne 0 ]; then
-            echo "Pushing {{serviceName}} (${DEPLOYMENT_STAGE}) code has failed!"
+            echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
             cd ${INITIAL_DIR}
             exit 255
         fi
         elif [ "${DEPLOYMENT_STAGE}" == "stable" ]; then
             npm run build-code && npm run push-code
             if [ $? -ne 0 ]; then
-                echo "Pushing {{serviceName}} (${DEPLOYMENT_STAGE}) code has failed!"
+                echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
                 cd ${INITIAL_DIR}
                 exit 255
             fi
             npm run build-layer && npm run push-layer
             if [ $? -ne 0 ]; then
-                echo "Pushing {{serviceName}}:${!DeploymentLayerName} (${DEPLOYMENT_STAGE}) layer has failed!"
+                echo "Pushing ${DeploymentPackageName}:${!DeploymentLayerName} (${DEPLOYMENT_STAGE}) layer has failed!"
                 cd ${INITIAL_DIR}
                 exit 255
             fi
@@ -64,7 +64,7 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
             if [ ! -z "${ENFORCEMENT_PACKAGE}" ]; then
                 npm run build-code && npm run push-code
                 if [ $? -ne 0 ]; then
-                    echo "Pushing {{serviceName}} (${DEPLOYMENT_STAGE}) code has failed!"
+                    echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
                     cd ${INITIAL_DIR}
                     exit 255
                 fi
@@ -80,7 +80,7 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
                 fi
                 npm run push-layer
                 if [ $? -ne 0 ]; then
-                    echo "Pushing {{serviceName}}:${ENFORCEMENT_PACKAGE} (${DEPLOYMENT_STAGE}) layer has failed!"
+                    echo "Pushing ${DeploymentPackageName}:${ENFORCEMENT_PACKAGE} (${DEPLOYMENT_STAGE}) layer has failed!"
                     cd ${INITIAL_DIR}
                     exit 255
                 fi
@@ -88,7 +88,7 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
         else
             npm run build-code && npm run push-code
             if [ $? -ne 0 ]; then
-                echo "Pushing {{serviceName}} (${DEPLOYMENT_STAGE}) code has failed!"
+                echo "Pushing ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) code has failed!"
                 cd ${INITIAL_DIR}
                 exit 255
             fi

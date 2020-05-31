@@ -1,6 +1,6 @@
 {
   "name": "simplify-templates",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simplify graphql-templates for code generation",
   "main": "index.js",
   "repository": {
@@ -15,7 +15,7 @@
     "node"
   ],
   "author": "Duong Dinh Cuong",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
     "url": "https://github.com/simplify-framework/templates/issues"
   },

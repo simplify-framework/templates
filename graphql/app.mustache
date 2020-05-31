@@ -8,9 +8,11 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { ApolloServer, gql } = require('apollo-server');
-const schema = fs.readFileSync(path.resolve(__dirname, 'graphql.schema'), 'utf8')
+const express = require('express')
+const { ApolloServer, gql } = require('apollo-server-express')
+const schema = fs.readFileSync(path.resolve(__dirname, 'schema.graphql'), 'utf8')
 const typeDefs = gql(schema);
+const app = express()
 
 {{#Definitions}}
 {{#Paths}}
@@ -40,10 +42,12 @@ const server = new ApolloServer({
     })
 })
 
+server.applyMiddleware({ app })
+
 if (process.env.LOCAL_DEBUG === "YES") {
-    server.listen().then(({ url }) => {
-        console.log(`GraphQL server is ready at ${url}`)
+    app.listen({ port: 4000 }, () => {
+        console.log(`GraphQL server is ready at http://localhost:4000${server.graphqlPath}`)
     })
 }
 
-module.exports = server
+module.exports = app

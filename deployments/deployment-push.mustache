@@ -75,7 +75,7 @@ try {
                         stackTemplate: TemplateURL
                     }
                 }).then(function (stackData) {
-                    stackData.apiConfig = { Region: config.Region, Profile: config.Profile }
+                    stackData.apiConfig = { Region: config.Region, Profile: config.Profile, StageName: 'latest' }
                     stackData.Outputs.map(function (o) {
                         if (o.OutputKey == `GatewayUrl`) {
                             stackData.apiConfig.GatewayURL = o.OutputValue

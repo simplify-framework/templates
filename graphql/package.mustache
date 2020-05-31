@@ -4,14 +4,16 @@
   "description": "Simplify graphql-serverless architecture model (GSAM)",
   "main": "app.js",
   "scripts": {
-    "push-update": "node .simplify-graphql/server-push.js --ops update",
-    "push-code": "env SERVER_SOURCE=build node .simplify-graphql/function-push.js",
-    "build-code": "webpack -p --config webpack.config.js",
-    "push-layer": "env LAYER_SOURCE=layer node .simplify-graphql/layer-push.js",
+    "push-update": "node .simplify-graphql/function-push.js --ops update --input server-input.json",
+    "push-code": "env SERVER_SOURCE=../src node .simplify-graphql/function-push.js --input server-input.json",
+    "build-code": "echo 'This source is the native Javascript code. No need to compile!'",
+    "push-bin": "env SERVER_SOURCE=../build node .simplify-graphql/function-push.js --input server-input.json",
+    "build-bin": "webpack -p --config webpack.config.js && cp schema.graphql build/schema.graphql",
+    "push-layer": "env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js --input server-input.json",
     "build-layer": "webpack -p --config webpack.config.layer.js",
-    "push-deps": "env LAYER_SOURCE=deps env DEPENDENCIES_PACKAGE={{NameSnake}}-deps node .simplify-graphql/layer-push.js",
-    "build-deps": "[ -d deps/nodejs ] || mkdir -p deps/nodejs && cp package.json deps/nodejs/package.json && cd deps/nodejs && npm install --only=production",
-    "start": "npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
+    "push-deps": "env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{NameSnake}}-deps node .simplify-graphql/layer-push.js --input server-input.json",
+    "build-deps": "[ -d deps/nodejs ] || mkdir -p deps/nodejs && cp src/package.json deps/nodejs/package.json && cd deps/nodejs && npm install --only=production",
+    "start": "cd src/ && npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
     "code-scan": "bash sonarqube-scanner.sh"
   },
   "keywords": [
@@ -33,12 +35,5 @@
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
     "simplify-sdk": "^0.1.11"
-  },
-  "dependencies": {
-    "aws-serverless-express": "^3.3.8",
-    "apollo-server": "^2.13.1",
-    "simplify-sdk": "^0.1.11",
-    "graphql": "^15.0.0",
-    "uuid": "^8.1.0"
   }
 }

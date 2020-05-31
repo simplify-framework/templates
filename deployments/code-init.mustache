@@ -11,7 +11,7 @@ const path = require('path')
 const simplify = require('simplify-sdk')
 const opName = `DeploymentInit`
 var nodeArgs = process.argv.slice(2);
-var configInputFile = process.env.DEPLOYMENT_INPUT || "deployment.json"
+var configInputFile = process.env.DEPLOYMENT_INPUT || "deployment-input.json"
 if (nodeArgs.length > 1) {
     configInputFile = (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") ? nodeArgs[1] : configInputFile
 }

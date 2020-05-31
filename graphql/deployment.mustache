@@ -224,7 +224,7 @@ Resources:
       StageKeys: 
         - RestApiId: !Ref {{Name}}
           StageName: !Ref DeploymentStage
-      Value: {{DeploymentApiKey}}
+      Value: {{Name}}-{{DeploymentApiKey}}
   
   {{Name}}APIGateWayUsagePlanKey:
     DependsOn: {{Name}}APIGateWayApiKey
@@ -394,7 +394,7 @@ Resources:
           - ":"
           - !Ref AWS::AccountId
           - ":"
-          - !Ref {{gatewayName}}
+          - !Ref {{Name}}
           - "/*/*/*"
 {{/Servers}}
 

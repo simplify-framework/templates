@@ -13,7 +13,7 @@
         "Servers": {
             {{#Servers}}
             "{{Name}}": {
-                "FunctionInput": "./{{Name}}/server-input.json",
+                "FunctionInput": "../{{Name}}/.simplify-graphql/server-input.json",
                 "CustomResourceArn": "NO",
                 "ResourcePermission": "NO"
             }{{#hasMore}}, {{/hasMore}}
