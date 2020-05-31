@@ -7,14 +7,14 @@
     FOR EVERY ({{Definition}})
         {{#Paths}}
         POST {{Path}} {{#Options}}using {{AuthMode}} authorization with ApiKey={{ApiKey}}{{/Options}}
-        {{#Operations}}
-            {{OperationId}} [{{#Parameters}}{{Name}}={{Kind}}{{#hasMore}}, {{/hasMore}}{{/Parameters}}] => {{DataType}}({{DataModel}}) will execute {{#Function}}@{{Kind}}={{Name}}{{/Function}}
-            {{#Function}}
+        {{#Resolvers}}
+            {{OperationId}} [{{#Parameters}}{{Name}}={{Kind}}{{#hasMore}}, {{/hasMore}}{{/Parameters}}] => {{DataType}}({{DataModel}}) will execute {{#Resolver}}@{{Kind}}={{Name}}{{/Resolver}}
+            {{#Resolver}}
                 {{#Chains}}
-                    {{#Run}}{{FunctionType}}={{Name}}{{/Run}}() onSuccess={{Next}}() onFailure={{Other}}() RetryOnFailure={{Retry}}
+                    {{#Run}}{{ResolverType}}={{Name}}{{/Run}}() onSuccess={{Next}}() onFailure={{Other}}() RetryOnFailure={{Retry}}
                 {{/Chains}}
-            {{/Function}}
-        {{/Operations}}
+            {{/Resolver}}
+        {{/Resolvers}}
         {{/Paths}}
     {{/Definitions}}
     {{#hasMore}}{{/hasMore}}

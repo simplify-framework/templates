@@ -5,7 +5,7 @@
             "Sid": "{{ProjectNamePascal}}UserAssumeRole",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Principal": {"AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}"},
+            "Principal": {"AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}User"},
             "Condition": {
                 "StringEquals": {"sts:ExternalId": "{{ProjectNamePascal}}-{{ProjectId}}"}
             }
@@ -14,7 +14,7 @@
             "Sid": "{{ProjectNamePascal}}SessionTags",
             "Effect": "Allow",
             "Action": "sts:TagSession",
-            "Principal": {"AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}"}
+            "Principal": {"AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}User"}
         }
     ]
 }

@@ -14,9 +14,9 @@ const typeDefs = gql(schema);
 
 {{#Definitions}}
 {{#Paths}}
-{{#Operations}}
-{{#Function}}const { {{Name}} } = require('./States/{{Name}}'){{/Function}}
-{{/Operations}}
+{{#Resolvers}}
+{{#Resolver}}const { {{Name}} } = require('./Resolvers/{{Name}}'){{/Resolver}}
+{{/Resolvers}}
 {{/Paths}}
 {{/Definitions}}
 
@@ -25,9 +25,9 @@ const resolvers = {
     {{{Definition}}}: {
     {{#Paths}}
     // POST {{Path}} {{#Options}}using {{AuthMode}} authorization with ApiKey={{ApiKey}}{{/Options}}
-    {{#Operations}}
-        {{OperationId}}: (parent, args, context, info) => {{#Function}}{{Name}}(parent, args, context, info){{/Function}}{{#hasMore}},{{/hasMore}}
-    {{/Operations}}
+    {{#Resolvers}}
+        {{OperationId}}: (parent, args, context, info) => {{#Resolver}}{{Name}}(parent, args, context, info){{/Resolver}}{{#hasMore}},{{/hasMore}}
+    {{/Resolvers}}
     {{#hasMore}},{{/hasMore}}{{^hasMore}}// END{{/hasMore}}
     {{/Paths}}
     }{{#hasMore}},{{/hasMore}}

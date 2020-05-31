@@ -11,8 +11,8 @@
             "Resource": [
                 {{#Definitions}}
                 {{#Paths}}
-                "arn:aws:execute-api:{{DeploymentRegion}}:{{deploymentAccount}}:*/latest/POST{{Path}}",
-                "arn:aws:execute-api:{{DeploymentRegion}}:{{deploymentAccount}}:*/latest/POST{{Path}}/*"{{#hasMore}},{{/hasMore}}
+                "arn:aws:execute-api:{{DeploymentRegion}}:{{DeploymentAccount}}:*/latest/POST{{Path}}",
+                "arn:aws:execute-api:{{DeploymentRegion}}:{{DeploymentAccount}}:*/latest/POST{{Path}}/*"{{#hasMore}},{{/hasMore}}
                 {{/Paths}}
                 {{#hasMore}},{{/hasMore}}
                 {{/Definitions}}

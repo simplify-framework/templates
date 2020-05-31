@@ -1,0 +1,12 @@
+#!/bin/bash
+aws iam delete-user-policy --user-name {{ProjectNamePascal}}User --policy-name {{ProjectNamePascal}}AccessRole $@
+aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}DeploymentPolicy $@
+aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}FunctionPolicy $@
+aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}ExecutePolicy $@
+aws iam delete-role --role-name {{ProjectNamePascal}}Role $@
+declare -a ACCESS_KEYS=(`aws iam list-access-keys --user-name {{ProjectNamePascal}}User --output text --query 'AccessKeyMetadata[*].AccessKeyId'`)
+for i in "${!ACCESS_KEYS[@]}"; do
+    accessKeyId=${ACCESS_KEYS[$i]}
+    aws iam delete-access-key --user-name {{ProjectNamePascal}}User --access-key-id ${accessKeyId}
+done
+aws iam delete-user --user-name {{ProjectNamePascal}}User $@

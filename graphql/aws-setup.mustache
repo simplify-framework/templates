@@ -1,0 +1,8 @@
+#!/bin/bash
+aws iam create-user --user-name {{ProjectNamePascal}}User $@
+aws iam create-role --role-name {{ProjectNamePascal}}Role --assume-role-policy-document file://.simplify-graphql/policy-relationship-role.json $@
+aws iam put-user-policy --user-name {{ProjectNamePascal}}User --policy-name {{ProjectNamePascal}}AccessRole --policy-document file://.simplify-graphql/policy-assume-role.json $@
+aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}DeploymentPolicy --policy-document file://.simplify-graphql/policy-deployment.json $@
+aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}FunctionPolicy --policy-document file://.simplify-graphql/policy-functions.json $@
+aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}ExecutePolicy --policy-document file://.simplify-graphql/policy-execute-api.json $@
+aws iam create-access-key --user-name {{ProjectNamePascal}}User $@

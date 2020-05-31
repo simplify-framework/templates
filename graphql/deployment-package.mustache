@@ -3,10 +3,10 @@
     "version": "{{ProjectVersion}}",
     "description": "{{{ProjectDesc}}}",
     "scripts": {
-        "stack-deploy": "node AWSDeploy/deployment.js --input deployment-input.json",
-        "stack-destroy": "node AWSDeploy/deployment.js --input deployment-input.json --deletion",
-        "push-update": "bash AWSDeploy/code-push.sh .env update",
-        "push-code": "bash AWSDeploy/code-push.sh .env push"
+        "stack-deploy": "node .simplify-graphql/deployment.js --input deployment-input.json",
+        "stack-destroy": "node .simplify-graphql/deployment.js --input deployment-input.json --deletion",
+        "push-update": "bash .simplify-graphql/code-push.sh .env update",
+        "push-code": "bash .simplify-graphql/code-push.sh .env push"
     },
     "license": "MIT",
     "private": true,

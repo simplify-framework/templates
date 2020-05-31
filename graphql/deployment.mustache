@@ -311,7 +311,7 @@ Resources:
           - !Ref {{Name}}LambdaFunction
       RetentionInDays: 14
 
-  {{#HasKeyVault}}
+  {{#DeploymentKeyVault}}
   {{Name}}Secret:
     Type: AWS::SecretsManager::Secret
     Properties:
@@ -370,7 +370,7 @@ Resources:
                 !Ref AWS::AccountId
               secretname:
                 !Ref {{Name}}Secret
-  {{/HasKeyVault}}
+  {{/DeploymentKeyVault}}
 
   {{Name}}CustomResource:
     Condition: Has{{NamePascal}}CustomResourceArn

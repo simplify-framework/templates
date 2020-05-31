@@ -36,12 +36,12 @@ input ChainInput {
     Retry: Int
 }
 
-directive @GraphQLFunctionSet(
+directive @GraphQLResolverSet(
     Name: String
     Chains: [ChainInput]
 ) on FIELD_DEFINITION
 
-directive @GraphQLFunction(
+directive @GraphQLResolver(
     Name: String
     Policy: String
     Runtime: String

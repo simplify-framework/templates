@@ -6,33 +6,35 @@
         { "input": ".gitignore.mustache", "output": ".gitignore" },
         { "input": "docker-compose.mustache", "output": "docker-compose.yml" },
         { "input": "nginx.conf.mustache", "output": "nginx.conf" },
-        { "input": "policy-relationship-role.mustache", "output": "AWSDeploy/policy-relationship-role.json" },
-        { "input": "policy-assume-role.mustache", "output": "AWSDeploy/policy-assume-role.json" },
-        { "input": "policy-deployment.mustache", "output": "AWSDeploy/policy-deployment.json" },
-        { "input": "policy-services.mustache", "output": "AWSDeploy/policy-services.json" },
-        { "input": "policy-execute-api.mustache", "output": "AWSDeploy/policy-execute-api.json" },
-        { "input": "deployment.mustache", "output": "AWSDeploy/deployment.yaml" },
-        { "input": "deployment-push.mustache", "output": "AWSDeploy/deployment.js" },
-        { "input": "deployment-input.mustache", "output": "AWSDeploy/deployment-input.json" },
+        { "input": "policy-relationship-role.mustache", "output": ".simplify-graphql/policy-relationship-role.json" },
+        { "input": "policy-assume-role.mustache", "output": ".simplify-graphql/policy-assume-role.json" },
+        { "input": "policy-deployment.mustache", "output": ".simplify-graphql/policy-deployment.json" },
+        { "input": "policy-functions.mustache", "output": ".simplify-graphql/policy-functions.json" },
+        { "input": "policy-execute-api.mustache", "output": ".simplify-graphql/policy-execute-api.json" },
+        { "input": "deployment.mustache", "output": ".simplify-graphql/deployment.yaml" },
+        { "input": "deployment-push.mustache", "output": ".simplify-graphql/deployment.js" },
+        { "input": "deployment-input.mustache", "output": ".simplify-graphql/deployment-input.json" },
         { "input": "deployment-package.mustache", "output": "package.json" },
-        { "input": "code-push.mustache", "output": "AWSDeploy/code-push.sh" },
-        { "input": "code-init.mustache", "output": "AWSDeploy/code-init.js" },
+        { "input": "code-push.mustache", "output": ".simplify-graphql/code-push.sh" },
+        { "input": "code-init.mustache", "output": ".simplify-graphql/code-init.js" },
+        { "input": "aws-setup.mustache", "output": ".simplify-graphql/aws-setup.sh" },
+        { "input": "aws-cleanup.mustache", "output": ".simplify-graphql/aws-cleanup.sh" },
         { "input": "verbal-design.mustache", "output": "verbal-design.txt" }
     ],
     "GraphQLServers": [
         { "input": ".babelrc.mustache", "output": "{{serverName}}/.babelrc" },
         { "input": "docker-entrypoint.mustache", "output": "{{serverName}}/docker-entrypoint.sh" },
         { "input": "Dockerfile.mustache", "output": "{{serverName}}/Dockerfile" },
-        { "input": "server-input.mustache", "output": "{{serverName}}/server-input.json" },
-        { "input": "server-push.mustache", "output": "{{serverName}}/server-push.js" },
-        { "input": "layer-push.mustache", "output": "{{serverName}}/layer-push.js" },
+        { "input": "server-input.mustache", "output": "{{serverName}}/.simplify-graphql/server-input.json" },
+        { "input": "server-push.mustache", "output": "{{serverName}}/.simplify-graphql/server-push.js" },
+        { "input": "layer-push.mustache", "output": "{{serverName}}/.simplify-graphql/layer-push.js" },
         { "input": "webpack.config.mustache", "output": "{{serverName}}/webpack.config.js" },
         { "input": "webpack.config.layer.mustache", "output": "{{serverName}}/webpack.config.layer.js" },
         { "input": "package.mustache", "output": "{{serverName}}/package.json" },
         { "input": "logger.mustache", "output": "{{serverName}}/Utilities/logger.js" },
         { "input": "api-utils.mustache", "output": "{{serverName}}/Utilities/api-utils.js" },
         { "input": "sigV4Client.mustache", "output": "{{serverName}}/Utilities/sigV4Client.js" },
-        { "input": "graphql.mustache", "output": "{{serverName}}/graphql.schema" },
+        { "input": "schema.mustache", "output": "{{serverName}}/schema.graphql" },
         { "input": "index.mustache", "output": "{{serverName}}/index.js" },
         { "input": "function-index.mustache", "output": "{{serverName}}/Functions/_index.js" },
         { "input": "app.mustache", "output": "{{serverName}}/app.js" }
@@ -46,8 +48,8 @@
     "GraphQLEnumObjects": [
         { "input": "enum.mustache", "output": "{{serverName}}/Schemas/Models/{{dataName}}.js" }
     ],
-    "GraphQLOperations": [
-        { "input": "state-function.mustache", "output": "{{serverName}}/States/{{stateName}}.js" }
+    "GraphQLResolvers": [
+        { "input": "resolver.mustache", "output": "{{serverName}}/Resolvers/{{stateName}}.js" }
     ],
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/Functions/{{functionName}}.js" }

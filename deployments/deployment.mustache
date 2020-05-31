@@ -257,7 +257,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          DEPLOYMENT:
+          DEPLOYMENT_STAGE:
             !Ref DeploymentStage
       Role:
         Fn::GetAtt:

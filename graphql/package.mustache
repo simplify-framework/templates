@@ -4,12 +4,12 @@
   "description": "Simplify graphql-serverless architecture model (GSAM)",
   "main": "app.js",
   "scripts": {
-    "push-update": "node server-push.js --ops update",
-    "push-code": "env SERVER_SOURCE=build node function-push.js",
+    "push-update": "node .simplify-graphql/server-push.js --ops update",
+    "push-code": "env SERVER_SOURCE=build node .simplify-graphql/function-push.js",
     "build-code": "webpack -p --config webpack.config.js",
-    "push-layer": "env LAYER_SOURCE=layer node layer-push.js",
+    "push-layer": "env LAYER_SOURCE=layer node .simplify-graphql/layer-push.js",
     "build-layer": "webpack -p --config webpack.config.layer.js",
-    "push-deps": "env LAYER_SOURCE=deps env DEPENDENCIES_PACKAGE={{NameSnake}}-deps node layer-push.js",
+    "push-deps": "env LAYER_SOURCE=deps env DEPENDENCIES_PACKAGE={{NameSnake}}-deps node .simplify-graphql/layer-push.js",
     "build-deps": "[ -d deps/nodejs ] || mkdir -p deps/nodejs && cp package.json deps/nodejs/package.json && cd deps/nodejs && npm install --only=production",
     "start": "npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
     "code-scan": "bash sonarqube-scanner.sh"

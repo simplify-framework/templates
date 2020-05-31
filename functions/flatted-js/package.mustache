@@ -11,7 +11,7 @@
         "build-layer": "webpack -p --config webpack.config.layer.js",
         "production": "webpack -p && env LOCAL_DEBUG= node build/index.js",
         "development": "webpack --mode development && env LOCAL_DEBUG=YES node build/index.js",
-        "start": "cd src && npm install && env LOCAL_DEBUG=YES DEPLOYMENT=latest node app.js",
+        "start": "cd src && npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
         "code-scan": "bash sonarqube-scanner.sh"
     },
     "license": "MIT",
