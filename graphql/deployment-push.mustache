@@ -101,7 +101,7 @@ try {
                                 adaptor: provider.getAPIGateway(),
                                 apiConfig: stackData.apiConfig[f]
                             }).then(function (data) {
-                                simplify.finishWithSuccess(`${f} Endpoint URL: ${stackData.apiConfig[f].GatewayUrl}`)
+                                simplify.consoleWithMessage(`${f} Endpoint URL: ${stackData.apiConfig[f].GatewayUrl}`)
                             }).catch(function (err) {
                                 simplify.finishWithSuccess(`${f} Endpoint Stage: ${stackData.apiConfig[f].StageName} Update Failed!`)
                             })
