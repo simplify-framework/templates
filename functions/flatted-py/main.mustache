@@ -1,8 +1,36 @@
 #!/bin/python
 import os
 import sys
+import flask
+from flask import request
 
-index = __import__('{{index}}')
+index = __import__('index')
 
-if __name__ == "__main__":
-    print(index.handler({}, {}))
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+
+{{#serviceEntries}}
+{{#operations}}
+@app.route('{{{pythonPathName}}}')
+def {{httpMethodLowerCase}}({{#pathParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/pathParams}}):
+    params = {}
+    {{#pathParams}}
+    params["{{paramName}}"] = {{{paramName}}}
+    {{/pathParams}}
+    result=index.handler({ 
+      "path": "{{{pythonPathName}}}",
+      "resource": "/{{{serviceNameSnake}}}",
+      "params": params,
+      "cookies": request.cookies,
+      "headers": request.headers,
+      "queryParameters": request.args,
+      "body": request.data
+    }, { "request": request })
+    response = flask.Response(result["body"], status=result["statusCode"], mimetype='application/json')
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+{{/operations}}
+{{/serviceEntries}}
+
+if __name__ == '__main__':
+  app.run(host='0.0.0.0', port=3000)

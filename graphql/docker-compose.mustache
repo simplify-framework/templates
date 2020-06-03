@@ -1,14 +1,14 @@
 version: '3.3'
 services:
   {{#Servers}}
-  {{Name}}:
+  {{NameSnake}}:
     build:
       context: ./{{Name}}/
     environment:
       - LOG_LEVEL=info
     restart: always
   {{/Servers}}
-  graphQLGatewayEndpoint:
+  graphql-gateway-endpoint:
     image: nginx
     ports:
       - 80:8080
@@ -17,5 +17,5 @@ services:
     restart: always
     depends_on:
     {{#Servers}}
-    - {{Name}}
+    - {{NameSnake}}
     {{/Servers}}

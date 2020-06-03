@@ -1,20 +1,20 @@
-FROM python:alpine
-ENV LOG_LEVEL "info"
+FROM python:3.6.10-alpine3.11
+
+ENV DEPLOYMENT_STAGE="latest"
 
 COPY . /home/pyapp
 RUN chmod +x /home/pyapp/docker-entrypoint.sh
 RUN apk --update add curl ca-certificates &&\
     addgroup -g 1001 pyapp && \
     adduser -u 1001 -G pyapp -s /bin/sh -D pyapp && \
-    cd /home/pyapp && npm install && \
+    cd /home/pyapp/src && pip install -r requirements.txt && \
     rm -rf /var/lib/apt/lists/* &&\
     rm -rf /var/cache/apk/*
 
-# Run as the pyapp user ID.
 USER pyapp
 
-WORKDIR /home/pyapp
+WORKDIR /home/pyapp/src
 
 EXPOSE 3000
 
-CMD ["python","main.py"]
+CMD ["python", "main.py"]

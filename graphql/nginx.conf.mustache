@@ -1,15 +1,27 @@
 server {
     listen       8080;
     server_name  localhost;
+    server_name_in_redirect off;
+    set $force_trailing_slash -1;
 
     #charset koi8-r;
     #access_log  /var/log/nginx/host.access.log  main;
 
     {{#Servers}}
-    location /{{Name}} {
-        proxy_pass http://{{Name}}:4000;
-        rewrite ^/{{Name}}(.*)$ $1 break;
+    location /{{NameSnake}} {
+        if ($request_method !~ ^(GET)$){ return 404; }
+        proxy_pass http://{{NameSnake}}:4000/;
+        rewrite ^/(.*)$ /graphql break;
     }
+    {{#Definitions}}
+    {{#Paths}}
+    location {{Path}} {
+        if ($request_method !~ ^(POST)$){ return 404; }
+        proxy_pass http://{{NameSnake}}:4000/;
+        rewrite ^/(.*)$ /graphql break;
+    }
+    {{/Paths}}
+    {{/Definitions}}
     {{/Servers}}
 
     #error_page  404              /404.html;

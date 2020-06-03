@@ -1,15 +1,18 @@
 server {
     listen       8080;
     server_name  localhost;
+    server_name_in_redirect off;
+    set $force_trailing_slash -1;
 
     #charset koi8-r;
     #access_log  /var/log/nginx/host.access.log  main;
 
     {{#services}}
-    location /{{serviceName}} {
-        proxy_pass http://{{serviceNameSnake}}:3000;
-        rewrite ^/{{serviceName}}(.*)$ $1 break;
+    {{#resourceEntries}}
+    location /{{projectNameSnake}}{{path}} {
+        proxy_pass http://{{serviceNameSnake}}:3000{{path}};
     }
+    {{/resourceEntries}}
     {{/services}}
 
     #error_page  404              /404.html;

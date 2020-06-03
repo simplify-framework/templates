@@ -10,7 +10,7 @@
         "build-code": "cd src/ && pip3 install -r requirements.txt",
         "build-layer": "mkdir -p layer/python && file={{serviceNameSnake}} && file_underscore=$(echo ${file} | tr '-' '_') && cp src/${file}.py layer/python/${file_underscore}.py",
         "code-scan": "bash sonarqube-scanner.sh",
-        "start": "python index.py"
+        "start": "cd src/ && pip3 install -r requirements.txt && python main.py"
     },
     "license": "MIT",
     "private": true,
