@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "push-update": "node .simplify-graphql/function-push.js --ops update --input server-input.json",
-    "push-code": "env SERVER_SOURCE=../src node .simplify-graphql/function-push.js --input server-input.json",
+    "push-code": "env FUNCTION_SOURCE=../src node .simplify-graphql/function-push.js --input server-input.json",
     "build-code": "echo 'This source is the native Javascript code. No need to compile!'",
-    "push-bin": "env SERVER_SOURCE=../build node .simplify-graphql/function-push.js --input server-input.json",
+    "push-bin": "env FUNCTION_SOURCE=../build node .simplify-graphql/function-push.js --input server-input.json",
     "build-bin": "webpack -p --config webpack.config.js && cp schema.graphql build/schema.graphql",
     "push-layer": "env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js --input server-input.json",
     "build-layer": "webpack -p --config webpack.config.layer.js",
@@ -34,6 +34,6 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
-    "simplify-sdk": "^0.1.12"
+    "simplify-sdk": "^0.1.13"
   }
 }

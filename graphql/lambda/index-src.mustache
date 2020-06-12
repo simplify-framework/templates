@@ -1,0 +1,25 @@
+'use strict';
+/**
+ * Use __non_webpack_require__ when require('a-package') that is underlying &
+ * pre-installed in your runtime such as 'aws-sdk' or in node_modules layers
+ **/
+var AWS = __non_webpack_require__('aws-sdk')
+var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+
+exports.handler = (event, context, callback) => {
+    callback(null, callback(null, [{
+        title: "First Book",
+        author: {
+            id: "1234567891",
+            name: "Star",
+            type: "JOURNALIST"
+        }
+    }, {
+        title: "Second Book",
+        author: {
+            id: "1234567890",
+            name: "War",
+            type: "SCIENTIST"
+        }
+    }]))
+};

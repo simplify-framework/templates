@@ -18,6 +18,15 @@
                 "ResourcePermission": "NO"
             }{{#hasMore}}, {{/hasMore}}
             {{/Servers}}
+        },
+        "Functions": {
+            {{#Functions}}
+            "{{FunctionNamePascal}}": {
+                "FunctionInput": "../LambdaFunctions/{{FunctionName}}/.simplify-graphql/function-input.json",
+                "CustomResourceArn": "NO",
+                "ResourcePermission": "NO"
+            }{{#hasMore}}, {{/hasMore}}
+            {{/Functions}}
         }
     }
 }

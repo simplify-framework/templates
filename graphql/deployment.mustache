@@ -279,7 +279,7 @@ Resources:
         Fn::Join:
         - ""
         - - !Ref {{Name}}LambdaFunction
-          - LambdaExecutionRole
+          - LambdaExecutionPolicy
       Roles:
       - !Ref {{Name}}LambdaExecutionRole
       PolicyDocument:
@@ -398,6 +398,110 @@ Resources:
           - "/*/*/*"
 {{/Servers}}
 
+{{#Functions}}
+  {{FunctionName}}LambdaFunction:
+    Type: AWS::Lambda::Function
+    Metadata:
+      aws:asset:path: "./src"
+      aws:asset:property: Code
+    Properties:
+      Handler: index.handler      
+      Environment:
+        Variables:
+          DEPLOYMENT_STAGE:
+            !Ref DeploymentStage
+      Role:
+        Fn::GetAtt:
+        - {{FunctionName}}LambdaExecutionRole
+        - Arn
+      Runtime: {{Runtime}}
+      Timeout: '15'
+      Code:
+        ZipFile: |
+          {{RuntimeCode}}
+
+  {{FunctionName}}LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:      
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+
+  {{FunctionName}}LambdaExecutionPolicy:
+    DependsOn:
+    - {{FunctionName}}LambdaExecutionRole
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Join:
+        - ""
+        - - !Ref {{FunctionName}}LambdaFunction
+          - LambdaExecutionPolicy
+      Roles:
+      - !Ref {{FunctionName}}LambdaExecutionRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          Resource:
+          - Fn::Sub:
+            - arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${groupname}:log-stream:*
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
+              groupname:
+                !Ref {{FunctionName}}LambdaFunction
+
+  {{FunctionName}}LambdaFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: {{FunctionName}}LambdaFunction
+    Properties:
+      LogGroupName:
+        Fn::Join:
+        - ""
+        - - '/aws/lambda/'
+          - !Ref {{FunctionName}}LambdaFunction
+      RetentionInDays: 14
+
+  {{FunctionName}}ResolverExecutionPolicy:
+    DependsOn:
+    {{#Servers}}
+    - {{ServerName}}LambdaExecutionRole
+    {{/Servers}}
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Join:
+        - ""
+        - - !Ref {{FunctionName}}LambdaFunction
+          - ResolverExecutionPolicy
+      Roles:
+      {{#Servers}}
+      - !Ref {{ServerName}}LambdaExecutionRole
+      {{/Servers}}
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - lambda:InvokeFunction
+          - lambda:InvokeAsync
+          Resource:
+          - !GetAtt {{FunctionName}}LambdaFunction.Arn
+
+{{/Functions}}
+
 Outputs:
   Region:
     Description: AWS Deployment Region
@@ -430,3 +534,14 @@ Outputs:
     Description: {{Name}} Execution Role ARN
     Value: !GetAtt {{Name}}LambdaExecutionRole.Arn
   {{/Servers}}
+  {{#Functions}}
+  {{FunctionName}}FunctionArn:
+    Description: {{FunctionName}} Function ARN
+    Value: !GetAtt {{FunctionName}}LambdaFunction.Arn
+  {{FunctionName}}FunctionName:
+    Description: {{FunctionName}} Function Name
+    Value: !Ref {{FunctionName}}LambdaFunction
+  {{FunctionName}}FunctionRole:
+    Description: {{FunctionName}} Execution Role ARN
+    Value: !GetAtt {{FunctionName}}LambdaExecutionRole.Arn
+  {{/Functions}}

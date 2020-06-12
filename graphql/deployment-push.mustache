@@ -78,6 +78,24 @@ try {
                     stackData.apiConfig = { Region: config.Region, Profile: config.Profile }
                     try {
                         fs.writeFileSync(path.join(__dirname, config.OutputFile), JSON.stringify(stackData, null, 4));
+                        Object.keys(config.Deployment.Functions).forEach(function (f) {
+                            const fInputPath = path.join(__dirname, config.Deployment.Functions[f].FunctionInput)
+                            var fConfig = JSON.parse(fs.readFileSync(fInputPath))
+                            if (!stackData.apiConfig[f]) {
+                                stackData.apiConfig[f] = { StageName: 'latest' }
+                            }
+                            stackData.Outputs.map(function (o) {
+                                if (o.OutputKey == `${f}FunctionRole`) {
+                                    fConfig.Function.Role = o.OutputValue
+                                } else if (o.OutputKey == `${f}FunctionName`) {
+                                    fConfig.Function.FunctionName = o.OutputValue
+                                } else if (o.OutputKey == `${f}Id`) {
+                                    stackData.apiConfig[f].GatewayId = o.OutputValue
+                                } else if (o.OutputKey == `${f}Url`) {
+                                    stackData.apiConfig[f].GatewayUrl = o.OutputValue
+                                }
+                            })
+                        })
                         Object.keys(config.Deployment.Servers).forEach(function (f) {
                             const fInputPath = path.join(__dirname, config.Deployment.Servers[f].FunctionInput)
                             var fConfig = JSON.parse(fs.readFileSync(fInputPath))

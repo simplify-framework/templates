@@ -1,14 +1,14 @@
 'use strict';
 {{#RemoteExecutionMode}}
 const AWS = require('aws-sdk');
-const lambda = new AWS.Lambda();
+const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 {{/RemoteExecutionMode}}
 
-module.exports.handler = function(event, context, callback) {
+module.exports.handler = function(args, context, callback) {
     {{#RemoteExecutionMode}}
     var params = {
-        FunctionName: "{{Run.Name}}LambdaFunction", 
-        Payload: "<Binary String>"
+        FunctionName: "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:{{Run.Name}}RemoteFunction", 
+        Payload: Buffer.from(JSON.stringify({ args, context }), "utf-8")
     };
     lambda.invoke(params, function(err, data) {
         callback(err, data)

@@ -37,7 +37,7 @@
         { "input": "sigV4Client.mustache", "output": "{{serverName}}/src/Utilities/sigV4Client.js" },
         { "input": "schema.mustache", "output": "{{serverName}}/src/schema.graphql" },
         { "input": "index.mustache", "output": "{{serverName}}/src/index.js" },
-        { "input": "function-index.mustache", "output": "{{serverName}}/src/Functions/_index.js" },
+        { "input": "function-index.mustache", "output": "{{serverName}}/src/Functions/functions.js" },
         { "input": "app.mustache", "output": "{{serverName}}/src/app.js" }
     ],
     "GraphQLDataInputs": [
@@ -54,5 +54,19 @@
     ],
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}.js" }
+    ],
+    "LambdaFunctions": [    
+        { "input": "lambda/handler.mustache", "output": "LambdaFunctions/{{functionName}}/src/index.js" },
+        { "input": "lambda/index-src.mustache", "output": "LambdaFunctions/{{functionName}}/src/{{functionNameSnake}}/index.js"},
+        { "input": "lambda/package-src.mustache", "output": "LambdaFunctions/{{functionName}}/src/package.json" },
+        { "input": "function-push.mustache", "output": "LambdaFunctions/{{functionName}}/.simplify-graphql/function-push.js" },
+        { "input": "lambda/function-input.mustache", "output": "LambdaFunctions/{{functionName}}/.simplify-graphql/function-input.json" },
+        { "input": "layer-push.mustache", "output": "LambdaFunctions/{{functionName}}/.simplify-graphql/layer-push.js" },
+        { "input": "lambda/sonar-project.mustache", "output": "LambdaFunctions/{{functionName}}/.simplify-graphql/sonar-project.properties" },
+        { "input": "lambda/sonarqube-scanner.mustache", "output": "LambdaFunctions/{{functionName}}/.simplify-graphql/sonarqube-scanner.sh" },
+        { "input": "lambda/webpack.config.mustache", "output": "LambdaFunctions/{{functionName}}/webpack.config.js" },
+        { "input": "lambda/webpack.config.layer.mustache", "output": "LambdaFunctions/{{functionName}}/webpack.config.layer.js" },
+        { "input": "lambda/.babelrc.mustache", "output": "LambdaFunctions/{{functionName}}/.babelrc" },
+        { "input": "lambda/package.mustache", "output": "LambdaFunctions/{{functionName}}/package.json" }
     ]
 }
