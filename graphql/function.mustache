@@ -7,7 +7,7 @@ const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 module.exports.handler = function(args, context, callback) {
     {{#RemoteExecutionMode}}
     var params = {
-        FunctionName: "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:{{Run.Name}}RemoteFunction", 
+        FunctionName: "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}-{{Run.Name}}LambdaFunction", 
         Payload: Buffer.from(JSON.stringify({ args, context }), "utf-8")
     };
     lambda.invoke(params, function(err, data) {
