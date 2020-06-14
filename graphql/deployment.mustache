@@ -1,34 +1,40 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: API Gateway resource stack creation using Simplify CLI
 Parameters:
-  DeploymentStage:
+  DeploymentEnv:
     Type: String
-    Default: 'latest'
-    AllowedValues:
-    - stable
-    - latest
   ApiAuthorizerId:
     Type: String
   {{#Servers}}
-  {{Name}}CustomResourceArn:
+  {{Name}}SecretKeyVault:
     Type: String
-  {{Name}}ResourcePermission:
+  {{Name}}ManagedResourceArn:
     Type: String
   {{/Servers}}
+  {{#Functions}}
+  {{FunctionName}}SecretKeyVault:
+    Type: String
+  {{FunctionName}}ManagedResourceArn:
+    Type: String
+  {{/Functions}}
 
 Conditions:
   {{#Servers}}
-  Has{{NamePascal}}CustomResourceArn: !Not [ !Equals [ !Ref {{Name}}CustomResourceArn, 'NO' ] ]
-  Has{{NamePascal}}ResourcePermission: !Not [ !Equals [ !Ref {{Name}}ResourcePermission, 'NO' ] ]
+  Has{{NamePascal}}SecretKeyVault: !Not [ !Equals [ !Ref {{Name}}SecretKeyVault, 'NO' ] ]
+  Has{{NamePascal}}ManagedResourceArn: !Not [ !Equals [ !Ref {{Name}}ManagedResourceArn, 'NO' ] ]
   {{/Servers}}
+  {{#Functions}}
+  Has{{FunctionNamePascal}}SecretKeyVault: !Not [ !Equals [ !Ref {{FunctionName}}SecretKeyVault, 'NO' ] ]
+  Has{{FunctionNamePascal}}ManagedResourceArn: !Not [ !Equals [ !Ref {{FunctionName}}ManagedResourceArn, 'NO' ] ]
+  {{/Functions}}
 
 Resources:
 {{#Servers}}
   {{Name}}:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Description: '{{Name}} Definitions'
-      Name: {{Name}}
+      Description: '{{Name}} GraphQL API Gateway'
+      Name: {{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}
       Body:
         swagger: '2.0'
         info:
@@ -194,7 +200,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: The Development stage deployment of {{Name}} API.
-      StageName: !Ref DeploymentStage
+      StageName: !Ref DeploymentEnv
       RestApiId:
         !Ref {{Name}}
 
@@ -206,7 +212,7 @@ Resources:
       UsagePlanName: {{Name}}-DefaultPlan
       ApiStages:
       - ApiId: !Ref {{Name}}
-        Stage: !Ref DeploymentStage
+        Stage: !Ref DeploymentEnv
       {{#Options}}
       Throttle:
         BurstLimit: {{BurstLimit}}
@@ -223,7 +229,7 @@ Resources:
       Enabled: true
       StageKeys: 
         - RestApiId: !Ref {{Name}}
-          StageName: !Ref DeploymentStage
+          StageName: !Ref DeploymentEnv
       Value: {{Name}}-{{DeploymentApiKey}}
   
   {{Name}}APIGateWayUsagePlanKey:
@@ -243,8 +249,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          DEPLOYMENT_STAGE:
-            !Ref DeploymentStage
+          DEPLOYMENT_ENV: {{DeploymentEnvSnake}}
       Role:
         Fn::GetAtt:
         - {{Name}}LambdaExecutionRole
@@ -268,7 +273,7 @@ Resources:
           Action:
           - sts:AssumeRole
       ManagedPolicyArns:
-      - !If [Has{{NamePascal}}ResourcePermission, !Ref {{Name}}ResourcePermission, !Ref "AWS::NoValue"]
+      - !If [Has{{NamePascal}}ManagedResourceArn, !Ref {{Name}}ManagedResourceArn, !Ref "AWS::NoValue"]
 
   {{Name}}LambdaExecutionPolicy:
     DependsOn:
@@ -311,13 +316,18 @@ Resources:
           - !Ref {{Name}}LambdaFunction
       RetentionInDays: 14
 
-  {{#DeploymentKeyVault}}
   {{Name}}Secret:
+    Condition: Has{{NamePascal}}SecretKeyVault
     Type: AWS::SecretsManager::Secret
     Properties:
+      Name:
+        Fn::Join:
+          - "-"
+          - - {{ProjectName}}{{DeploymentEnvPascal}}
+            - {{Name}}Secret
       Description: Secret manager for {{Name}}LambdaFunction
       GenerateSecretString:
-        SecretStringTemplate: '{"{{NamePascal}}Type":"AutoRotation"}'
+        SecretStringTemplate: !Ref {{Name}}SecretKeyVault
         GenerateStringKey: {{NamePascal}}Key
         ExcludeCharacters: '"@/\'
         ExcludeLowercase: false
@@ -327,6 +337,7 @@ Resources:
         PasswordLength: 48
 
   {{Name}}SecretRotationSchedule:
+    Condition: Has{{NamePascal}}SecretKeyVault
     Type: AWS::SecretsManager::RotationSchedule
     DependsOn: {{Name}}LambdaFunction
     Properties:
@@ -336,6 +347,7 @@ Resources:
         AutomaticallyAfterDays: 30
 
   {{Name}}SecretLambdaInvokePermission:
+    Condition: Has{{NamePascal}}SecretKeyVault
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !GetAtt {{Name}}LambdaFunction.Arn
@@ -343,6 +355,7 @@ Resources:
       Principal: secretsmanager.amazonaws.com
 
   {{Name}}SecretMangerPolicy:
+    Condition: Has{{NamePascal}}SecretKeyVault
     DependsOn:
     - {{Name}}LambdaExecutionRole
     Type: AWS::IAM::ManagedPolicy
@@ -370,15 +383,6 @@ Resources:
                 !Ref AWS::AccountId
               secretname:
                 !Ref {{Name}}Secret
-  {{/DeploymentKeyVault}}
-
-  {{Name}}CustomResource:
-    Condition: Has{{NamePascal}}CustomResourceArn
-    DependsOn:
-    - {{Name}}LambdaFunction
-    Type: AWS::CloudFormation::CustomResource
-    Properties:
-      ServiceToken: !Ref {{Name}}CustomResourceArn
 
   {{Name}}LambdaApiGatewayPermission:
     Type: AWS::Lambda::Permission
@@ -408,8 +412,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          DEPLOYMENT_STAGE:
-            !Ref DeploymentStage
+          DEPLOYMENT_ENV: {{DeploymentEnvSnake}}
       Role:
         Fn::GetAtt:
         - {{FunctionName}}LambdaExecutionRole
@@ -432,6 +435,8 @@ Resources:
             - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
+      ManagedPolicyArns:
+      - !If [Has{{FunctionNamePascal}}ManagedResourceArn, !Ref {{FunctionName}}ManagedResourceArn, !Ref "AWS::NoValue"]
 
   {{FunctionName}}LambdaExecutionPolicy:
     DependsOn:
@@ -500,6 +505,73 @@ Resources:
           Resource:
           - !GetAtt {{FunctionName}}LambdaFunction.Arn
 
+  {{FunctionName}}Secret:
+    Condition: Has{{FunctionNamePascal}}SecretKeyVault
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name:
+        Fn::Join:
+          - "-"
+          - - {{ProjectName}}{{DeploymentEnvPascal}}
+            - {{FunctionName}}Secret
+      Description: Secret manager for {{FunctionName}}LambdaFunction
+      GenerateSecretString:
+        SecretStringTemplate: !Ref {{FunctionName}}SecretKeyVault
+        GenerateStringKey: {{FunctionNamePascal}}Key
+        ExcludeCharacters: '"@/\'
+        ExcludeLowercase: false
+        ExcludeNumbers: false
+        ExcludePunctuation: false
+        ExcludeUppercase: false
+        PasswordLength: 48
+
+  {{FunctionName}}SecretRotationSchedule:
+    Condition: Has{{FunctionNamePascal}}SecretKeyVault
+    Type: AWS::SecretsManager::RotationSchedule
+    DependsOn: {{FunctionName}}LambdaFunction
+    Properties:
+      SecretId: !Ref {{FunctionName}}Secret
+      RotationLambdaARN: !GetAtt {{FunctionName}}LambdaFunction.Arn
+      RotationRules:
+        AutomaticallyAfterDays: 30
+
+  {{FunctionName}}SecretLambdaInvokePermission:
+    Condition: Has{{FunctionNamePascal}}SecretKeyVault
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt {{FunctionName}}LambdaFunction.Arn
+      Action: 'lambda:InvokeFunction'
+      Principal: secretsmanager.amazonaws.com
+
+  {{FunctionName}}SecretMangerPolicy:
+    Condition: Has{{FunctionNamePascal}}SecretKeyVault
+    DependsOn:
+    - {{FunctionName}}LambdaExecutionRole
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Join:
+        - ""
+        - - !Ref {{FunctionName}}LambdaFunction
+          - SecretMangerPolicy
+      Roles:
+      - !Ref {{FunctionName}}LambdaExecutionRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - secretsmanager:GetSecretValue
+          - secretsmanager:PutSecretValue
+          Resource:
+          - Fn::Sub:
+            - arn:aws:secretsmanager:${region}:${account}:${secretname}-*
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
+              secretname:
+                !Ref {{FunctionName}}Secret
 {{/Functions}}
 
 Outputs:
@@ -508,7 +580,7 @@ Outputs:
     Value: !Ref AWS::Region
   StageName:
     Description: API Deployment stage
-    Value: !Ref DeploymentStage
+    Value: !Ref DeploymentEnv
   {{#Servers}}
   {{Name}}Url:
     Description: Root URL of the API gateway
@@ -520,7 +592,7 @@ Outputs:
         - ".execute-api."
         - !Ref AWS::Region
         - ".amazonaws.com/"
-        - !Ref DeploymentStage
+        - !Ref DeploymentEnv
   {{Name}}Id:
     Description: API Gateway id
     Value: !Ref {{Name}}

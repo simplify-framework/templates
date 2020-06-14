@@ -16,17 +16,21 @@ node .simplify-graphql/code-init.js --input deployment-input.json
 declare -a DEPLOYMENT_PACKAGES=(
 {{#Servers}}
     "{{Name}}"
-{{/Servers}})
-declare -a DEPLOYMENT_LANGUAGES=({{#Servers}}"{{Language}}"{{#hasMore}} {{/hasMore}}{{/Servers}})
-declare -a DEPLOYMENT_RUNTIMES=({{#Servers}}"{{Runtime}}"{{#hasMore}} {{/hasMore}}{{/Servers}})
+{{/Servers}}
+{{#Functions}}
+    "RemoteFunctions/{{FunctionName}}"
+{{/Functions}})
+declare -a DEPLOYMENT_LANGUAGES=({{#Servers}}"{{Language}}"{{#hasMore}} {{/hasMore}}{{/Servers}} {{#Functions}}"{{Language}}"{{#hasMore}} {{/hasMore}}{{/Functions}})
+declare -a DEPLOYMENT_RUNTIMES=({{#Servers}}"{{Runtime}}"{{#hasMore}} {{/hasMore}}{{/Servers}} {{#Functions}}"{{Runtime}}"{{#hasMore}} {{/hasMore}}{{/Functions}})
 
 for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
     DeploymentPackageName=${DEPLOYMENT_PACKAGES[$i]}
-    DeploymentStageName="ENV_${DeploymentPackageName}_DEPLOYMENT_STAGE"
+    DeploymentPackageKey=`echo "${DeploymentPackageName}" | tr '/' '_'`
+    DeploymentStageName="ENV_${DeploymentPackageKey}_DEPLOYMENT_STAGE"
     export DEPLOYMENT_STAGE="${!DeploymentStageName}"
-    EnforcementPackageName="ENV_${DeploymentPackageName}_ENFORCEMENT_PACKAGE"
+    EnforcementPackageName="ENV_${DeploymentPackageKey}_ENFORCEMENT_PACKAGE"
     export ENFORCEMENT_PACKAGE="${!EnforcementPackageName}"
-    DeploymentLayerName="ENV_${DeploymentPackageName}_DEPLOYMENT_LAYER"
+    DeploymentLayerName="ENV_${DeploymentPackageKey}_DEPLOYMENT_LAYER"
     if [ -z "${DEPLOYMENT_STAGE}" ]; then
         echo "Pushing ${DeploymentPackageName} with blank DEPLOYMENT_STAGE is not satified!"
         continue

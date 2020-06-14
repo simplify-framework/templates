@@ -16,7 +16,7 @@ if (nodeArgs.length > 1) {
     configInputFile = (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") ? nodeArgs[1] : configInputFile
 }
 try {
-    var config = simplify.getInputConfig(path.join(__dirname, configInputFile))
+    var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
     var stackData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
     Object.keys(config.Deployment.Servers).forEach(function(f) {
         const fInputPath = path.join(__dirname, config.Deployment.Servers[f].FunctionInput)

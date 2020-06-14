@@ -1,0 +1,23 @@
+'use strict';
+
+process.env.DEPLOYMENT_STAGE = 'canary'
+
+require('./index').handler({
+    'x-canary-selection': 'latest',
+    title: "Fox in Socks",
+    author: {
+        name: "Dr. Seuss"
+    }
+}, {
+    dataType: "ListType",
+    dataSchema: {
+        title: "String",
+        author: {
+            id: "ID",
+            name: "String",
+            type: "JOURNALIST"
+        },
+        comments: [ "String" ],
+        outofstock: "Boolean"
+    }
+}, (err, data) => console.log(err, data))

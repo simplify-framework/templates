@@ -2,15 +2,15 @@
     "Profile": "{{DeploymentProfile}}",
     "Region": "{{DeploymentRegion}}",
     "Bucket": {
-        "Name": "{{DeploymentBucket}}-{{ProjectId}}",
-        "Key": "servers/${DATE_TODAY}/dist"
+        "Name": "{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}",
+        "Key": "servers/${DATE_TODAY}"
     },
-    "OutputFile": "server-meta.json",
+    "OutputFile": "{{DeploymentEnvSnake}}/{{NamePascal}}-meta.json",
     "LayerConfig": {
         "CompatibleRuntimes": [
             "{{Runtime}}"
         ],
-        "LayerName": "{{NameSnake}}"
+        "LayerName": "{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}"
     },
     "Function": {
         "FunctionName": "{{Name}}",
@@ -20,7 +20,7 @@
         "Role": "${Function{{NamePascal}}RoleArn}",
         "Runtime": "{{Runtime}}",
         "Tags": {
-            "GroupName": "{{ProjectName}}-{{DeploymentStage}}"
+            "GroupName": "{{ProjectNamePascal}}{{DeploymentEnvPascal}}"
         },
         "Timeout": 15,
         "TracingConfig": {
@@ -29,7 +29,8 @@
         "Environment": {
             "Variables": {
                 "DEPLOYMENT_STAGE": "${DEPLOYMENT_STAGE}",
-                "ENFORCEMENT_PACKAGE": "${ENFORCEMENT_PACKAGE}"
+                "ENFORCEMENT_PACKAGE": "${ENFORCEMENT_PACKAGE}",
+                "DEPLOYMENT_ENV": "${DEPLOYMENT_ENV}"
             }
         }
     }

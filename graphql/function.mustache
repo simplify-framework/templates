@@ -4,15 +4,20 @@ const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 {{/RemoteExecutionMode}}
 
-module.exports.handler = function(args, context, callback) {
+module.exports.handler = function(event, context, callback) {
     {{#RemoteExecutionMode}}
-    var params = {
-        FunctionName: "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}-{{Run.Name}}LambdaFunction", 
-        Payload: Buffer.from(JSON.stringify({ args, context }), "utf-8")
-    };
-    lambda.invoke(params, function(err, data) {
-        callback(err, data)
-    });
+    if (process.env.LOCAL_DEBUG=="YES") {
+        require('../../../RemoteFunctions/{{Run.Name}}/src/index').handler(event, context, callback)
+    } else {
+        const parameters = require('./parameters.json')
+        var params = {
+            FunctionName: parameters.FunctionName, 
+            Payload: Buffer.from(JSON.stringify({ event, context }), "utf-8")
+        };
+        lambda.invoke(params, function(err, data) {
+            callback(err, JSON.parse(data.Payload))
+        });
+    }
     {{/RemoteExecutionMode}}
     {{^RemoteExecutionMode}}
     callback(null, [{
@@ -29,6 +34,6 @@ module.exports.handler = function(args, context, callback) {
             name: "War",
             type: "SCIENTIST"
         }
-    }])
+    }, event.args])
     {{/RemoteExecutionMode}}
 }

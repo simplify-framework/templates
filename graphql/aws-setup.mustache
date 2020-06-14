@@ -1,20 +1,26 @@
 #!/bin/bash
-echo " + Create User Account for {{ProjectNamePascal}}..." && aws iam create-user --user-name {{ProjectNamePascal}}User $@ >/dev/null
-echo "   Waiting for User Account is stable..." && sleep 10
-echo " + Create User Role {{ProjectNamePascal}}Role..."
-USER_ROLE_ARN=`aws iam create-role --role-name {{ProjectNamePascal}}Role --assume-role-policy-document file://.simplify-graphql/policy-relationship-role.json --output text --query 'Role.Arn' $@`
-echo "   Waiting for User Role is stable..." && sleep 10
-echo " + Create Role Policy {{ProjectNamePascal}}AccessRole..." && aws iam put-user-policy --user-name {{ProjectNamePascal}}User --policy-name {{ProjectNamePascal}}AccessRole --policy-document file://.simplify-graphql/policy-assume-role.json $@ >/dev/null
-echo " + Create Role Policy {{ProjectNamePascal}}DeploymentPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}DeploymentPolicy --policy-document file://.simplify-graphql/policy-deployment.json $@ >/dev/null
-echo " + Create Role Policy {{ProjectNamePascal}}FunctionPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}FunctionPolicy --policy-document file://.simplify-graphql/policy-functions.json $@ >/dev/null
-echo " + Create Role Policy {{ProjectNamePascal}}ExecutionPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}ExecutionPolicy --policy-document file://.simplify-graphql/policy-execute-api.json $@ >/dev/null
-echo " + Create User Access Key for {{ProjectNamePascal}}User..."
-ACCESS_KEYS=`aws iam create-access-key --user-name {{ProjectNamePascal}}User --output text --query 'AccessKey.[AccessKeyId,SecretAccessKey]' $@`
-ACCESS_KEY_ID=`echo ${ACCESS_KEYS} | awk '{ print $1 }'`
-ACCESS_KEY_SECRET=`echo ${ACCESS_KEYS} | awk '{ print $2 }'`
-aws configure set region {{DeploymentRegion}} --profile {{DeploymentProfile}}-source $@
-aws configure set aws_access_key_id ${ACCESS_KEY_ID} --profile {{DeploymentProfile}}-source $@
-aws configure set aws_secret_access_key ${ACCESS_KEY_SECRET} --profile {{DeploymentProfile}}-source $@
-aws configure set role_arn ${USER_ROLE_ARN} --profile {{DeploymentProfile}} $@
-aws configure set source_profile {{DeploymentProfile}}-source --profile {{DeploymentProfile}} $@
-aws configure set external_id {{ProjectNamePascal}}-{{ProjectId}} --profile {{DeploymentProfile}} $@
+echo " + Create User Account for {{ProjectNamePascal}}{{DeploymentEnvPascal}}..." && aws iam create-user --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User $@ >/dev/null
+if [ $? -eq 0 ]; then
+    echo "   Waiting for User Account is stable..." && sleep 10
+    echo " + Create User Role {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role..."
+    USER_ROLE_ARN=`aws iam create-role --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --assume-role-policy-document file://.simplify-graphql/${DEPLOYMENT_ENV}/policy-relationship-role.json --output text --query 'Role.Arn' $@`
+    if [ $? -eq 0 ]; then
+        echo "   Waiting for User Role is stable..." && sleep 10
+        echo " + Create Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}AccessRole..." && aws iam put-user-policy --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}AccessRole --policy-document file://.simplify-graphql/${DEPLOYMENT_ENV}/policy-assume-role.json $@ >/dev/null
+        echo " + Create Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}DeploymentPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}DeploymentPolicy --policy-document file://.simplify-graphql/${DEPLOYMENT_ENV}/policy-deployment.json $@ >/dev/null
+        echo " + Create Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}FunctionPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}FunctionPolicy --policy-document file://.simplify-graphql/${DEPLOYMENT_ENV}/policy-functions.json $@ >/dev/null
+        echo " + Create Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}ExecutionPolicy..." && aws iam put-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}ExecutionPolicy --policy-document file://.simplify-graphql/${DEPLOYMENT_ENV}/policy-execute-api.json $@ >/dev/null
+        echo " + Create User Access Key for {{ProjectNamePascal}}{{DeploymentEnvPascal}}User..."
+        ACCESS_KEYS=`aws iam create-access-key $@ --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User --output text --query 'AccessKey.[AccessKeyId,SecretAccessKey]'`
+        if [ $? -eq 0 ]; then
+            ACCESS_KEY_ID=`echo ${ACCESS_KEYS} | awk '{ print $1 }'`
+            ACCESS_KEY_SECRET=`echo ${ACCESS_KEYS} | awk '{ print $2 }'`
+            aws configure set region eu-west-1 --profile {{DeploymentProfile}}-source
+            aws configure set aws_access_key_id ${ACCESS_KEY_ID} --profile {{DeploymentProfile}}-source
+            aws configure set aws_secret_access_key ${ACCESS_KEY_SECRET} --profile {{DeploymentProfile}}-source
+            aws configure set role_arn ${USER_ROLE_ARN} --profile {{DeploymentProfile}}
+            aws configure set source_profile {{DeploymentProfile}}-source --profile {{DeploymentProfile}}
+            aws configure set external_id {{ProjectNamePascal}}{{DeploymentEnvPascal}}-{{ProjectId}} --profile {{DeploymentProfile}}
+        fi
+    fi
+fi

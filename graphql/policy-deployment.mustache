@@ -8,8 +8,8 @@
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}",
-                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}/*"
+                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}",
+                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}/*"
             ]
         },
         {
@@ -63,8 +63,16 @@
                 "cloudformation:*"
             ],
             "Resource": [
-                "arn:aws:cloudformation:{{DeploymentRegion}}:{{DeploymentAccount}}:stack/{{ProjectName}}/*"
+                "arn:aws:cloudformation:{{DeploymentRegion}}:{{DeploymentAccount}}:stack/{{ProjectName}}{{DeploymentEnvPascal}}/*"
             ]
+        },
+        {
+            "Sid": "CloudFormationSecretManager{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetRandomPassword"
+            ],
+            "Resource": "*"
         }
     ]
 }

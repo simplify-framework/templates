@@ -1,0 +1,11 @@
+#!/bin/bash
+# Simplify Automatic Deployment Script
+# Project: {{ProjectNamePascal}}
+# Deployment: {{ProjectName}}
+# Region: {{DeploymentRegion}}
+# Profile: {{DeploymentProfile}}
+# Version: {{ProjectVersion}}
+
+export $(egrep -v '^#' .env | xargs)
+
+bash .simplify-graphql/${DEPLOYMENT_ENV}/aws-cleanup.sh $@

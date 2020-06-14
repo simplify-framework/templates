@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [        
         {
-            "Sid": "IAMRolePolicy{{ProjectNamePascal}}",
+            "Sid": "{{ProjectNamePascal}}ServerRolePolicy",
             "Effect": "Allow",
             "Action": [
                 "iam:*Role",
@@ -16,18 +16,47 @@
             ],
             "Resource": [
                 {{#Servers}}
-                "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:{{Name}}Secret-*",
-                "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}-{{Name}}Schedule*-*",
-                "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}-{{Name}}Lambda*-*",
-                "arn:aws:iam::{{DeploymentAccount}}:policy/{{ProjectName}}-{{Name}}Lambda*-*",
-                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}-{{Name}}Lambda*-*:log-stream:*",
-                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}-{{Name}}Lambda*-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}-{{Name}}Lambda*-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}-*:*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}:*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{NameSnake}}"{{#hasMore}},{{/hasMore}}
+                "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:secret:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Secret-*",
+                "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Schedule*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Lambda*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:policy/{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Lambda*-*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Lambda*-*:log-stream:*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}-*:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}"{{#hasMore}},{{/hasMore}}
                 {{/Servers}}
+            ]
+        },
+        {
+            "Sid": "{{ProjectNamePascal}}FunctionRolePolicy",
+            "Effect": "Allow",
+            "Action": [
+                "iam:*Role",
+                "iam:*RolePolicy",
+                "iam:*PolicyVersions",
+                "secretsmanager:*",
+                "iam:*Policy",
+                "logs:*",
+                "events:*",
+                "lambda:*"
+            ],
+            "Resource": [
+                {{#Functions}}
+                "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:secret:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Secret-*",
+                "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Schedule*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*",
+                "arn:aws:iam::{{DeploymentAccount}}:policy/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*:log-stream:*",
+                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}-*:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}-*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}:*",
+                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}"{{#hasMore}},{{/hasMore}}
+                {{/Functions}}
             ]
         }
     ]

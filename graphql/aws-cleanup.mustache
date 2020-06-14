@@ -1,14 +1,14 @@
 #!/bin/bash
-echo " - Delete User Policy {{ProjectNamePascal}}AccessRole..." && aws iam delete-user-policy --user-name {{ProjectNamePascal}}User --policy-name {{ProjectNamePascal}}AccessRole $@
-echo " - Delete Role Policy {{ProjectNamePascal}}DeploymentPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}DeploymentPolicy $@
-echo " - Delete Role Policy {{ProjectNamePascal}}FunctionPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}FunctionPolicy $@
-echo " - Delete Role Policy {{ProjectNamePascal}}ExecutionPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}Role --policy-name {{ProjectNamePascal}}ExecutionPolicy $@
-echo " - Delete User Role {{ProjectNamePascal}}Role..." && aws iam delete-role --role-name {{ProjectNamePascal}}Role $@
-declare -a ACCESS_KEYS=(`aws iam list-access-keys --user-name {{ProjectNamePascal}}User --output text --query 'AccessKeyMetadata[*].AccessKeyId'`)
-echo " - Delete Access Keys for {{ProjectNamePascal}}User..."
+echo " - Delete User Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}AccessRole..." && aws iam delete-user-policy --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}AccessRole $@
+echo " - Delete Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}DeploymentPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}DeploymentPolicy $@
+echo " - Delete Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}FunctionPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}FunctionPolicy $@
+echo " - Delete Role Policy {{ProjectNamePascal}}{{DeploymentEnvPascal}}ExecutionPolicy..." && aws iam delete-role-policy --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role --policy-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}ExecutionPolicy $@
+echo " - Delete User Role {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role..." && aws iam delete-role --role-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}Role $@
+declare -a ACCESS_KEYS=(`aws iam list-access-keys --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User --output text --query 'AccessKeyMetadata[*].AccessKeyId' $@`)
+echo " - Delete Access Keys for {{ProjectNamePascal}}{{DeploymentEnvPascal}}User..."
 for i in "${!ACCESS_KEYS[@]}"; do
     accessKeyId=${ACCESS_KEYS[$i]}
     echo "   > Delete Access Key Id: ${accessKeyId}..."
-    aws iam delete-access-key --user-name {{ProjectNamePascal}}User --access-key-id ${accessKeyId}
+    aws iam delete-access-key --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User --access-key-id ${accessKeyId} $@
 done
-echo " - Delete User Account {{ProjectNamePascal}}User..." && aws iam delete-user --user-name {{ProjectNamePascal}}User $@
+echo " - Delete User Account {{ProjectNamePascal}}{{DeploymentEnvPascal}}User..." && aws iam delete-user --user-name {{ProjectNamePascal}}{{DeploymentEnvPascal}}User $@

@@ -1,10 +1,10 @@
 const path = require('path')
 module.exports = {
     entry: {
-        index: './src/{{serviceNameSnake}}/index.js',
+        index: './src/index.js',
     },
     output: {
-        path: path.join(__dirname, 'layer/nodejs/node_modules/{{serviceNameSnake}}'),
+        path: path.join(__dirname, 'layer/nodejs/node_modules/{{FunctionNameSnake}}'),
         publicPath: '/',
         filename: '[name].js',
         libraryTarget: 'umd'

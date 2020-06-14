@@ -12,10 +12,11 @@ const opName = `FunctionLayer`
 var nodeArgs = process.argv.slice(2);
 const simplify = require('simplify-sdk')
 const provider = require('simplify-sdk/provider')
-var configInputFile = process.env.FUNCTION_INPUT || "function-input.json"
-var configSrcDir =  process.env.LAYER_SOURCE || "layer"
+var configInputFile = process.env.FUNCTION_INPUT || 'function-input.json'
+var configSrcDir =  process.env.LAYER_SOURCE || 'layer'
 process.env.ENFORCEMENT_PACKAGE = process.env.ENFORCEMENT_PACKAGE || ''
 process.env.DEPLOYMENT_STAGE = process.env.DEPLOYMENT_STAGE || 'latest'
+process.env.DEPLOYMENT_ENV = process.env.DEPLOYMENT_ENV || 'demo'
 while (nodeArgs.length > 1) {
     if (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") {
         configInputFile =  nodeArgs[1]
@@ -24,8 +25,9 @@ while (nodeArgs.length > 1) {
     }
     nodeArgs = nodeArgs.slice(2);
 }
+
 try {
-    var config = simplify.getInputConfig(path.join(__dirname, configInputFile))
+    var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
     const layerConfig = config.LayerConfig
     const functionConfig = config.Function
     const bucketName = config.Bucket.Name
@@ -40,29 +42,34 @@ try {
         layerConfig.LayerName = process.env.DEPENDENCIES_PACKAGE
     }
     provider.setConfig(config).then(function() {
+        const LAYER_NAME = layerConfig.LayerName.split('-').join('_').toUpperCase()
         simplify.uploadDirectoryAsZip({
             adaptor: provider.getStorage(), ...{
-                bucketKey, inputDirectory, outputFilePath
+                bucketKey, inputDirectory, outputFilePath, fileName: 'layer',
+                hashInfo: simplify.getFunctionSha256(path.join(__dirname, config.OutputFile), `SHA256_LAYER_${LAYER_NAME}_HASH`)
             }
         }).then(function (uploadInfor) {
-            simplify.createFunctionLayerVersion({
-                adaptor: provider.getFunction(),
-                ...{ layerConfig, functionConfig, bucketName, bucketKey: uploadInfor.Key }
-            }).then(function (data) {
-                try {                    
-                    let configInput = JSON.parse(fs.readFileSync(path.join(__dirname, configInputFile)))
-                    configInput.Function.Layers = data.Layers
-                    fs.writeFileSync(path.join(__dirname, configInputFile), JSON.stringify(configInput, null, 4))
-                    let metaOutput = JSON.parse(fs.readFileSync(path.join(__dirname, configInput.OutputFile)))
-                    const LAYER_NAME = layerConfig.LayerName.split('-').join('_').toUpperCase()
-                    metaOutput.Configuration.Environment.Variables[`SHA256_LAYER_${LAYER_NAME}_HASH`] = uploadInfor.FileSha256
-                    fs.writeFileSync(path.join(__dirname, configInput.OutputFile), JSON.stringify(metaOutput, null, 4));
-                } catch(err) {
+            if (uploadInfor.Key) {
+                simplify.createFunctionLayerVersion({
+                    adaptor: provider.getFunction(),
+                    ...{ layerConfig, functionConfig, bucketName, bucketKey: uploadInfor.Key }
+                }).then(function (data) {
+                    try {                    
+                        let configInput = JSON.parse(fs.readFileSync(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile)))
+                        configInput.Function.Layers = data.Layers
+                        fs.writeFileSync(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile), JSON.stringify(configInput, null, 4))
+                        let metaOutput = JSON.parse(fs.readFileSync(path.join(__dirname, configInput.OutputFile)))
+                        metaOutput.Configuration.Environment.Variables[`SHA256_LAYER_${LAYER_NAME}_HASH`] = uploadInfor.FileSha256
+                        fs.writeFileSync(path.join(__dirname, configInput.OutputFile), JSON.stringify(metaOutput, null, 4));
+                    } catch(err) {
+                        simplify.finishWithErrors(`${opName}-Update`, err);
+                    }
+                }, function(err) {
                     simplify.finishWithErrors(`${opName}-Update`, err);
-                }
-            }, function(err) {
-                simplify.finishWithErrors(`${opName}-Update`, err);
-            })
+                })
+            } else {
+                simplify.finishWithSuccess(`${uploadInfor.HashSource} is UP_TO_DATE`)
+            }
         }, function(err) {
             simplify.finishWithErrors(`${opName}-UploadZip`, err);
         })

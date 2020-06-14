@@ -3,15 +3,17 @@
     "version": "{{ProjectVersion}}",
     "description": "{{{ProjectDesc}}}",
     "scripts": {
-        "stack-deploy": "node .simplify-graphql/deployment.js --input deployment-input.json",
-        "stack-destroy": "node .simplify-graphql/deployment.js --input deployment-input.json --deletion",
+        "stack-deploy": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} node .simplify-graphql/deployment.js --input deployment-input.json",
+        "stack-destroy": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} node .simplify-graphql/deployment.js --input deployment-input.json --deletion",
         "push-update": "bash .simplify-graphql/code-push.sh .env update",
         "push-code": "bash .simplify-graphql/code-push.sh .env push",
+        "setup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-setup.sh",
+        "cleanup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-cleanup.sh",
         "test": "echo '*** NOT IMPLEMENTED: Implement your test code!'\n"
     },
     "license": "MIT",
     "private": true,
     "devDependencies": {
-        "simplify-sdk": "^0.1.13"
+        "simplify-sdk": "^0.1.18"
     }
 }

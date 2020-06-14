@@ -4,14 +4,17 @@
     "description": "Remote Function Execution For {{#Servers}}{{ServerName}}{{#hasMore}}, {{/hasMore}}{{/Servers}}",
     "main": "app.js",
     "scripts": {
-        "push-update": "node function-push.js --ops update",
-        "push-code": "env FUNCTION_SOURCE=build node function-push.js",
-        "build-code": "webpack -p --config webpack.config.js",
-        "push-layer": "env LAYER_SOURCE=layer node layer-push.js",
+        "push-update": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} node .simplify-graphql/function-push.js --ops update",
+        "push-code": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env FUNCTION_SOURCE=../src node .simplify-graphql/function-push.js",
+        "build-code": "echo 'This source is the native Javascript code. No need to compile!'",
+        "build-mini": "webpack -p --config webpack.config.js",
+        "push-layer": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js",
         "build-layer": "webpack -p --config webpack.config.layer.js",
+        "push-deps": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}-deps node .simplify-graphql/layer-push.js",
+        "build-deps": "[ -d deps/nodejs ] || mkdir -p deps/nodejs && cp src/package.json deps/nodejs/package.json && cd deps/nodejs && npm install --only=production",
         "production": "webpack -p && env LOCAL_DEBUG= node build/index.js",
         "development": "webpack --mode development && env LOCAL_DEBUG=YES node build/index.js",
-        "start": "cd src && npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node index.js",
+        "start": "cd src && npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node debug.js",
         "code-scan": "bash sonarqube-scanner.sh"
     },
     "license": "MIT",
@@ -20,7 +23,7 @@
         "debug": "^4.1.1"
     },
     "devDependencies": {
-        "simplify-sdk": "^0.1.13",
+        "simplify-sdk": "^0.1.18",
         "aws-sdk": "^2.635.0",
         "adm-zip": "^0.4.14",
         "@babel/cli": "^7.8.4",

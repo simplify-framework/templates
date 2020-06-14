@@ -2,29 +2,30 @@
     "Profile": "{{DeploymentProfile}}",
     "Region": "{{DeploymentRegion}}",
     "Bucket": {
-        "Name": "{{DeploymentBucket}}-{{ProjectId}}",
+        "Name": "{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}",
         "Key": "stacks/${DATE_TODAY}"
     },
-    "OutputFile": "{{ProjectName}}-meta.json",
+    "OutputFile": "{{DeploymentEnvSnake}}/{{ProjectName}}-meta.json",
     "Deployment": {
-        "Name": "{{ProjectName}}{{DeploymentName}}",
+        "Name": "{{ProjectName}}{{DeploymentEnvPascal}}",
         "Definition": "deployment.yaml",
-        "Authorizer": "{{AuthorizerId}}",
+        "ApiAuthorizerId": "{{ApiAuthorizerId}}",
         "Servers": {
             {{#Servers}}
             "{{Name}}": {
-                "FunctionInput": "../{{Name}}/.simplify-graphql/server-input.json",
-                "CustomResourceArn": "NO",
-                "ResourcePermission": "NO"
+                "FunctionInput": "../{{Name}}/.simplify-graphql/{{DeploymentEnvSnake}}/server-input.json",
+                "ManagedResourceArn": "NO",
+                "SecretKeyVault": "NO"
             }{{#hasMore}}, {{/hasMore}}
             {{/Servers}}
         },
         "Functions": {
             {{#Functions}}
-            "{{FunctionNamePascal}}": {
-                "FunctionInput": "../RemoteFunctions/{{FunctionName}}/.simplify-graphql/function-input.json",
-                "CustomResourceArn": "NO",
-                "ResourcePermission": "NO"
+            "{{FunctionName}}": {
+                "DependsOn": [{{#Servers}}"{{ServerName}}"{{#hasMore}}, {{/hasMore}}{{/Servers}}],
+                "FunctionInput": "../RemoteFunctions/{{FunctionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json",
+                "ManagedResourceArn": "NO",
+                "SecretKeyVault": "NO"
             }{{#hasMore}}, {{/hasMore}}
             {{/Functions}}
         }
