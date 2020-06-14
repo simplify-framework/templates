@@ -2,22 +2,16 @@
 
 process.env.DEPLOYMENT_STAGE = 'canary'
 
-require('./index').handler({
+require('./handler').handler({
     'x-canary-selection': 'latest',
-    title: "Fox in Socks",
-    author: {
-        name: "Dr. Seuss"
-    }
-}, {
-    dataType: "ListType",
-    dataSchema: {
-        title: "String",
+    args: {
+        title: "Fox in Socks",
         author: {
-            id: "ID",
-            name: "String",
-            type: "JOURNALIST"
-        },
-        comments: [ "String" ],
-        outofstock: "Boolean"
-    }
+            name: "Dr. Seuss"
+        }
+    },
+    dataType: "ListType",
+    dataContext: {}
+}, {
+    requestContext: null
 }, (err, data) => console.log(err, data))
