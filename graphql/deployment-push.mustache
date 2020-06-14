@@ -92,16 +92,13 @@ try {
                                     fConfig.Function.Role = o.OutputValue
                                 } else if (o.OutputKey == `${f}FunctionName`) {
                                     fConfig.Function.FunctionName = o.OutputValue
-                                } else if (o.OutputKey == `${f}FunctionArn`) {
-                                    fConfig.Function.FunctionArn = o.OutputValue
                                 }
                             })
                             fs.writeFileSync(fInputPath, JSON.stringify(fConfig, null, 4));
                             config.Deployment.Functions[f].DependsOn.map(server => {
                                 const parameterPath = path.join(__dirname, "..", server, "src", "Functions", f, "parameters.json")
                                 fs.writeFileSync(parameterPath, JSON.stringify({
-                                    FunctionName: fConfig.Function.FunctionName,
-                                    FunctionArn: fConfig.Function.FunctionArn
+                                    FunctionName: fConfig.Function.FunctionName
                                 }, null, 4));
                             })
                         })
