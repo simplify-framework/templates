@@ -12,7 +12,8 @@
         "monitor-metric": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv metric -h 24 -t 300",
         "security-check": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify",
         "monitor-config": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify -e",
-        "security-patch": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv patch"
+        "security-patch": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv patch",
+        "take-snapshot": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify --snapshot"
     },
     "license": "MIT",
     "private": true,
