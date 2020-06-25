@@ -10,7 +10,7 @@
         "setup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-setup.sh",
         "cleanup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-cleanup.sh",
         "monitor-metric": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv metric -h 24 -t 300",
-        "seccurity-check": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify",
+        "security-check": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify",
         "monitor-config": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv verify -e",
         "security-patch": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv patch"
     },
