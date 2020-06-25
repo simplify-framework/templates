@@ -9,7 +9,7 @@ INITIAL_DIR=$PWD
 ENV_FILE=${1:-".env"}
 FUNC_OPS=${2:-"push"}
 
-export $(egrep -v '^#' ${ENV_FILE} | xargs)
+`grep -v '^#' ${ENV_FILE} | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
 
 node code-init.js --input {{deploymentNameSnake}}.json
 

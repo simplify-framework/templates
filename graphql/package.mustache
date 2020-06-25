@@ -8,7 +8,7 @@
     "push-code": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env FUNCTION_SOURCE=../src node .simplify-graphql/function-push.js --input server-input.json",
     "build-code": "echo 'This source is the native Javascript code. No need to compile!'",
     "push-bin": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env FUNCTION_SOURCE=../build node .simplify-graphql/function-push.js --input server-input.json",
-    "build-bin": "webpack -p --config webpack.config.js && cp schema.graphql build/schema.graphql",
+    "build-bin": "webpack -p --config webpack.config.js && cp src/schema.graphql build/schema.graphql",
     "push-layer": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js --input server-input.json",
     "build-layer": "webpack -p --config webpack.config.layer.js",
     "push-deps": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}-deps node .simplify-graphql/layer-push.js --input server-input.json",
@@ -22,6 +22,13 @@
     "faas",
     "aws"
   ],
+  "dependencies": {
+    "apollo-server-express": "^2.14.1",
+    "aws-serverless-express": "^3.3.8",
+    "simplify-sdk": "^0.1.23",
+    "graphql": "^15.0.0",
+    "uuid": "^8.1.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
@@ -34,6 +41,6 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
-    "simplify-sdk": "^0.1.18"
+    "simplify-sdk": "^0.1.23"
   }
 }

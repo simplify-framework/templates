@@ -9,11 +9,12 @@
         "push-code": "bash .simplify-graphql/code-push.sh .env push",
         "setup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-setup.sh",
         "cleanup-env": "bash .simplify-graphql/{{DeploymentEnvSnake}}/aws-cleanup.sh",
-        "test": "echo '*** NOT IMPLEMENTED: Implement your test code!'\n"
+        "monitor": "node node_modules/simplify-secops/entrypoint.js -p {{DeploymentProfile}} -i .simplify-graphql/{{DeploymentEnvSnake}}/functions.csv metric -h 24 -t 300"
     },
     "license": "MIT",
     "private": true,
     "devDependencies": {
-        "simplify-sdk": "^0.1.18"
+        "simplify-sdk": "^0.1.23",
+        "simplify-secops": "^0.1.4"
     }
 }

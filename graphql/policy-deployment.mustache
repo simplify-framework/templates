@@ -73,6 +73,14 @@
                 "secretsmanager:GetRandomPassword"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "SecurityOperationCloudWatch{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:GetMetricData"
+            ],
+            "Resource": "*"
         }
     ]
 }

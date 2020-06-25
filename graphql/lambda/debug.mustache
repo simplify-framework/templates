@@ -2,7 +2,7 @@
 
 process.env.DEPLOYMENT_STAGE = 'canary'
 
-require('./handler').handler({
+require('./index').handler({
     'x-canary-selection': 'latest',
     args: {
         title: "Fox in Socks",

@@ -45,7 +45,7 @@ try {
                             adaptor: provider.getFunction(),
                             functionConfig: fConfig.Function
                         }).then(function(data) {
-                            simplify.consoleWithMessage(`${opName}-CleanupFunction`, `Function Layers - ${data.length}`)
+                            simplify.finishWithMessage(`${opName}-CleanupFunction`, `Function Layers - ${data.length}`)
                         }).catch(err => simplify.finishWithErrors(`${opName}-CleanupFunction`, err))
                     })
                 }).catch(err => simplify.finishWithErrors(`${opName}-CleanupBucket`, err))
