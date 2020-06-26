@@ -1,0 +1,14 @@
+'use strict';
+/** 
+ * Simplify Framework - GraphQL 0.1.13
+ * GitHub URL   : https://github.com/simplify-framework
+ * ProjectName  : {{ProjectName}}
+ * ProjectId    : {{ProjectId}}
+ * License      : Apache-2.0 (Free)
+ */
+module.exports = {
+    'express': require('express'),
+    'simplify-sdk': { 'graphql': require('simplify-sdk/graphql') },
+    'aws-serverless-express': require('aws-serverless-express'),
+    'apollo-server-express': { ApolloServer: require('apollo-server-express/ApolloServer'), gql : require('apollo-server-express/gql') }
+} 
