@@ -30,7 +30,7 @@
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}"{{#hasMore}},{{/hasMore}}
                 {{/Servers}}
             ]
-        },
+        }{{#Functions}},
         {
             "Sid": "{{ProjectNamePascal}}FunctionRolePolicy",
             "Effect": "Allow",
@@ -60,6 +60,6 @@
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}"{{#hasMore}},{{/hasMore}}
                 {{/Functions}}
             ]
-        }
+        }{{/Functions}}
     ]
 }
