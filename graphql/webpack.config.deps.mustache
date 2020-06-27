@@ -4,7 +4,7 @@ module.exports = {
         index: './src/deps.js',
     },
     output: {
-        path: path.join(__dirname, 'deps'),
+        path: path.join(__dirname, 'deps/nodejs/node_modules/{{NameSnake}}-deps'),
         publicPath: '/',
         filename: '[name].js',
         libraryTarget: 'commonjs2'
@@ -15,18 +15,13 @@ module.exports = {
         __dirname: false,     // if you don't put this is, __dirname
         __filename: false,    // and __filename return blank or /
     },
-    externals: [], // Need this to avoid error when working with Express
+    externals: [], // Pack all node_modules into one webpack library
     module: {
         rules: [
             {
                 // Transpiles ES6-8 into ES5
                 test: /\.js$/,
-                exclude: [
-                    /node_modules/
-                ],
-                use: {
-                    loader: "babel-loader"
-                }
+                use: ["babel-loader", "remove-hashbag-loader"]
             },
             {
                 // Transpiles files into memory
@@ -39,6 +34,11 @@ module.exports = {
                 }
             }
         ]
+    },
+    resolveLoader: {
+        alias: {
+          "remove-hashbag-loader": path.join(__dirname, "./loaders/hashbag")
+        }
     },
     plugins: []
 }

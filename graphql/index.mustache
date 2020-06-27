@@ -6,7 +6,7 @@
  * ProjectId    : {{ProjectId}}
  * License      : Apache-2.0 (Free)
  */
-const awsServerlessExpress = require('aws-serverless-express');
+const awsServerlessExpress = require('{{NameSnake}}-deps')['aws-serverless-express'];
 const server = awsServerlessExpress.createServer(require('./app'));
 
 exports.handler = (event, context, callback) => {
