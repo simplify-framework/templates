@@ -20,20 +20,11 @@ module.exports.handler = function(event, context, callback) {
     }
     {{/RemoteExecutionMode}}
     {{^RemoteExecutionMode}}
-    callback(null, [{
-        title: "First Book",
-        author: {
-            id: "1234567891",
-            name: "Star",
-            type: "JOURNALIST"
-        }
-    }, {
-        title: "Second Book",
-        author: {
-            id: "1234567890",
-            name: "War",
-            type: "SCIENTIST"
-        }
-    }, event.args])
+    const {{functionName}}Result = {
+{{#DataValues}}
+        {{Name}}: {{#Value}}{{#isListType}}[ {{#isListStringType}}{{#Default}}"{{Value}}"{{#hasMore}}, {{/hasMore}}{{/Default}}{{/isListStringType}}{{^isListStringType}}{{#isJSONObject}}{{{Default}}}{{/isJSONObject}}{{^isJSONObject}}"{{{Default}}}"{{/isJSONObject}}{{/isListStringType}} ]{{/isListType}}{{^isListType}}{{#isObjectType}}{{{Default}}}{{/isObjectType}}{{^isObjectType}}{{#isBoolType}}{{Default}}{{/isBoolType}}{{^isBoolType}}"{{Default}}"{{/isBoolType}}{{/isObjectType}}{{/isListType}}{{/Value}}{{#hasMore}},{{/hasMore}}
+{{/DataValues}}
+    }
+    callback(null, {{#isResultListType}}[ {{functionName}}Result, event.args ]{{/isResultListType}}{{^isResultListType}}{{functionName}}Result{{/isResultListType}})
     {{/RemoteExecutionMode}}
 }

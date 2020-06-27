@@ -62,12 +62,14 @@
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}{{#RemoteExecutionMode}}/index{{/RemoteExecutionMode}}.js" }
     ],
-    "RemoteFunctions": [    
+    "RemoteFunctions": [
+        { "input": "lambda/deps.mustache", "output": "RemoteFunctions/{{functionName}}/src/deps.js" },
         { "input": "lambda/debug.mustache", "output": "RemoteFunctions/{{functionName}}/src/debug.js" },
         { "input": "lambda/handler.mustache", "output": "RemoteFunctions/{{functionName}}/src/index.js" },
         { "input": "lambda/index-src.mustache", "output": "RemoteFunctions/{{functionName}}/src/{{functionName}}.js"},
         { "input": "lambda/package-src.mustache", "output": "RemoteFunctions/{{functionName}}/src/package.json" },
         { "input": "function-push.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/function-push.js" },
+        { "input": "lambda/package-deps.mustache", "output": "RemoteFunctions/{{functionName}}/deps/nodejs/node_modules/{{functionNameSnake}}-deps/package.json" },
         { "input": "lambda/function-input.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json" },
         { "input": "layer-push.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/layer-push.js" },
         { "input": "lambda/sonar-project.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/sonar-project.properties" },

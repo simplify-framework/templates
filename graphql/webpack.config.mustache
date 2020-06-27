@@ -34,9 +34,7 @@ module.exports = {
                 exclude: [
                     /node_modules/
                 ],
-                use: {
-                    loader: "file-loader"
-                }
+                use: ["file-loader", "remove-hashbag-loader"]
             }
         ]
     },

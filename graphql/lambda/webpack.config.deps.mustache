@@ -2,13 +2,13 @@ const path = require('path')
 const LicenseCheckerWebpackPlugin = require("license-checker-webpack-plugin")
 module.exports = {
     entry: {
-        index: './src/index.js',
+        index: './src/deps.js',
     },
     output: {
-        path: path.join(__dirname, 'layer/nodejs/node_modules/{{FunctionNameSnake}}'),
+        path: path.join(__dirname, 'deps/nodejs/node_modules/{{FunctionNameSnake}}-deps'),
         publicPath: '/',
         filename: '[name].js',
-        libraryTarget: 'umd'
+        libraryTarget: 'commonjs2'
     },
     target: 'node',
     node: {
@@ -16,7 +16,7 @@ module.exports = {
         __dirname: false,     // if you don't put this is, __dirname
         __filename: false,    // and __filename return blank or /
     },
-    externals: [], // Need this to avoid error when working with Express
+    externals: [], // Pack all node_modules into one webpack library
     module: {
         rules: [
             {
