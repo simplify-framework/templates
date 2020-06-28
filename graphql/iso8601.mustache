@@ -19,6 +19,7 @@ const parseISO8601 = value => {
 
 const serializeISO8601 = value => {
   // For output i.e. response for graphql
+  if (typeof value === 'string') value = new Date(value)
   const valueAsString = value.toISOString();
   if (isISO8601(valueAsString)) {
     return valueAsString;

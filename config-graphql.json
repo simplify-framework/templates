@@ -57,7 +57,8 @@
         { "input": "enum.mustache", "output": "{{serverName}}/src/Schemas/Models/{{dataName}}.js" }
     ],
     "GraphQLResolvers": [
-        { "input": "resolver.mustache", "output": "{{serverName}}/src/Resolvers/{{stateName}}.js" }
+        { "input": "resolver.mustache", "output": "{{serverName}}/src/Resolvers/{{stateName}}.js" },
+        { "input": "tests.spec.mustache", "output": "{{serverName}}/tests/{{stateName}}.spec.js" }
     ],
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}{{#RemoteExecutionMode}}/index{{/RemoteExecutionMode}}.js" }
@@ -72,9 +73,11 @@
         { "input": "lambda/package-deps.mustache", "output": "RemoteFunctions/{{functionName}}/deps/nodejs/node_modules/{{functionNameSnake}}-deps/package.json" },
         { "input": "lambda/function-input.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json" },
         { "input": "layer-push.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/layer-push.js" },
+        { "input": "hashbag.mustache", "output": "RemoteFunctions/{{functionName}}/loaders/hashbag.js" },
         { "input": "lambda/sonar-project.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/sonar-project.properties" },
         { "input": "lambda/sonarqube-scanner.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/sonarqube-scanner.sh" },
         { "input": "lambda/webpack.config.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.js" },
+        { "input": "lambda/webpack.config.deps.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.deps.js" },
         { "input": "lambda/webpack.config.layer.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.layer.js" },
         { "input": "lambda/.babelrc.mustache", "output": "RemoteFunctions/{{functionName}}/.babelrc" },
         { "input": "lambda/package.mustache", "output": "RemoteFunctions/{{functionName}}/package.json" }

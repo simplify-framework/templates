@@ -5,7 +5,7 @@
 # Region: {{DeploymentRegion}}
 # Profile: {{DeploymentProfile}}
 # Version: {{ProjectVersion}}
-
-export $(egrep -v '^#' .env | xargs)
+ENV_FILE=${1:-".env"}
+CMD_OUTPUT=`grep -v '^#' ${ENV_FILE} | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
 
 bash .simplify-graphql/${DEPLOYMENT_ENV}/aws-cleanup.sh $@

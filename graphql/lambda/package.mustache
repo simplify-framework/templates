@@ -11,10 +11,10 @@
         "push-layer": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js",
         "build-layer": "webpack -p --config webpack.config.layer.js",
         "push-deps": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}-deps node .simplify-graphql/layer-push.js",
-        "build-deps": "[ -d deps/nodejs ] || mkdir -p deps/nodejs && cp src/package.json deps/nodejs/package.json && cd deps/nodejs && npm install --only=production",
+        "build-deps": "webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{functionNameSnake}}-deps && npm link",
         "production": "webpack -p && env LOCAL_DEBUG= node build/index.js",
         "development": "webpack --mode development && env LOCAL_DEBUG=YES node build/index.js",
-        "start": "cd src && npm install && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node debug.js",
+        "start": "cd src && npm install && npm link {{functionNameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node debug.js",
         "code-scan": "bash sonarqube-scanner.sh"
     },
     "license": "MIT",
