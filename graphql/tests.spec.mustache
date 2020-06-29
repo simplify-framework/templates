@@ -4,9 +4,8 @@ chai.should()
 
 describe('({{ProjectName}}) {{Name}} [*]:', function () {
     before('Prepare for {{Name}} [*] test specs', async function () {
-        //await apiService.config({ ...apiConfig });
     });
-    it('Should be resolved with {{{OperationId}}} (Object) when calling {{Name}} at http://localhost:4000/graphql', async function () {
+    it('Should be resolved with {{{OperationId}}} ({{Definition}}) when calling {{Name}} at http://localhost:4000/graphql', async function () {
         const response = await fetch('http://localhost:4000/graphql', {
             "headers": {
                 "content-type": "application/json"
@@ -14,7 +13,7 @@ describe('({{ProjectName}}) {{Name}} [*]:', function () {
             "body": JSON.stringify({
                 "operationName": "{{NamePascal}}",
                 "variables": {},
-                "query": "query {{NamePascal}} { {{{OperationId}}} { {{#DataValues}}{{Name}} {{#Value}}{{#isNestedObject}}{ {{Name}} }{{/isNestedObject}}{{/Value}}{{#hasMore}} {{/hasMore}}{{/DataValues}} } }"}
+                "query": "{{DefinitionSnake}} {{NamePascal}} { {{{OperationId}}} { {{#DataValues}}{{Name}} {{#Value}}{{#isNestedObject}}{ {{#Default}}{{Name}}{{#hasMore}} {{/hasMore}}{{/Default}} }{{/isNestedObject}}{{/Value}}{{#hasMore}} {{/hasMore}}{{/DataValues}} } }"}
             ),
             "method": "POST",
             "mode": "cors"
