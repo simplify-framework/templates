@@ -9,7 +9,7 @@ INITIAL_DIR=$PWD
 ENV_FILE=${1:-".env"}
 FUNC_OPS=${2:-"push"}
 
-CMD_OUTPUT=`grep -v '^#' ${ENV_FILE} | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
+`grep -v '^#' ${ENV_FILE} | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
 
 node .simplify-graphql/code-init.js --input deployment-input.json
 
