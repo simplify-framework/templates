@@ -1,0 +1,50 @@
+'use strict';
+/** 
+ * Simplify Framework - GraphQL {{GeneratorVersion}}
+ * GitHub URL   : https://github.com/simplify-framework
+ * ProjectName  : {{ProjectName}}
+ * ProjectId    : {{ProjectId}}
+ * License      : Apache-2.0 (Free)
+ */
+if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
+const cassandra = require('cassandra-driver');
+
+export class DataTable {
+    constructor(options) {
+        this.connector = new cassandra.Client({
+            contactPoints: process.env.CONTACT_POINTS.split(','),
+            localDataCenter: process.env.LOCAL_DATA_CENTER,
+            keyspace: process.env.KEY_SPACE })
+        this.options = options
+    }
+
+    createTable() {
+        return new Promise((resolve, reject) => {
+            reject(`Not implemented function`)
+        })
+    }
+
+    putItem(objItem, attrNames, attrValues, conditionExpression, conditionOperator) {
+        return new Promise((resolve, reject) => {
+            reject(`Not implemented function`)
+        })
+    }
+
+    getItem(attrKey, options) {
+        return new Promise((resolve, reject) => {
+            reject(`Not implemented function`)
+        })
+    }
+
+    query(attrValues, options) {
+        return new Promise((resolve, reject) => {
+            reject(`Not implemented function`)
+        })
+    }
+
+    scan(attrValues, options) {
+        return new Promise((resolve, reject) => {
+            reject(`Not implemented function`)
+        })
+    }
+}
