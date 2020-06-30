@@ -1,0 +1,174 @@
+'use strict';
+process.env.AWS_SDK_LOAD_CONFIG = process.env.AWS_SDK_LOAD_CONFIG || true
+if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
+const AWS = __non_webpack_require__('aws-sdk')
+
+export class DatabaseTable {
+    constructor(tableType, tableSchema) {
+        this.connector = new AWS.DynamoDB({ apiVersion: '2012-08-10' })
+        this.tableSchema = tableSchema || {}
+        this.tableType = tableType
+        this.tableName = `${this.tableType || 'Default'}-${process.env.PROJECT_ID || 'project-id'}-${process.env.ENVIRONMENT || 'devel'}`
+    }
+
+    getDynamoDBAttrsFromItem(objItem) {
+        let attrResult = {}
+        function recursiveParseItem(objValue) {
+            let attrItem = {}
+            if (typeof objValue === 'string') attrItem['S'] = objValue
+            else if (typeof objValue === 'number') attrItem['N'] = objValue + ""
+            else if (typeof objValue === 'object') {
+                if (Array.isArray(objValue)) {
+                    attrItem['L'] = objValue.map(li => recursiveParseItem(li))
+                } else {
+                    attrItem['M'] = {}
+                    Object.keys(objValue).map(key => {
+                        attrItem['M'][key] = recursiveParseItem(objValue[key])
+                    })
+                }
+            } else if (typeof objValue === 'boolean')
+                attrItem['BOOL'] = objValue
+            else {
+                attrItem['B'] = Buffer.from(objValue)
+            }
+            return attrItem
+        }
+        Object.keys(objItem).map(key => {
+            const objValue = objItem[key]
+            attrResult[key] = recursiveParseItem(objValue)
+        })
+        return attrResult
+    }
+
+    getDynamoDBItemFromAttrs(attrItem) {
+        let objItem = {}
+        function recursiveParseAttrs(attrItem) {
+            const attrValue = attrItem['S'] ? attrItem['S'] : (
+                attrItem['N'] ? parseFloat(attrItem['N']) : (
+                    typeof attrItem['BOOL'] !=='undefined' ? attrItem['BOOL'] : (
+                        attrItem['SS'] ? attrItem['SS'] : (
+                            attrItem['M'] ? function() {
+                                let mResult = {}
+                                Object.keys(attrItem['M']).map(key => {
+                                    mResult[key] = recursiveParseAttrs(attrItem['M'][key])
+                                })
+                                return mResult
+                             }() : (
+                                attrItem['L'] ? attrItem['L'].map(li => {
+                                    const liItem = recursiveParseAttrs(li)
+                                    return liItem
+                                }) : undefined
+                            )
+                        )
+                    )
+                )
+            )
+            return attrValue
+        }
+        Object.keys(attrItem).map(key => {
+            objItem[key] = recursiveParseAttrs(attrItem[key])
+        })
+        return objItem
+    }
+
+    createTable() {
+        var params = {
+            ...{
+                AttributeDefinitions: [
+                    { AttributeName: 'id', AttributeType: 'S' },
+                    { AttributeName: 'owner', AttributeType: 'S' }
+                ],
+                KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
+                BillingMode: 'PAY_PER_REQUEST',
+                TableName: this.tableName,
+                GlobalSecondaryIndexes: [{
+                    IndexName: 'owner-index',
+                    KeySchema: [{ AttributeName: 'owner', KeyType: 'HASH' }],
+                    Projection: { ProjectionType: 'ALL' }
+                }],
+                StreamSpecification: {
+                    StreamEnabled: true,
+                    StreamViewType: 'NEW_AND_OLD_IMAGES'
+                },
+                SSESpecification: { Enabled: true, SSEType: 'KMS' }
+            }, ...this.tableSchema
+        }
+        return new Promise((resolve, reject) => {
+            this.connector.createTable(params, function (err, data) {
+                err ? reject(err) : resolve(data)
+            })
+        })
+    }
+
+    putItem(objItem, attrNames, attrValues, conditionExpression, conditionOperator) {
+        objItem["__typename"] = this.tableType
+        const attrItem = this.getDynamoDBAttrsFromItem(objItem)
+        var params = {
+            Item: attrItem,
+            TableName: this.tableName,
+            ConditionExpression: conditionExpression || undefined,
+            ExpressionAttributeNames: attrNames || undefined,
+            ExpressionAttributeValues: attrValues || undefined,
+            ConditionalOperator: conditionOperator || undefined,
+            ReturnConsumedCapacity: 'INDEXES',
+            ReturnValues: 'NONE'
+        }
+        return new Promise((resolve, reject) => {
+            this.connector.putItem(params, function (err, data) {
+                err ? reject(err) : resolve(data)
+            })
+        })
+    }
+
+    getItem(attrKey, options) {
+        const { consistentRead } = options || {}
+        attrKey = this.getDynamoDBAttrsFromItem(attrKey)
+        var params = {
+            Key: attrKey,
+            TableName: this.tableName,
+            ConsistentRead: consistentRead || false,
+            ReturnConsumedCapacity: 'INDEXES'
+        }
+        const _thisObject = this
+        return new Promise((resolve, reject) => {
+            this.connector.getItem(params, function (err, data) {
+                err ? reject(err) : resolve(_thisObject.getDynamoDBItemFromAttrs(data.Item))
+            })
+        })
+    }
+
+    query(attrValues, options) {
+        const { KeyConditionExpression, ExpressionAttributeNames, IndexName } = options || {}
+        attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
+        var params = {
+            TableName: this.tableName,
+            ExpressionAttributeValues: attrValues || undefined,
+            IndexName: IndexName || undefined,
+            KeyConditionExpression: KeyConditionExpression,
+            ExpressionAttributeNames: ExpressionAttributeNames || undefined
+        }
+        const _thisObject = this
+        return new Promise((resolve, reject) => {
+            this.connector.query(params, function (err, data) {
+                err ? reject(err) : resolve(data.Items.map(item => _thisObject.getDynamoDBItemFromAttrs(item)))
+            })
+        })
+    }
+
+    scan(attrValues, options) {
+        let { FilterExpression, ExpressionAttributeNames } = options || {}
+        attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
+        var params = {
+            TableName: this.tableName,
+            FilterExpression: FilterExpression,
+            ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+            ExpressionAttributeValues: attrValues || undefined
+        }
+        const _thisObject = this
+        return new Promise((resolve, reject) => {
+            this.connector.scan(params, function (err, data) {
+                err ? reject(err) : resolve(data.Items.map(item => _thisObject.getDynamoDBItemFromAttrs(item)))
+            })
+        })
+    }
+}
