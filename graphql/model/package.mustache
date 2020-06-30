@@ -5,6 +5,14 @@
   "main": "dist/index.js",
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+{{#DataSource}}
+    {{#isMongoDB}}
+    "mongodb": "^3.5.9",
+    {{/isMongoDB}}
+    {{#isCassandra}}
+    "cassandra-driver": "^4.5.2",
+    {{/isCassandra}}
+{{/DataSource}}
     "uuid": "^7.0.3"
   },
   "devDependencies": {
