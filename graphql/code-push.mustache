@@ -18,7 +18,7 @@ declare -a DEPLOYMENT_PACKAGES=(
     "{{Name}}"
 {{/Servers}}
 {{#Functions}}
-    "RemoteFunctions/{{FunctionName}}"
+    "Executions/{{FunctionName}}"
 {{/Functions}})
 declare -a DEPLOYMENT_LANGUAGES=({{#Servers}}"{{Language}}"{{#hasMore}} {{/hasMore}}{{/Servers}} {{#Functions}}"{{Language}}"{{#hasMore}} {{/hasMore}}{{/Functions}})
 declare -a DEPLOYMENT_RUNTIMES=({{#Servers}}"{{Runtime}}"{{#hasMore}} {{/hasMore}}{{/Servers}} {{#Functions}}"{{Runtime}}"{{#hasMore}} {{/hasMore}}{{/Functions}})

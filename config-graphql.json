@@ -45,7 +45,12 @@
         { "input": "index.mustache", "output": "{{serverName}}/src/index.js" },
         { "input": "deps.mustache", "output": "{{serverName}}/src/deps.js" },
         { "input": "function-index.mustache", "output": "{{serverName}}/src/Functions/functions.js" },
-        { "input": "app.mustache", "output": "{{serverName}}/src/app.js" }
+        { "input": "app.mustache", "output": "{{serverName}}/src/app.js" },
+        { "input": "model/.babelrc.mustache", "output": "{{serverName}}/models/.babelrc" },
+        { "input": "model/package.mustache", "output": "{{serverName}}/models/package.json" },
+        { "input": "model/dynamodb.mustache", "output": "{{serverName}}/models/src/dynamodb.js" },
+        { "input": "model/cassandra.mustache", "output": "{{serverName}}/models/src/cassandra.js" },
+        { "input": "model/index.mustache", "output": "{{serverName}}/models/src/index.js" }
     ],
     "GraphQLDataInputs": [
         { "input": "input.mustache", "output": "{{serverName}}/src/Schemas/Inputs/{{dataName}}.js" }
@@ -63,23 +68,23 @@
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}{{#RemoteExecutionMode}}/index{{/RemoteExecutionMode}}.js" }
     ],
-    "RemoteFunctions": [
-        { "input": "lambda/deps.mustache", "output": "RemoteFunctions/{{functionName}}/src/deps.js" },
-        { "input": "lambda/debug.mustache", "output": "RemoteFunctions/{{functionName}}/src/debug.js" },
-        { "input": "lambda/handler.mustache", "output": "RemoteFunctions/{{functionName}}/src/index.js" },
-        { "input": "lambda/index-src.mustache", "output": "RemoteFunctions/{{functionName}}/src/{{functionName}}.js"},
-        { "input": "lambda/package-src.mustache", "output": "RemoteFunctions/{{functionName}}/src/package.json" },
-        { "input": "function-push.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/function-push.js" },
-        { "input": "lambda/package-deps.mustache", "output": "RemoteFunctions/{{functionName}}/deps/nodejs/node_modules/{{functionNameSnake}}-deps/package.json" },
-        { "input": "lambda/function-input.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json" },
-        { "input": "layer-push.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/layer-push.js" },
-        { "input": "hashbag.mustache", "output": "RemoteFunctions/{{functionName}}/loaders/hashbag.js" },
-        { "input": "lambda/sonar-project.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/sonar-project.properties" },
-        { "input": "lambda/sonarqube-scanner.mustache", "output": "RemoteFunctions/{{functionName}}/.simplify-graphql/sonarqube-scanner.sh" },
-        { "input": "lambda/webpack.config.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.js" },
-        { "input": "lambda/webpack.config.deps.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.deps.js" },
-        { "input": "lambda/webpack.config.layer.mustache", "output": "RemoteFunctions/{{functionName}}/webpack.config.layer.js" },
-        { "input": "lambda/.babelrc.mustache", "output": "RemoteFunctions/{{functionName}}/.babelrc" },
-        { "input": "lambda/package.mustache", "output": "RemoteFunctions/{{functionName}}/package.json" }
+    "Executions": [
+        { "input": "lambda/deps.mustache", "output": "Executions/{{functionName}}/src/deps.js" },
+        { "input": "lambda/debug.mustache", "output": "Executions/{{functionName}}/src/debug.js" },
+        { "input": "lambda/handler.mustache", "output": "Executions/{{functionName}}/src/index.js" },
+        { "input": "lambda/index-src.mustache", "output": "Executions/{{functionName}}/src/{{functionName}}.js"},
+        { "input": "lambda/package-src.mustache", "output": "Executions/{{functionName}}/src/package.json" },
+        { "input": "function-push.mustache", "output": "Executions/{{functionName}}/.simplify-graphql/function-push.js" },
+        { "input": "lambda/package-deps.mustache", "output": "Executions/{{functionName}}/deps/nodejs/node_modules/{{functionNameSnake}}-deps/package.json" },
+        { "input": "lambda/function-input.mustache", "output": "Executions/{{functionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json" },
+        { "input": "layer-push.mustache", "output": "Executions/{{functionName}}/.simplify-graphql/layer-push.js" },
+        { "input": "hashbag.mustache", "output": "Executions/{{functionName}}/loaders/hashbag.js" },
+        { "input": "lambda/sonar-project.mustache", "output": "Executions/{{functionName}}/.simplify-graphql/sonar-project.properties" },
+        { "input": "lambda/sonarqube-scanner.mustache", "output": "Executions/{{functionName}}/.simplify-graphql/sonarqube-scanner.sh" },
+        { "input": "lambda/webpack.config.mustache", "output": "Executions/{{functionName}}/webpack.config.js" },
+        { "input": "lambda/webpack.config.deps.mustache", "output": "Executions/{{functionName}}/webpack.config.deps.js" },
+        { "input": "lambda/webpack.config.layer.mustache", "output": "Executions/{{functionName}}/webpack.config.layer.js" },
+        { "input": "lambda/.babelrc.mustache", "output": "Executions/{{functionName}}/.babelrc" },
+        { "input": "lambda/package.mustache", "output": "Executions/{{functionName}}/package.json" }
     ]
 }

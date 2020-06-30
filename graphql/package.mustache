@@ -12,8 +12,9 @@
     "push-layer": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../layer node .simplify-graphql/layer-push.js --input server-input.json",
     "build-layer": "webpack -p --config webpack.config.layer.js",
     "push-deps": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}-deps node .simplify-graphql/layer-push.js --input server-input.json",
-    "build-deps": "webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{NameSnake}}-deps && npm link",
-    "start": "npm run build-deps && cd src/ && npm install && npm link {{NameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
+    "build-deps": "npm run build-models && webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{NameSnake}}-deps && npm link",
+    "build-models": "cd models/ && npm install && npm run build",
+    "start": "cd src/ && npm install && npm link {{NameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
     "code-scan": "bash sonarqube-scanner.sh",
     "test-apis": "nyc --reporter=text mocha --require @babel/register --timeout 60000 \"./tests/*.spec.js*\""
   },

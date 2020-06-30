@@ -7,7 +7,7 @@ const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 module.exports.handler = function(event, context, callback) {
     {{#RemoteExecutionMode}}
     if (process.env.LOCAL_DEBUG=="YES") {
-        require('../../../../RemoteFunctions/{{Run.Name}}/src/index').handler(event, context, callback)
+        require('../../../../Executions/{{Run.Name}}/src/index').handler(event, context, callback)
     } else {
         const parameters = require('./parameters.json')
         var params = {

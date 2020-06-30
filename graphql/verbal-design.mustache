@@ -26,7 +26,7 @@
 
 {{#DataSources}}
 {{^isEmpty}}
-* [{{Definition}}] persists on DataSource={{{Type}}}@{{Name}} has Indexes={{#Indexes}}{{Name}}:{{Type}}{{#hasMore}},{{/hasMore}}{{/Indexes}}
+* [{{Definition}}] connects to DataSource={{{Engine}}} @alias={{Name}} has Tables={{#Tables}}{{Name}}[:{{Key}} #{{Index}}]{{#hasMore}},{{/hasMore}}{{/Tables}}
 {{/isEmpty}}
 {{/DataSources}}
 

@@ -1,14 +1,23 @@
 'use strict';
+/** 
+ * Simplify Framework - GraphQL {{GeneratorVersion}}
+ * GitHub URL   : https://github.com/simplify-framework
+ * ProjectName  : {{ProjectName}}
+ * ProjectId    : {{ProjectId}}
+ * License      : Apache-2.0 (Free)
+ */
 process.env.AWS_SDK_LOAD_CONFIG = process.env.AWS_SDK_LOAD_CONFIG || true
 if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
 const AWS = __non_webpack_require__('aws-sdk')
 
-export class DatabaseTable {
-    constructor(tableType, tableSchema) {
+export class DataTable {
+    constructor(options) {
+        const { tableName, tableSchema, primaryKey, secondaryIndex } = options
         this.connector = new AWS.DynamoDB({ apiVersion: '2012-08-10' })
         this.tableSchema = tableSchema || {}
-        this.tableType = tableType
-        this.tableName = `${this.tableType || 'Default'}-${process.env.PROJECT_ID || 'project-id'}-${process.env.ENVIRONMENT || 'devel'}`
+        this.tableName = [ tableName || 'Default', process.env.PROJECT_ID || '', process.env.ENVIRONMENT || '' ].filter(v => v !== '').join('-')
+        this.tableType = tableName
+        this.options = options
     }
 
     getDynamoDBAttrsFromItem(objItem) {
@@ -75,15 +84,15 @@ export class DatabaseTable {
         var params = {
             ...{
                 AttributeDefinitions: [
-                    { AttributeName: 'id', AttributeType: 'S' },
-                    { AttributeName: 'owner', AttributeType: 'S' }
+                    { AttributeName: this.options.primaryKey, AttributeType: 'S' },
+                    { AttributeName: this.options.secondaryIndex, AttributeType: 'S' }
                 ],
-                KeySchema: [{ AttributeName: 'id', KeyType: 'HASH' }],
+                KeySchema: [{ AttributeName: this.options.primaryKey, KeyType: 'HASH' }],
                 BillingMode: 'PAY_PER_REQUEST',
                 TableName: this.tableName,
                 GlobalSecondaryIndexes: [{
                     IndexName: 'owner-index',
-                    KeySchema: [{ AttributeName: 'owner', KeyType: 'HASH' }],
+                    KeySchema: [{ AttributeName: this.options.secondaryIndex, KeyType: 'HASH' }],
                     Projection: { ProjectionType: 'ALL' }
                 }],
                 StreamSpecification: {

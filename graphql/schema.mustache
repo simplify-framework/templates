@@ -1,9 +1,7 @@
 enum GraphQLEngineType { FARGATE LAMBDA KUBERNETES }
 enum GraphQLAuthMode { SIGV4 COGNITO NONE }
 enum GraphQLExecutionMode { LOCAL REMOTE }
-enum GraphQLSourceType { TABLE_STORAGE BLOB_STORAGE EVENT_STREAM NONE }
 enum GraphQLEventType { EVENT_RULE DATA_SOURCE USER_EVENT }
-enum GraphQLDataAccess { READ_ONLY READ_WRITE WRITE_ONLY NONE }
 
 input GraphQLServerOptions {
     AuthorizationId: String
@@ -18,9 +16,10 @@ input GraphQLEndpointOptions {
     HasApiKey: Boolean
 }
 
-input GraphQLDataIndex {
+input GraphQLDataTable {
     Name: String
-    Type: String
+    Key: String
+    Index: String
 }
 
 input FunctionInput {
@@ -71,10 +70,9 @@ directive @GraphQLEvent (
 ) on OBJECT
 
 directive @GraphQLDataSource (
-    Name: GraphQLSourceType!
-    Type: GraphQLSourceType!
-    Access: GraphQLDataAccess
-    Indexes: [GraphQLDataIndex]
+    Name: String
+    Engine: String
+    Tables: [ GraphQLDataTable ]
 ) on OBJECT
 
 scalar DateTime

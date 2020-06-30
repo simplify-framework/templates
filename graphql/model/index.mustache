@@ -1,10 +1,18 @@
-'use strict'
+'use strict';
+/** 
+ * Simplify Framework - GraphQL {{GeneratorVersion}}
+ * GitHub URL   : https://github.com/simplify-framework
+ * ProjectName  : {{ProjectName}}
+ * ProjectId    : {{ProjectId}}
+ * License      : Apache-2.0 (Free)
+ */
 process.env.AWS_SDK_LOAD_CONFIG = process.env.AWS_SDK_LOAD_CONFIG || true
 if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
 const AWS = __non_webpack_require__('aws-sdk')
 AWS.config.update({ region: process.env.REGION || "eu-central-1" })
-const TableProviderName = process.env.TABLE_PROVIDER || 'DynamoDB'
-const { DatabaseTable } = require(`./${TableProviderName}`)
+{{#DataSource}}
+const {{Engine}} = require(`./{{EngineLowercase}}`)
+{{/DataSource}}
 
 const getLocalCredentials = function(configProfile) {
     return new Promise(function (resolve, reject) {
@@ -27,8 +35,17 @@ export default async function () {
     const credentials = await getLocalCredentials(process.env.PROFILE || "default")
     AWS.config.update({ credentials: credentials });
     return {
-    {{#DataSource}}
-        {{Name}}: new DatabaseTable('{{Name}}'){{#hasMore}},{{/hasMore}}
-    {{/DataSource}}
+{{#DataSource}}
+    {{#isDynamoDB}}
+    {{#Tables}}
+        {{Name}}: new {{Engine}}.DataTable({ tableName: '{{Name}}', primaryKey: '{{Key}}', secondaryIndex: '{{Index}}' }){{#hasMore}},{{/hasMore}}
+    {{/Tables}}
+    {{/isDynamoDB}}
+    {{#isCassandra}}
+    {{#Tables}}
+        {{Name}}: new {{Engine}}.DataTable({ tableName: '{{Name}}', primaryKey: '{{Key}}', secondaryIndex: '{{Index}}' }){{#hasMore}},{{/hasMore}}
+    {{/Tables}}
+    {{/isCassandra}}
+{{/DataSource}}
     }
 }

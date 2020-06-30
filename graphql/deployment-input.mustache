@@ -25,7 +25,7 @@
             {{#Functions}}
             "{{FunctionName}}": {
                 "DependsOn": [{{#Servers}}"{{ServerName}}"{{#hasMore}}, {{/hasMore}}{{/Servers}}],
-                "FunctionInput": "../RemoteFunctions/{{FunctionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json",
+                "FunctionInput": "../Executions/{{FunctionName}}/.simplify-graphql/{{DeploymentEnvSnake}}/function-input.json",
                 "ManagedResourceArn": "NO",
                 "SecretKeyVault": "NO"
             }{{#hasMore}}, {{/hasMore}}
