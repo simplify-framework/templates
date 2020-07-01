@@ -109,16 +109,18 @@ export class DataTable {
         })
     }
 
-    putItem(objItem, attrNames, attrValues, conditionExpression, conditionOperator) {
+    putItem(objItem, options) {
         objItem["__typename"] = this.tableType
         const attrItem = this.getDynamoDBAttrsFromItem(objItem)
+        let attributeValues = options.ExpressionAttributeValues
+        attributeValues = attributeValues ? this.getDynamoDBAttrsFromItem(attributeValues) : undefined
         var params = {
             Item: attrItem,
             TableName: this.tableName,
-            ConditionExpression: conditionExpression || undefined,
-            ExpressionAttributeNames: attrNames || undefined,
-            ExpressionAttributeValues: attrValues || undefined,
-            ConditionalOperator: conditionOperator || undefined,
+            ConditionExpression: options.ConditionExpression || undefined,
+            ExpressionAttributeNames: options.ExpressionAttributeNames || undefined,
+            ExpressionAttributeValues: attributeValues || undefined,
+            ConditionalOperator: options.ConditionalOperator || undefined,
             ReturnConsumedCapacity: 'INDEXES',
             ReturnValues: 'NONE'
         }
@@ -165,7 +167,7 @@ export class DataTable {
     }
 
     scan(attrValues, options) {
-        let { FilterExpression, ExpressionAttributeNames } = options || {}
+        const { FilterExpression, ExpressionAttributeNames } = options || {}
         attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
         var params = {
             TableName: this.tableName,
