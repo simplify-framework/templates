@@ -7,7 +7,7 @@
  * License      : Apache-2.0 (Free)
  */
 const path = require('path')
-const { StateExecution } = require('simplify-sdk/graphql')
+const { StateExecution } = require('{{serverNameSnake}}-deps')['simplify-sdk'].graphql
 const { {{DataSchema}} } = require('../Schemas/Models/{{DataSchema}}')
 const executionPath = path.join(__dirname, "../Functions")
 

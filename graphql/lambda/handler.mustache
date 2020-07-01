@@ -18,5 +18,5 @@ module.exports.handler = (event, context, callback) => {
     if (allowedCanaries.indexOf((event || {})['x-canary-selection']) >=0 && process.env.DEPLOYMENT_STAGE === 'canary') {
         {{FunctionName}} = getPackage(`${(event || {})['x-canary-selection']}`)
     }
-    {{FunctionName}}.handler(event.args, event.context, callback)
+    {{FunctionName}}.handler(event, context, callback)
 };
