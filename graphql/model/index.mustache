@@ -35,7 +35,7 @@ export default async function () {
     const credentials = await getLocalCredentials(process.env.PROFILE || "default")
     AWS.config.update({ credentials: credentials });
     return {
-{{#DataSource}}
+{{#DataSources}}
     {{#isDynamoDB}}
     {{#Tables}}
         {{Name}}: new {{Engine}}.DataTable({ tableName: '{{Name}}', primaryKey: '{{Key}}', secondaryIndex: '{{Index}}' }){{#hasMore}},{{/hasMore}}
@@ -46,6 +46,7 @@ export default async function () {
         {{Name}}: new {{Engine}}.DataTable({ tableName: '{{Name}}', primaryKey: '{{Key}}', secondaryIndex: '{{Index}}' }){{#hasMore}},{{/hasMore}}
     {{/Tables}}
     {{/isCassandra}}
-{{/DataSource}}
+        {{#hasMore}}/** DONOT REMOVE THIS CONJONCTION **/,{{/hasMore}}{{^hasMore}}/** END WITH {{Engine}} DATASOURCE TYPE **/{{/hasMore}}
+{{/DataSources}}
     }
 }

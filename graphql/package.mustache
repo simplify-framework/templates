@@ -14,7 +14,7 @@
     "push-deps": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env LAYER_SOURCE=../deps env DEPENDENCIES_PACKAGE={{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}-deps node .simplify-graphql/layer-push.js --input server-input.json",
     "build-deps": "npm run build-models && webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{NameSnake}}-deps && npm link",
     "build-models": "cd models/ && npm install && npm run build",
-    "start": "cd src/ && npm install && npm link {{NameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node app.js",
+    "start": "cd src/ && npm install && npm link {{NameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest AWS_XRAY_CONTEXT_MISSING=LOG_ERROR node app.js",
     "code-scan": "bash sonarqube-scanner.sh",
     "test-apis": "nyc --reporter=text mocha --require @babel/register --timeout 60000 \"./tests/*.spec.js*\""
   },
@@ -50,7 +50,7 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-node-externals": "^1.7.2",
-    "simplify-sdk": "^0.1.24",
+    "simplify-sdk": "^0.1.25",
     "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "chai": "^4.2.0",

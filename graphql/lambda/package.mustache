@@ -14,7 +14,7 @@
         "build-deps": "webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{functionNameSnake}}-deps && npm link",
         "production": "webpack -p && env LOCAL_DEBUG= node build/index.js",
         "development": "webpack --mode development && env LOCAL_DEBUG=YES node build/index.js",
-        "start": "cd src && npm install && npm link {{functionNameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest node debug.js",
+        "start": "cd src && npm install && npm link {{functionNameSnake}}-deps && env LOCAL_DEBUG=YES DEPLOYMENT_STAGE=latest AWS_XRAY_CONTEXT_MISSING=LOG_ERROR node debug.js",
         "code-scan": "bash sonarqube-scanner.sh"
     },
     "license": "MIT",
@@ -23,7 +23,7 @@
         "debug": "^4.1.1"
     },
     "devDependencies": {
-        "simplify-sdk": "^0.1.24",
+        "simplify-sdk": "^0.1.25",
         "aws-sdk": "^2.635.0",
         "adm-zip": "^0.4.14",
         "@babel/cli": "^7.8.4",

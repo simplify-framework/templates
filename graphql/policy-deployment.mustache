@@ -57,6 +57,19 @@
             ]
         },
         {
+            "Sid": "DynamoDBTables{{DeploymentAccount}}",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:*"
+            ],
+            "Resource": [
+                {{#DataTables}}
+                "arn:aws:dynamodb:{{DeploymentRegion}}:{{DeploymentAccount}}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}",
+                "arn:aws:dynamodb:{{DeploymentRegion}}:{{DeploymentAccount}}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}/stream/*"{{#hasMore}},{{/hasMore}}
+                {{/DataTables}}
+            ]
+        },
+        {
             "Sid": "CloudFormationSpecificBucket{{DeploymentAccount}}",
             "Effect": "Allow",
             "Action": [

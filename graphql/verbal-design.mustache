@@ -16,7 +16,17 @@
             {{/Resolver}}
         {{/Resolvers}}
         {{/Paths}}
+        {{#DataTables}}
+        * {{Name}}Table HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/DataTables}}
+        {{#KeySpaces}}
+        * {{Name}}Space HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/KeySpaces}}
+        {{#Documents}}
+        * {{Name}}Document HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/Documents}}
     {{/Definitions}}
+    
     {{#hasMore}}{{/hasMore}}
 {{/Servers}}
 

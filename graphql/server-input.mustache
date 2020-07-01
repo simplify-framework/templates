@@ -1,6 +1,9 @@
 {
     "Profile": "{{DeploymentProfile}}",
     "Region": "{{DeploymentRegion}}",
+    "ProjectId": "{{ProjectId}}",
+    "AccountId": "{{DeploymentAccount}}",
+    "Environment": "{{DeploymentEnvSnake}}",
     "Bucket": {
         "Name": "{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}",
         "Key": "servers/${DATE_TODAY}"
@@ -30,7 +33,8 @@
             "Variables": {
                 "DEPLOYMENT_STAGE": "${DEPLOYMENT_STAGE}",
                 "ENFORCEMENT_PACKAGE": "${ENFORCEMENT_PACKAGE}",
-                "DEPLOYMENT_ENV": "${DEPLOYMENT_ENV}"
+                "ENVIRONMENT": "${DEPLOYMENT_ENV}",
+                "PROJECT_ID": "{{ProjectId}}"
             }
         }
     }

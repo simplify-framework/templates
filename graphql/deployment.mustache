@@ -249,7 +249,8 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          DEPLOYMENT_ENV: {{DeploymentEnvSnake}}
+          ENVIRONMENT: {{DeploymentEnvSnake}}
+          PROJECT_ID: {{ProjectId}}
       Role:
         Fn::GetAtt:
         - {{Name}}LambdaExecutionRole
@@ -295,6 +296,10 @@ Resources:
           - logs:CreateLogGroup
           - logs:CreateLogStream
           - logs:PutLogEvents
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+          - dynamodb:Query
+          - dynamodb:Scan
           Resource:
           - Fn::Sub:
             - arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${groupname}:log-stream:*
@@ -304,6 +309,14 @@ Resources:
                 !Ref AWS::AccountId
               groupname:
                 !Ref {{Name}}LambdaFunction
+          {{#DataTables}}
+          - Fn::Sub:
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
+          {{/DataTables}}
 
   {{Name}}LambdaFunctionLogGroup:
     Type: AWS::Logs::LogGroup
@@ -402,6 +415,35 @@ Resources:
           - "/*/*/*"
 {{/Servers}}
 
+{{#DataTables}}
+  {{Name}}Table:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: "{{Index}}"
+          AttributeType: "S"
+        - AttributeName: "{{Key}}"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: {{Key}}
+          KeyType: HASH
+      TableName: {{Name}}-{{ProjectId}}-{{DeploymentEnv}}
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes: 
+        - IndexName: {{Index}}-{{Key}}
+          KeySchema:
+            - AttributeName: {{Index}}
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+
+{{/DataTables}}
+
 {{#Functions}}
   {{FunctionName}}LambdaFunction:
     Type: AWS::Lambda::Function
@@ -412,7 +454,8 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          DEPLOYMENT_ENV: {{DeploymentEnvSnake}}
+          ENVIRONMENT: {{DeploymentEnvSnake}}
+          PROJECT_ID: {{ProjectId}}
       Role:
         Fn::GetAtt:
         - {{FunctionName}}LambdaExecutionRole
