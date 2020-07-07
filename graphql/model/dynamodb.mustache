@@ -35,10 +35,14 @@ export class DataTable {
                         attrItem['M'][key] = recursiveParseItem(objValue[key])
                     })
                 }
-            } else if (typeof objValue === 'boolean')
+            } else if (typeof objValue === 'boolean') {
                 attrItem['BOOL'] = objValue
-            else {
-                attrItem['B'] = Buffer.from(objValue)
+            } else if (typeof objValue === 'undefined') {
+                /** 
+                 * NULL if value is an undefined property or a future support type
+                 * - Not supported type-1: attrItem['B'] = Buffer.from(objValue || '')
+                 */
+                attrItem['NULL'] = true
             }
             return attrItem
         }
@@ -66,7 +70,7 @@ export class DataTable {
                                 attrItem['L'] ? attrItem['L'].map(li => {
                                     const liItem = recursiveParseAttrs(li)
                                     return liItem
-                                }) : undefined
+                                }) : attrItem['NULL'] ? undefined : JSON.parse(attrItem)
                             )
                         )
                     )
@@ -119,13 +123,37 @@ export class DataTable {
             TableName: this.tableName,
             ConditionExpression: options.ConditionExpression || undefined,
             ExpressionAttributeNames: options.ExpressionAttributeNames || undefined,
-            ExpressionAttributeValues: attributeValues || undefined,
+            ExpressionAttributeValues: attributeValues ? Object.keys(attributeValues).length === 0 ? undefined : attributeValues : undefined,
             ConditionalOperator: options.ConditionalOperator || undefined,
             ReturnConsumedCapacity: 'INDEXES',
             ReturnValues: 'NONE'
         }
         return new Promise((resolve, reject) => {
             this.connector.putItem(params, function (err, data) {
+                err ? reject(err) : resolve(data)
+            })
+        })
+    }
+    
+    updateItem(objKeys, options) {
+        objItem["__typename"] = this.tableType
+        const attrKeys = this.getDynamoDBAttrsFromItem(objKeys)
+        let attributeValues = { ...options.ExpressionAttributeValues, ...options.UpdateExpressionAttributeValues }
+        attributeValues = attributeValues ? this.getDynamoDBAttrsFromItem(attributeValues) : undefined
+        var params = {
+            Key: attrKeys,
+            TableName: this.tableName,
+            UpdateExpression: options.UpdateExpression,
+            ConditionExpression: options.ConditionExpression || undefined,
+            ExpressionAttributeNames: options.ExpressionAttributeNames || undefined,
+            ExpressionAttributeValues: attributeValues ? Object.keys(attributeValues).length === 0 ? undefined : attributeValues : undefined,
+            ConditionalOperator: options.ConditionalOperator || undefined,
+            ReturnConsumedCapacity: 'INDEXES',
+            ReturnItemCollectionMetrics: 'SIZE',
+            ReturnValues: 'ALL_NEW'
+        }
+        return new Promise((resolve, reject) => {
+            this.connector.updateItem(params, function (err, data) {
                 err ? reject(err) : resolve(data)
             })
         })
@@ -153,7 +181,7 @@ export class DataTable {
         attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
         var params = {
             TableName: this.tableName,
-            ExpressionAttributeValues: attrValues || undefined,
+            ExpressionAttributeValues: attributeValues ? Object.keys(attributeValues).length === 0 ? undefined : attributeValues : undefined,
             IndexName: IndexName || undefined,
             KeyConditionExpression: KeyConditionExpression,
             ExpressionAttributeNames: ExpressionAttributeNames || undefined
@@ -173,7 +201,7 @@ export class DataTable {
             TableName: this.tableName,
             FilterExpression: FilterExpression,
             ExpressionAttributeNames: ExpressionAttributeNames || undefined,
-            ExpressionAttributeValues: attrValues || undefined
+            ExpressionAttributeValues: attributeValues ? Object.keys(attributeValues).length === 0 ? undefined : attributeValues : undefined
         }
         const _thisObject = this
         return new Promise((resolve, reject) => {
