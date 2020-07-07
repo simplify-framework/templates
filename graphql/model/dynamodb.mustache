@@ -177,9 +177,9 @@ export class DataTable {
         })
     }
 
-    query(attrValues, options) {
+    query(attributeValues, options) {
         const { KeyConditionExpression, ExpressionAttributeNames, IndexName } = options || {}
-        attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
+        attributeValues = attributeValues ? this.getDynamoDBAttrsFromItem(attributeValues) : undefined
         var params = {
             TableName: this.tableName,
             ExpressionAttributeValues: attributeValues ? Object.keys(attributeValues).length === 0 ? undefined : attributeValues : undefined,
@@ -195,9 +195,9 @@ export class DataTable {
         })
     }
 
-    scan(attrValues, options) {
+    scan(attributeValues, options) {
         const { FilterExpression, ExpressionAttributeNames } = options || {}
-        attrValues = attrValues ? this.getDynamoDBAttrsFromItem(attrValues) : undefined
+        attributeValues = attributeValues ? this.getDynamoDBAttrsFromItem(attributeValues) : undefined
         var params = {
             TableName: this.tableName,
             FilterExpression: FilterExpression,
