@@ -2,6 +2,7 @@ enum GraphQLEngineType { FARGATE LAMBDA KUBERNETES }
 enum GraphQLAuthMode { SIGV4 COGNITO NONE }
 enum GraphQLExecutionMode { LOCAL REMOTE }
 enum GraphQLEventType { EVENT_RULE DATA_SOURCE USER_EVENT }
+enum GraphQLDataAccess { READ_ONLY READ_WRITE }
 
 input GraphQLServerOptions {
     AuthorizationId: String
@@ -20,6 +21,7 @@ input GraphQLDataTable {
     Name: String
     Key: String
     Index: String
+    Access: GraphQLDataAccess
 }
 
 input FunctionInput {
@@ -65,7 +67,6 @@ directive @GraphQLEvent (
     Type: GraphQLEventType!
     Function: String!
     Value: String
-    Access: GraphQLDataAccess
     Source: GraphQLEventType
 ) on OBJECT
 

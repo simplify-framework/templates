@@ -17,13 +17,19 @@
         {{/Resolvers}}
         {{/Paths}}
         {{#DataTables}}
+        {{^isEmpty}}
         * {{Name}}Table HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/isEmpty}}
         {{/DataTables}}
         {{#KeySpaces}}
+        {{^isEmpty}}
         * {{Name}}Space HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/isEmpty}}
         {{/KeySpaces}}
         {{#Documents}}
+        {{^isEmpty}}
         * {{Name}}Document HAS KEY={{Key}} AND INDEX={{Index}}
+        {{/isEmpty}}
         {{/Documents}}
     {{/Definitions}}
     

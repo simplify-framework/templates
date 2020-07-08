@@ -296,10 +296,6 @@ Resources:
           - logs:CreateLogGroup
           - logs:CreateLogStream
           - logs:PutLogEvents
-          - dynamodb:PutItem
-          - dynamodb:GetItem
-          - dynamodb:Query
-          - dynamodb:Scan
           Resource:
           - Fn::Sub:
             - arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${groupname}:log-stream:*
@@ -309,14 +305,60 @@ Resources:
                 !Ref AWS::AccountId
               groupname:
                 !Ref {{Name}}LambdaFunction
-          {{#DataTables}}
+
+  {{Name}}DataSourceExecutionPolicy:
+    DependsOn:
+    - {{Name}}LambdaExecutionRole
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Join:
+        - ""
+        - - !Ref {{Name}}LambdaFunction
+          - DataSourceExecutionPolicy
+      Roles:
+      - !Ref {{Name}}LambdaExecutionRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        {{#DataTables}}
+        {{^isEmpty}}
+        - Sid: {{Name}}Policy
+          Effect: Allow
+          Action:
+          {{#isReadWrite}}
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+          - dynamodb:Query
+          - dynamodb:Scan
+          {{/isReadWrite}}
+          {{#isReadOnly}}
+          - dynamodb:GetItem
+          - dynamodb:Query
+          - dynamodb:Scan
+          {{/isReadOnly}}
+          Resource:
           - Fn::Sub:
             - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}
             - region:
                 !Ref AWS::Region
               account:
                 !Ref AWS::AccountId
-          {{/DataTables}}
+        {{/isEmpty}}
+        {{#isEmpty}}
+        - Effect: Deny
+          Action:
+          - dynamodb:*
+          Resource:
+          - Fn::Sub:
+            - arn:aws:dynamodb:${region}:${account}:table/NONE
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
+        {{/isEmpty}}
+        {{/DataTables}}
 
   {{Name}}LambdaFunctionLogGroup:
     Type: AWS::Logs::LogGroup
