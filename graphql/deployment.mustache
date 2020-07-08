@@ -345,6 +345,12 @@ Resources:
                 !Ref AWS::Region
               account:
                 !Ref AWS::AccountId
+          - Fn::Sub:
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}/index/*
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
         {{/isEmpty}}
         {{#isEmpty}}
         - Effect: Deny
@@ -472,7 +478,7 @@ Resources:
       TableName: {{Name}}-{{ProjectId}}-{{DeploymentEnv}}
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes: 
-        - IndexName: {{Index}}-{{Key}}
+        - IndexName: {{Index}}-index
           KeySchema:
             - AttributeName: {{Index}}
               KeyType: HASH
