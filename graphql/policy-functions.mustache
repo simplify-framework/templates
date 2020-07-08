@@ -30,7 +30,7 @@
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}"{{#hasMore}},{{/hasMore}}
                 {{/Servers}}
             ]
-        }{{#Functions}},
+        },
         {
             "Sid": "{{ProjectNamePascal}}FunctionRolePolicy",
             "Effect": "Allow",
@@ -47,6 +47,7 @@
             ],
             "Resource": [
                 {{#Functions}}
+				{{^isEmpty}}
                 "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:secret:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Secret-*",
                 "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Schedule*-*",
                 "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}Lambda*-*",
@@ -58,8 +59,12 @@
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}-*",
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}:*",
                 "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-{{FunctionName}}"{{#hasMore}},{{/hasMore}}
+				{{/isEmpty}}
+				{{#isEmpty}}
+				"arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-NONE
+				{{/isEmpty}}
                 {{/Functions}}
             ]
-        }{{/Functions}}
+        }
     ]
 }
