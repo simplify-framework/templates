@@ -1,0 +1,19 @@
+module.exports = {
+    stringify: function (v) {
+        const cache = new Set();
+        return JSON.stringify(v, function (key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.has(value)) {
+                    try {
+                        return JSON.parse(JSON.stringify(value));
+                    }
+                    catch (err) {
+                        return;
+                    }
+                }
+                cache.add(value);
+            }
+            return value;
+        })
+    }
+}
