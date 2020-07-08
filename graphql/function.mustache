@@ -2,6 +2,7 @@
 {{#RemoteExecutionMode}}
 const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
+const jsonify = require('../../Utilities/jsonify')
 {{/RemoteExecutionMode}}
 
 module.exports.handler = function(event, context, callback) {
@@ -12,7 +13,7 @@ module.exports.handler = function(event, context, callback) {
         const parameters = require('./parameters.json')
         var params = {
             FunctionName: parameters.FunctionName, 
-            Payload: Buffer.from(JSON.stringify({ event, context }), "utf-8")
+            Payload: Buffer.from(jsonify.stringify(event), "utf-8")
         };
         lambda.invoke(params, function(err, data) {
             callback(err, JSON.parse(data.Payload))
