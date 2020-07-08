@@ -10,7 +10,7 @@ const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../../.env') })
 global.fetch = require('node-fetch')
 const AWS = require('aws-sdk')
-const sigV4Client = require('./sigV4Client')
+const sigV4Client = require('./sigv4gw')
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
 process.env.AWS_SDK_LOAD_CONFIG= process.env.AWS_SDK_LOAD_CONFIG || true
