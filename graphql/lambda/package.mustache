@@ -4,7 +4,7 @@
     "description": "Remote Function Execution For {{#Servers}}{{ServerName}}{{#hasMore}}, {{/hasMore}}{{/Servers}}",
     "main": "app.js",
     "scripts": {
-        "push-update": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} node .simplify-graphql/function-push.js --ops update",
+        "push-config": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} node .simplify-graphql/function-push.js --ops update",
         "push-code": "env DEPLOYMENT_ENV={{DeploymentEnvSnake}} env FUNCTION_SOURCE=../src node .simplify-graphql/function-push.js",
         "build-code": "echo 'This source is the native Javascript code. No need to compile!'",
         "build-mini": "webpack -p --config webpack.config.js",
@@ -24,18 +24,18 @@
     },
     "devDependencies": {
         "simplify-sdk": "^0.1.27",
-        "aws-sdk": "^2.635.0",
-        "adm-zip": "^0.4.14",
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.9.6",
-        "@babel/node": "^7.7.4",
-        "@babel/preset-env": "^7.9.6",
-        "@babel/register": "^7.9.0",
-        "license-checker-webpack-plugin": "0.1.5",
+        "aws-sdk": "^2.713.0",
+        "adm-zip": "^0.4.16",
+        "@babel/cli": "^7.10.4",
+        "@babel/core": "^7.10.4",
+        "@babel/node": "^7.10.4",
+        "@babel/preset-env": "^7.10.4",
+        "@babel/register": "^7.10.4",
+        "license-checker-webpack-plugin": "^0.1.5",
         "babel-loader": "^8.1.0",
         "file-loader": "^6.0.0",
         "webpack": "^4.43.0",
-        "webpack-cli": "^3.3.11",
-        "webpack-node-externals": "^1.7.2"
+        "webpack-cli": "^3.3.12",
+        "webpack-node-externals": "^2.3.0"
     }
 }

@@ -1,10 +1,10 @@
 {
   "name": "{{NameSnake}}-models",
   "version": "1.0.0",
-  "description": "",
+  "description": "The {{Name}} DataSource models",
   "main": "dist/index.js",
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
+    "@babel/runtime": "^7.10.4",
 {{#DataSources}}
     {{#isMongoDB}}
     "mongodb": "^3.5.9",
@@ -13,13 +13,13 @@
     "cassandra-driver": "^4.5.2",
     {{/isCassandra}}
 {{/DataSources}}
-    "uuid": "^7.0.3"
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/register": "^7.9.0",
+    "@babel/cli": "^7.10.4",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.4",
     "babel-minify": "^0.5.1",
     "babel-preset-minify": "^0.5.1",
     "uglifyjs-folder": "^1.5.4"
@@ -31,7 +31,6 @@
     "minify": "node node_modules/uglifyjs-folder/cli.js js -eo dist",
     "compile": "node node_modules/@babel/cli/bin/babel.js src --out-dir dist --minified --no-comments",
     "build": "npm run compile && npm run minify",
-    "test": "npm run build && node dist/index.js"
-  },
-  "author": "Dinh Cuong DUONG"
+    "start": "npm run build && node dist/index.js"
+  }
 }

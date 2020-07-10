@@ -21,7 +21,8 @@
         { "input": "deployment-package.mustache", "output": "package.json" },
         { "input": "code-push.mustache", "output": ".simplify-graphql/code-push.sh" },
         { "input": "code-init.mustache", "output": ".simplify-graphql/code-init.js" },
-        { "input": "verbal-design.mustache", "output": "verbal-design.txt" }
+        { "input": "verbal-design.mustache", "output": "verbal-design.txt" },
+        { "input": "README.mustache", "output": "README.md" }
     ],
     "GraphQLServers": [
         { "input": ".babelrc.mustache", "output": "{{serverName}}/.babelrc" },
@@ -64,7 +65,7 @@
     ],
     "GraphQLResolvers": [
         { "input": "resolver.mustache", "output": "{{serverName}}/src/Resolvers/{{stateName}}.js" },
-        { "input": "tests.spec.mustache", "output": "{{serverName}}/tests/{{stateName}}.spec.js" }
+        { "input": "tests.spec.mustache", "output": "{{serverName}}/tests/samples/{{stateName}}.spec.js" }
     ],
     "GraphQLFunctions": [
         { "input": "function.mustache", "output": "{{serverName}}/src/Functions/{{functionName}}{{#RemoteExecutionMode}}/index{{/RemoteExecutionMode}}.js" }

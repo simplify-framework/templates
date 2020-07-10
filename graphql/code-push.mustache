@@ -32,12 +32,11 @@ for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
     export ENFORCEMENT_PACKAGE="${!EnforcementPackageName}"
     DeploymentLayerName="ENV_${DeploymentPackageKey}_DEPLOYMENT_LAYER"
     if [ -z "${DEPLOYMENT_STAGE}" ]; then
-        echo "Pushing ${DeploymentPackageName} with blank DEPLOYMENT_STAGE is not satified!"
-        continue
+        DEPLOYMENT_STAGE="latest"
     fi
     cd ${INITIAL_DIR}/${DeploymentPackageName} && npm install
-    if [ "${FUNC_OPS}" == "update" ]; then
-        npm run push-update
+    if [ "${FUNC_OPS}" == "config" ]; then
+        npm run push-config
         if [ $? -ne 0 ]; then
             echo "Update ${DeploymentPackageName} (${DEPLOYMENT_STAGE}) has failed!"
             cd ${INITIAL_DIR}
