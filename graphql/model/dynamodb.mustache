@@ -26,7 +26,7 @@ export class DataTable {
             let attrItem = {}
             if (typeof objValue === 'string') attrItem['S'] = objValue
             else if (typeof objValue === 'number') attrItem['N'] = objValue + ""
-            else if (typeof objValue === 'object') {
+            else if (typeof objValue === 'object' && objValue) {
                 if (Array.isArray(objValue)) {
                     attrItem['L'] = objValue.map(li => recursiveParseItem(li))
                 } else {
@@ -42,6 +42,8 @@ export class DataTable {
                  * NULL if value is an undefined property or a future support type
                  * - Not supported type-1: attrItem['B'] = Buffer.from(objValue || '')
                  */
+                attrItem['NULL'] = true
+            } else {
                 attrItem['NULL'] = true
             }
             return attrItem
