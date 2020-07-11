@@ -1,6 +1,6 @@
 {
   "name": "simplify-templates",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "description": "Simplify graphql-templates for code generation",
   "main": "index.js",
   "repository": {
