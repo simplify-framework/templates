@@ -40,7 +40,7 @@ try {
                 if (fs.existsSync(path.join(__dirname, config.OutputFile))) {
                     fs.unlinkSync(path.join(__dirname, config.OutputFile))
                 }
-                simplify.deleteENV_Bucket({ adaptor: provider.getStorage(), bucketName: bucketName }).then(function() {
+                simplify.deleteDeploymentBucket({ adaptor: provider.getStorage(), bucketName: bucketName }).then(function() {
                     const cleanupResources = { ...config.Deployment.Servers, ...config.Deployment.Functions }
                     Object.keys(cleanupResources).forEach(function (f) {
                         const fInputPath = path.join(__dirname, cleanupResources[f].FunctionInput)

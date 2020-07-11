@@ -37,7 +37,7 @@ try {
                     stackName: config.Deployment.Name
                 }
             }).then(function (stackData) {
-                simplify.deleteENV_Bucket({ adaptor: provider.getStorage(), bucketName: bucketName }).then(function() {
+                simplify.deleteDeploymentBucket({ adaptor: provider.getStorage(), bucketName: bucketName }).then(function() {
                     Object.keys(config.Deployment.Functions).forEach(function (f) {
                         const fInputPath = path.join(__dirname, config.Deployment.Functions[f].FunctionInput)
                         var fConfig = JSON.parse(fs.readFileSync(fInputPath))
