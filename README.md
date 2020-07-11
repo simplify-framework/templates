@@ -1,5 +1,5 @@
 # templates
-Simplify Templates For Code Generation
+Simplify Templates For SimplifyF Code Generation
 
 SIMPLIFY-FRAMEWORK PUBLIC SOURCE LICENSE
 Version 1.0 - May 31, 2020
