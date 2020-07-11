@@ -1,5 +1,6 @@
 # Simplify Templates - LICENSE 
-  (FREE to use with SimplifyF)
+  
+***(FREE of Use only with Simplify Framework)***
   
 SIMPLIFY-FRAMEWORK PUBLIC SOURCE LICENSE
 Version 1.0 - May 31, 2020
