@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [        
         {
-            "Sid": "{{ProjectNamePascal}}FunctionRolePolicy",
+            "Sid": "{{PROJECT_NamePascal}}FunctionRolePolicy",
             "Effect": "Allow",
             "Action": [
                 "iam:*Role",
@@ -16,17 +16,17 @@
                 "lambda:*"
             ],
             "Resource": [
-                "arn:aws:secretsmanager:{{DeploymentRegion}}:{{DeploymentAccount}}:secret:{{ProjectName}}{{DeploymentEnvPascal}}-*Secret-*",
-                "arn:aws:events:{{DeploymentRegion}}:{{DeploymentAccount}}:rule/{{ProjectName}}{{DeploymentEnvPascal}}-*Schedule*-*",
-                "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectName}}{{DeploymentEnvPascal}}-*Lambda*-*",
-                "arn:aws:iam::{{DeploymentAccount}}:policy/{{ProjectName}}{{DeploymentEnvPascal}}-*Lambda*-*",
-                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-*Lambda*-*:log-stream:*",
-                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group:/aws/lambda/{{ProjectName}}{{DeploymentEnvPascal}}-*Lambda*-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:function:{{ProjectName}}{{DeploymentEnvPascal}}-*Lambda*-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-*-*:*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-*-*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-*:*",
-                "arn:aws:lambda:{{DeploymentRegion}}:{{DeploymentAccount}}:layer:{{ProjectName}}{{DeploymentEnvPascal}}-*"
+                "arn:aws:secretsmanager:{{ENV_Region}}:{{ENV_AccountId}}:secret:{{PROJECT_Name}}{{ENV_NamePascal}}-*Secret-*",
+                "arn:aws:events:{{ENV_Region}}:{{ENV_AccountId}}:rule/{{PROJECT_Name}}{{ENV_NamePascal}}-*Schedule*-*",
+                "arn:aws:iam::{{ENV_AccountId}}:role/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
+                "arn:aws:iam::{{ENV_AccountId}}:policy/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
+                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*:log-stream:*",
+                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:function:{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*-*:*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*:*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*"
             ]
         }
     ]

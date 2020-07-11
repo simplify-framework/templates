@@ -1,10 +1,10 @@
 import chai, { expect } from 'chai'
 chai.should()
 
-const apiConfig = require('../../../../{{serverName}}-meta.json').apiConfig;
+const apiConfig = require('../../../../{{ServerName}}-meta.json').apiConfig;
 const apiService = require('../../../utils/api-utils');
 
-describe('({{ProjectName}}) {{Name}} [*]:', function () {
+describe('({{PROJECT_Name}}) {{Name}} [*]:', function () {
     before('Prepare for {{Name}} [*] test specs', async function () {
         await apiService.config({ ...apiConfig });
     });

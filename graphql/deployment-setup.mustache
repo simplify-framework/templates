@@ -1,10 +1,10 @@
 #!/bin/bash
 # Simplify Automatic Deployment Script
-# Project: {{ProjectNamePascal}}
-# Deployment: {{ProjectName}}
-# Region: {{DeploymentRegion}}
-# Profile: {{DeploymentProfile}}
-# Version: {{ProjectVersion}}
+# Project: {{PROJECT_NamePascal}}
+# Deployment: {{PROJECT_Name}}
+# Region: {{ENV_Region}}
+# Profile: {{ENV_Profile}}
+# Version: {{PROJECT_Version}}
 `grep -v '^#' .env | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
 
 bash .simplify-graphql/${DEPLOYMENT_ENV}/aws-setup.sh $@

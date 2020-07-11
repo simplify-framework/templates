@@ -1,41 +1,66 @@
-## {{ProjectName}} Project
+## {{PROJECT_Name}} Project
 
 ### Quick Start for AWS
 
-***Pre-requisites: Setup AWS provisioned account profile with ACCESS_KEY_ID and ACCESS_KEY_SECRET***
+**Pre-requisites: Setup AWS provisioned account profile `{{PROJECT_Profile}}` with ACCESS_KEY_ID and ACCESS_KEY_SECRET**
 
-    export ACCESS_KEY_ID=
-    export ACCESS_KEY_SECRET=
+- Create an IAM User named as `YourAccountUser` and generate Security credentials (Access keys)
 
-**Required Permission:**
+    export ACCESS_KEY_ID= `********************`
+    export ACCESS_KEY_SECRET= `****************`
 
-    + iam:CreateUser
-    + iam:CreateRole
-    + iam:PutUserPolicy
-    + iam:PutRolePolicy
-    + iam:CreateAccessKey
+- Run the following commands to setup project environment account profile: `{{ENV_Profile}}`
 
     ```bash
-    aws configure set region {{DeploymentRegion}} --profile account-setup-user
-    aws configure set aws_access_key_id ${ACCESS_KEY_ID} --profile account-setup-user
-    aws configure set aws_secret_access_key ${ACCESS_KEY_SECRET} --profile account-setup-user
+    aws configure set region {{ENV_Region}} --profile {{PROJECT_Profile}}
+    aws configure set aws_access_key_id ${ACCESS_KEY_ID} --profile {{PROJECT_Profile}}
+    aws configure set aws_secret_access_key ${ACCESS_KEY_SECRET} --profile {{PROJECT_Profile}}
     ```
 
-1. Setup project account for AWS {{DeploymentEnv}} environment:
+- Create a JSON file `user-role-policy.json` for `YourAccountUser`:
+
+    ```JSON
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "iam:CreateUser",
+                    "iam:CreateRole",
+                    "iam:PutUserPolicy",
+                    "iam:PutRolePolicy",
+                    "iam:CreateAccessKey",
+                    "iam:DeleteAccessKey",
+                    "iam:DeleteUserPolicy",
+                    "iam:DeleteRolePolicy",
+                    "iam:DeleteRole",
+                    "iam:DeleteUser"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+            }
+        ]
+    }
+    ```
+- Update `YourAccountUser` with provisioned IAM Permissions:
+
+    `aws iam put-user-policy --user-name YourAccountUser --policy-name AccountSetupAccessPolicy --policy-document file://user-role-policy.json`
+
+1. Setup project account for AWS {{ENV_Name}} environment:
     - `npm install && npm audit fix`
-    - `npm run setup-account`
-2. Deploy project infrastructure resources on AWS {{DeploymentEnv}} environment:
+    - `npm run account-setup`
+2. Deploy project infrastructure resources on AWS {{ENV_Name}} environment:
     - `npm run stack-deploy`
-3. Publish local project code on to AWS {{DeploymentEnv}} environment:
+3. Publish local project code on to AWS {{ENV_Name}} environment:
     - `npm run push-code`
-4. Update .env configuration for AWS {{DeploymentEnv}} environment:
+4. Update .env configuration for AWS {{ENV_Name}} environment:
     - `npm run push-config`
 5. Develop your code, re-design your solution and then re-generate project code
-    - `npm run generate-{{DeploymentEnvSnake}}`
-6. Destroy project infrastructure resources on AWS {{DeploymentEnv}} environment:
+    - `npm run generate-{{ENV_NameSnake}}`
+6. Destroy project infrastructure resources on AWS {{ENV_Name}} environment:
     - `npm run stack-destroy`
-7. Cleanup project account for AWS {{DeploymentEnv}} environment:
-    - `npm run cleanup-account`
+7. Cleanup project account for AWS {{ENV_Name}} environment:
+    - `npm run account-cleanup`
 
 ### Create new or switch to an environment:
 

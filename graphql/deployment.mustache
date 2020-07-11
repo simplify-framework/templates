@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: API Gateway resource stack creation using Simplify CLI
 Parameters:
-  DeploymentEnv:
+  Environment:
     Type: String
   ApiAuthorizerId:
     Type: String
@@ -19,6 +19,7 @@ Parameters:
   {{/Functions}}
 
 Conditions:
+  HasApiAuthorizerId: !Not [ !Equals [ !Ref ApiAuthorizerId, 'NO' ] ]
   {{#Servers}}
   Has{{NamePascal}}SecretKeyVault: !Not [ !Equals [ !Ref {{Name}}SecretKeyVault, 'NO' ] ]
   Has{{NamePascal}}ManagedResourceArn: !Not [ !Equals [ !Ref {{Name}}ManagedResourceArn, 'NO' ] ]
@@ -34,7 +35,7 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Description: '{{Name}} GraphQL API Gateway'
-      Name: {{ProjectName}}{{DeploymentEnvPascal}}-{{Name}}
+      Name: {{PROJECT_Name}}{{ENV_NamePascal}}-{{Name}}
       Body:
         swagger: '2.0'
         info:
@@ -158,7 +159,7 @@ Resources:
             type: apiKey
             name: x-api-key
             in: header
-          {{#AuthorizerId}}
+          {{#hasAuthorizerId}}
           CognitoAuthorizer:
             type: apiKey
             name: Authorization
@@ -175,7 +176,7 @@ Resources:
                     !Ref AWS::AccountId
                   userPoolId:
                     !Ref ApiAuthorizerId
-          {{/AuthorizerId}}
+          {{/hasAuthorizerId}}
         definitions:
           RequestSchema:
             type: object
@@ -200,7 +201,7 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     Properties:
       Description: The Development stage deployment of {{Name}} API.
-      StageName: !Ref DeploymentEnv
+      StageName: !Ref Environment
       RestApiId:
         !Ref {{Name}}
 
@@ -212,7 +213,7 @@ Resources:
       UsagePlanName: {{Name}}-DefaultPlan
       ApiStages:
       - ApiId: !Ref {{Name}}
-        Stage: !Ref DeploymentEnv
+        Stage: !Ref Environment
       {{#Options}}
       Throttle:
         BurstLimit: {{BurstLimit}}
@@ -229,8 +230,8 @@ Resources:
       Enabled: true
       StageKeys: 
         - RestApiId: !Ref {{Name}}
-          StageName: !Ref DeploymentEnv
-      Value: {{Name}}-{{DeploymentApiKey}}
+          StageName: !Ref Environment
+      Value: {{Name}}-{{ENV_ApiKey}}
   
   {{Name}}APIGateWayUsagePlanKey:
     DependsOn: {{Name}}APIGateWayApiKey
@@ -249,8 +250,8 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{DeploymentEnvSnake}}
-          PROJECT_ID: {{ProjectId}}
+          ENVIRONMENT: {{ENV_NameSnake}}
+          PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
         - {{Name}}LambdaExecutionRole
@@ -340,13 +341,13 @@ Resources:
           {{/isReadOnly}}
           Resource:
           - Fn::Sub:
-            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}
             - region:
                 !Ref AWS::Region
               account:
                 !Ref AWS::AccountId
           - Fn::Sub:
-            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}/index/*
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}/index/*
             - region:
                 !Ref AWS::Region
               account:
@@ -384,7 +385,7 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{ProjectName}}{{DeploymentEnvPascal}}
+          - - {{PROJECT_Name}}{{ENV_NamePascal}}
             - {{Name}}Secret
       Description: Secret manager for {{Name}}LambdaFunction
       GenerateSecretString:
@@ -475,7 +476,7 @@ Resources:
       KeySchema: 
         - AttributeName: {{Key}}
           KeyType: HASH
-      TableName: {{Name}}-{{ProjectId}}-{{DeploymentEnv}}
+      TableName: {{Name}}-{{PROJECT_Id}}-{{ENV_Name}}
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes: 
         - IndexName: {{Index}}-index
@@ -502,8 +503,8 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{DeploymentEnvSnake}}
-          PROJECT_ID: {{ProjectId}}
+          ENVIRONMENT: {{ENV_NameSnake}}
+          PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
         - {{FunctionName}}LambdaExecutionRole
@@ -603,7 +604,7 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{ProjectName}}{{DeploymentEnvPascal}}
+          - - {{PROJECT_Name}}{{ENV_NamePascal}}
             - {{FunctionName}}Secret
       Description: Secret manager for {{FunctionName}}LambdaFunction
       GenerateSecretString:
@@ -671,7 +672,7 @@ Outputs:
     Value: !Ref AWS::Region
   StageName:
     Description: API Deployment stage
-    Value: !Ref DeploymentEnv
+    Value: !Ref Environment
   {{#Servers}}
   {{Name}}Url:
     Description: Root URL of the API gateway
@@ -683,7 +684,7 @@ Outputs:
         - ".execute-api."
         - !Ref AWS::Region
         - ".amazonaws.com/"
-        - !Ref DeploymentEnv
+        - !Ref Environment
   {{Name}}Id:
     Description: API Gateway id
     Value: !Ref {{Name}}

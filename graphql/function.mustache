@@ -21,11 +21,11 @@ module.exports.handler = function(event, context, callback) {
     }
     {{/RemoteExecutionMode}}
     {{^RemoteExecutionMode}}
-    const {{functionName}}Result = {
+    const {{FunctionName}}Result = {
 {{#DataValues}}
         {{Name}}: {{#Value}}{{#isListType}}[ {{#isListStringType}}{{#Default}}"{{Value}}"{{#hasMore}}, {{/hasMore}}{{/Default}}{{/isListStringType}}{{^isListStringType}}{{^isNestedObject}}"{{{Default}}}"{{/isNestedObject}}{{/isListStringType}} ]{{/isListType}}{{^isListType}}{{#isObjectType}}{{#isNestedObject}}{ {{#Default}}{{Name}}: {{#Value}}{{#isScalarType}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isScalarType}}{{^isScalarType}}{{#isEnumObject}}"{{Default}}"{{/isEnumObject}}{{^isEnumObject}}{ {{#Default}}{{Name}}: {{#Value}}"{{Default}}"{{/Value}}{{#hasMore}}, {{/hasMore}}{{/Default}} }{{/isEnumObject}}{{/isScalarType}}{{/Value}}{{#hasMore}}, {{/hasMore}}{{/Default}} }{{/isNestedObject}}{{^isNestedObject}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isNestedObject}}{{/isObjectType}}{{^isObjectType}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isObjectType}}{{/isListType}}{{/Value}}{{#hasMore}},{{/hasMore}}
 {{/DataValues}}
     }
-    callback(null, {{#isResultListType}}[ {{functionName}}Result, event.args ].filter(obj => Object.keys(obj).length){{/isResultListType}}{{^isResultListType}}{{functionName}}Result{{/isResultListType}})
+    callback(null, {{#isResultListType}}[ {{FunctionName}}Result, event.args ].filter(obj => Object.keys(obj).length){{/isResultListType}}{{^isResultListType}}{{FunctionName}}Result{{/isResultListType}})
     {{/RemoteExecutionMode}}
 }

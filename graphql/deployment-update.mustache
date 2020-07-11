@@ -7,4 +7,4 @@
 # Version: {{PROJECT_Version}}
 `grep -v '^#' .env | sed -E 's|^(.+)=(.*)$|export \1=\2|g'`
 
-bash .simplify-graphql/${DEPLOYMENT_ENV}/aws-cleanup.sh $@
+bash .simplify-graphql/${DEPLOYMENT_ENV}/aws-update.sh $@

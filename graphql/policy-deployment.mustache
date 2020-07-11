@@ -2,85 +2,85 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "DeploymentStorage{{DeploymentAccount}}",
+            "Sid": "DeploymentStorage{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}",
-                "arn:aws:s3:::{{DeploymentBucket}}-{{ProjectId}}-{{DeploymentEnvSnake}}/*"
+                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}",
+                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}/*"
             ]
         },
         {
-            "Sid": "DescribeLogGroups{{DeploymentAccount}}",
+            "Sid": "DescribeLogGroups{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "logs:DescribeLogGroups"
             ],
             "Resource": [
-                "arn:aws:logs:{{DeploymentRegion}}:{{DeploymentAccount}}:log-group::log-stream:*"
+                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group::log-stream:*"
             ]
         },
         {
-            "Sid": "APIGatewayDenyAction{{DeploymentAccount}}",
+            "Sid": "APIGatewayDenyAction{{ENV_AccountId}}",
             "Effect": "Deny",
             "Action": [
                 "apigateway:*"
             ],
             "Resource": [
-                "arn:aws:apigateway:{{DeploymentRegion}}::/account",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/account/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/clientcertificates",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/clientcertificates/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/domainnames",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/domainnames/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/vpclinks",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/vpclinks/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/apis",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/apis/*"
+                "arn:aws:apigateway:{{ENV_Region}}::/account",
+                "arn:aws:apigateway:{{ENV_Region}}::/account/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/clientcertificates",
+                "arn:aws:apigateway:{{ENV_Region}}::/clientcertificates/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/domainnames",
+                "arn:aws:apigateway:{{ENV_Region}}::/domainnames/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/vpclinks",
+                "arn:aws:apigateway:{{ENV_Region}}::/vpclinks/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/apis",
+                "arn:aws:apigateway:{{ENV_Region}}::/apis/*"
             ]
         },
         {
-            "Sid": "APIGatewayManageAction{{DeploymentAccount}}",
+            "Sid": "APIGatewayManageAction{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "apigateway:*"
             ],
             "Resource": [
-                "arn:aws:apigateway:{{DeploymentRegion}}::/restapis",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/restapis/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/usageplans",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/usageplans/*",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/apikeys",
-                "arn:aws:apigateway:{{DeploymentRegion}}::/apikeys/*"
+                "arn:aws:apigateway:{{ENV_Region}}::/restapis",
+                "arn:aws:apigateway:{{ENV_Region}}::/restapis/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/usageplans",
+                "arn:aws:apigateway:{{ENV_Region}}::/usageplans/*",
+                "arn:aws:apigateway:{{ENV_Region}}::/apikeys",
+                "arn:aws:apigateway:{{ENV_Region}}::/apikeys/*"
             ]
         },
         {
-            "Sid": "DynamoDBTables{{DeploymentAccount}}",
+            "Sid": "DynamoDBTables{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "dynamodb:*"
             ],
             "Resource": [
                 {{#DataTables}}
-                "arn:aws:dynamodb:{{DeploymentRegion}}:{{DeploymentAccount}}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}",
-                "arn:aws:dynamodb:{{DeploymentRegion}}:{{DeploymentAccount}}:table/{{Name}}-{{ProjectId}}-{{DeploymentEnv}}/stream/*"{{#hasMore}},{{/hasMore}}
+                "arn:aws:dynamodb:{{ENV_Region}}:{{ENV_AccountId}}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}",
+                "arn:aws:dynamodb:{{ENV_Region}}:{{ENV_AccountId}}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}/stream/*"{{#hasMore}},{{/hasMore}}
                 {{/DataTables}}
             ]
         },
         {
-            "Sid": "CloudFormationSpecificBucket{{DeploymentAccount}}",
+            "Sid": "CloudFormationSpecificBucket{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "cloudformation:*"
             ],
             "Resource": [
-                "arn:aws:cloudformation:{{DeploymentRegion}}:{{DeploymentAccount}}:stack/{{ProjectName}}{{DeploymentEnvPascal}}/*"
+                "arn:aws:cloudformation:{{ENV_Region}}:{{ENV_AccountId}}:stack/{{PROJECT_Name}}{{ENV_NamePascal}}/*"
             ]
         },
         {
-            "Sid": "CloudFormationSecretManager{{DeploymentAccount}}",
+            "Sid": "CloudFormationSecretManager{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "secretsmanager:GetRandomPassword"
@@ -88,7 +88,7 @@
             "Resource": "*"
         },
         {
-            "Sid": "SecurityOperationCloudWatch{{DeploymentAccount}}",
+            "Sid": "SecurityOperationCloudWatch{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "cloudwatch:GetMetricData"

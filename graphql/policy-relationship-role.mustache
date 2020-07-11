@@ -2,24 +2,24 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "{{ProjectNamePascal}}UserAssumeRole",
+            "Sid": "{{PROJECT_NamePascal}}UserAssumeRole",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
             "Principal": {
-                "AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}{{DeploymentEnvPascal}}User"
+                "AWS": "arn:aws:iam::{{ENV_AccountId}}:user/{{PROJECT_NamePascal}}{{ENV_NamePascal}}User"
             },
             "Condition": {
                 "StringEquals": {
-                    "sts:ExternalId": "{{ProjectNamePascal}}{{DeploymentEnvPascal}}-{{ProjectId}}"
+                    "sts:ExternalId": "{{PROJECT_NamePascal}}{{ENV_NamePascal}}-{{PROJECT_Id}}"
                 }
             }
         },
         {
-            "Sid": "{{ProjectNamePascal}}SessionTags",
+            "Sid": "{{PROJECT_NamePascal}}SessionTags",
             "Effect": "Allow",
             "Action": "sts:TagSession",
             "Principal": {
-                "AWS": "arn:aws:iam::{{DeploymentAccount}}:user/{{ProjectNamePascal}}{{DeploymentEnvPascal}}User"
+                "AWS": "arn:aws:iam::{{ENV_AccountId}}:user/{{PROJECT_NamePascal}}{{ENV_NamePascal}}User"
             }
         }
     ]

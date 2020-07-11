@@ -6,7 +6,7 @@
                 "sts:AssumeRole",
                 "sts:TagSession"
             ],
-            "Resource": "arn:aws:iam::{{DeploymentAccount}}:role/{{ProjectNamePascal}}{{DeploymentEnvPascal}}Role",
+            "Resource": "arn:aws:iam::{{ENV_AccountId}}:role/{{PROJECT_NamePascal}}{{ENV_NamePascal}}Role",
             "Effect": "Allow"
         }
     ]
