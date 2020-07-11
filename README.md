@@ -1,6 +1,6 @@
-# Simplify Templates - LICENSE (FREE to use with SimplifyF)
-Simplify Templates For SimplifyF Code Generation
-
+# Simplify Templates - LICENSE 
+  (FREE to use with SimplifyF)
+  
 SIMPLIFY-FRAMEWORK PUBLIC SOURCE LICENSE
 Version 1.0 - May 31, 2020
 
