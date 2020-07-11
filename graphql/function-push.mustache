@@ -44,14 +44,24 @@ try {
                 fs.writeFileSync(path.join(__dirname, config.OutputFile), JSON.stringify({
                     ...metaOutput, ...data
                 }, null, 4));
-            }).catch(err => simplify.finishWithErrors(`${opName}-Update`, err))
+            }).catch(err => simplify.finishWithErrors(`${opName}-Fetch`, err))
         } else if (functionOps === 'update') {
             simplify.updateFunctionConfiguration({ adaptor: provider.getFunction(), functionConfig}).then(data => {
-                let metaOutput = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
-                fs.writeFileSync(path.join(__dirname, config.OutputFile), JSON.stringify({
-                    Configuration: { ...metaOutput.Configuration, ...data }
-                }, null, 4));
-            }).catch(err => simplify.finishWithErrors(`${opName}-Update`, err))
+                if (fs.existsSync(path.join(__dirname, process.env.DEPLOYMENT_ENV, "attached-policy.json"))) {
+                    const policyDocument = JSON.parse(fs.readFileSync(path.join(__dirname, process.env.DEPLOYMENT_ENV, "attached-policy.json")))
+                    simplify.updateFunctionRolePolicy({ adaptor: provider.getIAM(), functionConfig, policyDocument: policyDocument }).then(policy => {
+                        let metaOutput = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
+                        fs.writeFileSync(path.join(__dirname, config.OutputFile), JSON.stringify({
+                            Configuration: { ...metaOutput.Configuration, ...data }
+                        }, null, 4));    
+                    }).catch(err => simplify.finishWithErrors(`${opName}-Policy`, err))
+                } else {
+                    let metaOutput = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
+                    fs.writeFileSync(path.join(__dirname, config.OutputFile), JSON.stringify({
+                        Configuration: { ...metaOutput.Configuration, ...data }
+                    }, null, 4));  
+                }
+            }).catch(err => simplify.finishWithErrors(`${opName}-Config`, err))
         } else {
             simplify.uploadDirectoryAsZip({
                 adaptor: provider.getStorage(), ...{
@@ -79,7 +89,7 @@ try {
             })
         }
     }).catch(function (err) {
-        simplify.finishWithErrors(`${opName}-UploadDirectory`, err)
+        simplify.finishWithErrors(`${opName}-SetConfig`, err)
     })
 } catch (err) {
     simplify.finishWithErrors(`${opName}-LoadConfig`, err)

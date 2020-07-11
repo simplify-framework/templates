@@ -1,5 +1,8 @@
 # Simplify Templates - LICENSE 
   
+![NPM Downloads](https://img.shields.io/npm/dw/simplify-templates)
+![Package Version](https://img.shields.io/github/package-json/v/simplify-framework/templates?color=green)
+
 ***(FREE of Use only with Simplify Framework)***
   
 SIMPLIFY-FRAMEWORK PUBLIC SOURCE LICENSE
