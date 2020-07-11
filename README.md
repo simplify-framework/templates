@@ -1,4 +1,4 @@
-# templates
+# simplify-templates
 Simplify Templates For SimplifyF Code Generation
 
 SIMPLIFY-FRAMEWORK PUBLIC SOURCE LICENSE
