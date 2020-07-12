@@ -35,7 +35,7 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Description: '{{Name}} GraphQL API Gateway'
-      Name: {{PROJECT_Name}}{{ENV_NamePascal}}-{{Name}}
+      Name: {{PROJECT_Name}}-{{ENV_Name}}-{{Name}}
       Body:
         swagger: '2.0'
         info:
@@ -250,7 +250,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{ENV_NameSnake}}
+          ENVIRONMENT: {{ENV_Name}}
           PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
@@ -385,7 +385,7 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{PROJECT_Name}}{{ENV_NamePascal}}
+          - - {{PROJECT_Name}}-{{ENV_Name}}
             - {{Name}}Secret
       Description: Secret manager for {{Name}}LambdaFunction
       GenerateSecretString:
@@ -503,7 +503,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{ENV_NameSnake}}
+          ENVIRONMENT: {{ENV_Name}}
           PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
@@ -604,7 +604,7 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{PROJECT_Name}}{{ENV_NamePascal}}
+          - - {{PROJECT_Name}}-{{ENV_Name}}
             - {{FunctionName}}Secret
       Description: Secret manager for {{FunctionName}}LambdaFunction
       GenerateSecretString:

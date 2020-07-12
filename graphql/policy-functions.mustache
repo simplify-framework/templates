@@ -16,17 +16,17 @@
                 "lambda:*"
             ],
             "Resource": [
-                "arn:aws:secretsmanager:{{ENV_Region}}:{{ENV_AccountId}}:secret:{{PROJECT_Name}}{{ENV_NamePascal}}-*Secret-*",
-                "arn:aws:events:{{ENV_Region}}:{{ENV_AccountId}}:rule/{{PROJECT_Name}}{{ENV_NamePascal}}-*Schedule*-*",
-                "arn:aws:iam::{{ENV_AccountId}}:role/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
-                "arn:aws:iam::{{ENV_AccountId}}:policy/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
-                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*:log-stream:*",
-                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
-                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:function:{{PROJECT_Name}}{{ENV_NamePascal}}-*Lambda*-*",
-                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*-*:*",
-                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*-*",
-                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*:*",
-                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}{{ENV_NamePascal}}-*"
+                "arn:aws:secretsmanager:{{ENV_Region}}:{{ENV_AccountId}}:secret:{{PROJECT_Name}}-{{ENV_Name}}-*Secret-*",
+                "arn:aws:events:{{ENV_Region}}:{{ENV_AccountId}}:rule/{{PROJECT_Name}}-{{ENV_Name}}-*Schedule*-*",
+                "arn:aws:iam::{{ENV_AccountId}}:role/{{PROJECT_Name}}-{{ENV_Name}}-*Lambda*-*",
+                "arn:aws:iam::{{ENV_AccountId}}:policy/{{PROJECT_Name}}-{{ENV_Name}}-*Lambda*-*",
+                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}-{{ENV_Name}}-*Lambda*-*:log-stream:*",
+                "arn:aws:logs:{{ENV_Region}}:{{ENV_AccountId}}:log-group:/aws/lambda/{{PROJECT_Name}}-{{ENV_Name}}-*Lambda*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:function:{{PROJECT_Name}}-{{ENV_Name}}-*Lambda*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}-{{ENV_Name}}-*-*:*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}-{{ENV_Name}}-*-*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}-{{ENV_Name}}-*:*",
+                "arn:aws:lambda:{{ENV_Region}}:{{ENV_AccountId}}:layer:{{PROJECT_Name}}-{{ENV_Name}}-*"
             ]
         }
     ]

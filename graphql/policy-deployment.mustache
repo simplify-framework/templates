@@ -2,14 +2,16 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "DeploymentStorage{{ENV_AccountId}}",
+            "Sid": "BucketStorage{{ENV_AccountId}}",
             "Effect": "Allow",
             "Action": [
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}",
-                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}/*"
+                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_Name}}",
+                "arn:aws:s3:::{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_Name}}/*",
+                "arn:aws:s3:::{{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-*",
+                "arn:aws:s3:::{{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-*/*"
             ]
         },
         {
@@ -76,7 +78,18 @@
                 "cloudformation:*"
             ],
             "Resource": [
-                "arn:aws:cloudformation:{{ENV_Region}}:{{ENV_AccountId}}:stack/{{PROJECT_Name}}{{ENV_NamePascal}}/*"
+                "arn:aws:cloudformation:{{ENV_Region}}:{{ENV_AccountId}}:stack/{{PROJECT_Name}}-{{ENV_Name}}/*",
+                "arn:aws:cloudformation:{{ENV_Region}}:{{ENV_AccountId}}:stack/{{PROJECT_Name}}-{{ENV_Name}}-*/*"
+            ]
+        },
+        {
+            "Sid": "CloudFFrontDeployment{{ENV_AccountId}}",
+            "Effect": "Allow",
+            "Action": [
+                "cloudfront:*"
+            ],
+            "Resource": [
+                "arn:aws:cloudfront::{{ENV_AccountId}}:distribution/*"
             ]
         },
         {

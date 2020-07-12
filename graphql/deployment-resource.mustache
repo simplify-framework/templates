@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Attached resource for {{PROJECT_Name}} function
+Parameters:
+  Environment:
+    Type: String
+  ResourceArn:
+    Type: String
+
+Conditions:
+  HasResourceArn: !Not [ !Equals [ !Ref ResourceArn, 'NO' ] ]
+
+Resources:
+  {{PROJECT_Name}}S3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: Private
+      #LifecycleConfiguration:
+      #  Rules:
+      #  - Id: {{PROJECT_Name}}GlacierRule
+      #    Prefix: glacier
+      #    Status: Enabled
+      #    ExpirationInDays: '365'
+      #    Transitions:
+      #      - TransitionInDays: '1'
+      #        StorageClass: GLACIER
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders: ['*']
+          AllowedMethods: [GET]
+          AllowedOrigins: ['*']
+          ExposedHeaders: [Date]
+          Id: GET{{PROJECT_Name}}CORSRuleId
+          MaxAge: '3600'
+        - AllowedHeaders: [x-amz-*]
+          AllowedMethods: [DELETE]
+          AllowedOrigins: ['https://{{ENV_Name}}.{{PROJECT_NameSnake}}.com', 'https://{{ENV_Name}}.{{PROJECT_DomainName}}']
+          ExposedHeaders: [Connection, Server, Date]
+          Id: DELETE{{PROJECT_Name}}CORSRuleId
+          MaxAge: '1800'
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      BucketName: {{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-website
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  {{PROJECT_Name}}Website:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+    - {{PROJECT_Name}}S3Bucket
+    Properties:
+      DistributionConfig:
+        Comment: Cloudfront Distribution pointing to S3 bucket
+        Origins:
+        - DomainName: !Select [2, !Split ["/", !GetAtt {{PROJECT_Name}}S3Bucket.WebsiteURL]]
+          Id: {{PROJECT_Name}}S3Origin
+          CustomOriginConfig:
+            HTTPPort: '80'
+            HTTPSPort: '443'
+            OriginProtocolPolicy: https-only
+            OriginSSLProtocols:
+            - TLSv1.2
+            OriginKeepaliveTimeout: 5
+            OriginReadTimeout: 30
+        {{#Servers}}
+        - DomainName: https://{{NameSnake}}.{{ENV_Region}}.{{ENV_Name}}.{{PROJECT_DomainName}}
+          Id: {{PROJECT_Name}}-{{Name}}
+          OriginPath: /{{ENV_Name}}
+          CustomOriginConfig:
+            HTTPPort: '80'
+            HTTPSPort: '443'
+            OriginProtocolPolicy: https-only
+            OriginSSLProtocols:
+            - TLSv1.2
+            OriginKeepaliveTimeout: 5
+            OriginReadTimeout: 30
+        {{/Servers}}
+        CacheBehaviors:
+        {{#Servers}}
+        {{#Definitions}}
+        {{#Paths}}
+        - TargetOriginId: {{PROJECT_Name}}-{{Name}}
+          PathPattern: {{Path}}
+          MaxTTL: 3600
+          MinTTL: 3600
+          DefaultTTL: 3600
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: ["POST", "GET"]
+          ForwardedValues:
+            Cookies:
+              Forward: all
+            QueryString: true
+          Compress: true
+        {{/Paths}}
+        {{/Definitions}}
+        {{/Servers}}
+        Enabled: true
+        HttpVersion: 'http2'
+        DefaultRootObject: index.html
+        Aliases:
+        - {{ENV_Name}}.{{PROJECT_DomainName}}
+        DefaultCacheBehavior:
+          AllowedMethods: ["GET", "HEAD", "OPTIONS"]
+          Compress: true
+          TargetOriginId: {{PROJECT_Name}}S3Origin
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        PriceClass: PriceClass_All
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: false
+        WebACLId: !If [HasResourceArn, !Ref ResourceArn, !Ref "AWS::NoValue"]
+Outputs:
+  Region:
+    Value: !Ref AWS::Region
+  ResourceName:
+    Value: !Ref {{PROJECT_Name}}S3Bucket
+  WebsiteURL:
+    Value: !GetAtt [{{PROJECT_Name}}Website, DomainName]
+  #S3BucketSecureURL:
+  #  Value: !Join ['', ['https://', !GetAtt [{{PROJECT_Name}}S3Bucket, DomainName]]]

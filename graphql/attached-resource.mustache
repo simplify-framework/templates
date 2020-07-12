@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Attached resource for {{Name}} function
+Parameters:
+  Environment:
+    Type: String
+  ResourceArn:
+    Type: String
+
+Conditions:
+  HasResourceArn: !Not [ !Equals [ !Ref ResourceArn, 'NO' ] ]
+
+Resources:
+  {{Name}}S3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: Private
+      #LifecycleConfiguration:
+      #  Rules:
+      #  - Id: GlacierRule
+      #    Prefix: glacier
+      #    Status: Enabled
+      #    ExpirationInDays: '365'
+      #    Transitions:
+      #      - TransitionInDays: '1'
+      #        StorageClass: GLACIER
+      BucketName: {{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-{{NameSnake}}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  {{Name}}S3AccessRole:
+    Condition: HasResourceArn
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Join:
+        - ""
+        - - !Ref {{Name}}S3Bucket
+          - RolePolicy
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+
+  {{Name}}S3AccessPolicy:
+    Condition: HasResourceArn
+    DependsOn:
+    - {{Name}}S3AccessRole
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Join:
+        - ""
+        - - !Ref {{Name}}S3Bucket
+          - RolePolicy
+      Roles:
+      - !Ref {{Name}}S3AccessRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - s3:PutObject
+          - s3:GetObject
+          - s3:DeleteObject
+          Resource:
+          - Fn::Sub:
+            - arn:aws:lambda:${region}:${account}:function:${parrent}
+            - region:
+                !Ref AWS::Region
+              account:
+                !Ref AWS::AccountId
+              parrent:
+                !Ref ResourceArn
+
+Outputs:
+  Region:
+    Value: !Ref AWS::Region
+  ResourceName:
+    Value: !Ref {{Name}}S3Bucket

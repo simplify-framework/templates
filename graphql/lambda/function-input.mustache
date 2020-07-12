@@ -2,18 +2,19 @@
     "Profile": "{{ENV_Profile}}",
     "Region": "{{ENV_Region}}",
     "ProjectId": "{{PROJECT_Id}}",
+    "ProjectName": "{{PROJECT_Name}}",
     "AccountId": "{{ENV_AccountId}}",
-    "Environment": "{{ENV_NameSnake}}",
+    "Environment": "{{ENV_Name}}",
     "Bucket": {
-        "Name": "{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}",
+        "Name": "{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_Name}}",
         "Key": "functions/${DATE_TODAY}"
     },
-    "OutputFile": "{{ENV_NameSnake}}/{{FunctionNamePascal}}-meta.json",
+    "OutputFile": "{{ENV_Name}}/{{FunctionNamePascal}}-meta.json",
     "LayerConfig": {
         "CompatibleRuntimes": [
             "{{Runtime}}"
         ],
-        "LayerName": "{{PROJECT_Name}}{{ENV_NamePascal}}-{{FunctionName}}"
+        "LayerName": "{{PROJECT_Name}}-{{ENV_Name}}-{{FunctionName}}"
     },
     "Function": {
         "FunctionName": "{{FunctionName}}",

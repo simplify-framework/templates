@@ -1,21 +1,23 @@
 {
     "Profile": "{{ENV_Profile}}",
     "Region": "{{ENV_Region}}",
+    "ProjectId": "{{PROJECT_Id}}",
+    "ProjectName": "{{PROJECT_Name}}",
     "AccountId": "{{ENV_AccountId}}",
-    "Environment": "{{ENV_NameSnake}}",
+    "Environment": "{{ENV_Name}}",
     "Bucket": {
-        "Name": "{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_NameSnake}}",
+        "Name": "{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_Name}}",
         "Key": "stacks/${DATE_TODAY}"
     },
-    "OutputFile": "{{ENV_NameSnake}}/{{PROJECT_Name}}-meta.json",
+    "OutputFile": "{{ENV_Name}}/{{PROJECT_Name}}-meta.json",
     "Deployment": {
-        "Name": "{{PROJECT_Name}}{{ENV_NamePascal}}",
-        "Definition": "deployment.yaml",
+        "Name": "{{PROJECT_Name}}-{{ENV_Name}}",
+        "Definition": "deployment-stack.yaml",
         "ApiAuthorizerId": "{{ENV_AuthorizerId}}",
         "Servers": {
             {{#Servers}}
             "{{Name}}": {
-                "FunctionInput": "../{{Name}}/.simplify-graphql/{{ENV_NameSnake}}/server-input.json",
+                "FunctionInput": "../{{Name}}/.simplify-graphql/{{ENV_Name}}/server-input.json",
                 "ManagedResourceArn": "NO",
                 "SecretKeyVault": "NO"
             }{{#hasMore}}, {{/hasMore}}
@@ -25,7 +27,7 @@
             {{#Functions}}
             "{{FunctionName}}": {
                 "DependsOn": [{{#Servers}}"{{ServerName}}"{{#hasMore}}, {{/hasMore}}{{/Servers}}],
-                "FunctionInput": "../Executions/{{FunctionName}}/.simplify-graphql/{{ENV_NameSnake}}/function-input.json",
+                "FunctionInput": "../Executions/{{FunctionName}}/.simplify-graphql/{{ENV_Name}}/function-input.json",
                 "ManagedResourceArn": "NO",
                 "SecretKeyVault": "NO"
             }{{#hasMore}}, {{/hasMore}}

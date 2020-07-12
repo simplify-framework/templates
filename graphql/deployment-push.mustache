@@ -95,7 +95,7 @@ try {
                     ...{
                         stackName: config.Deployment.Name,
                         stackParameters: {
-                            Environment: '{{ENV_NameSnake}}',
+                            Environment: '{{ENV_Name}}',
                             ApiAuthorizerId: config.Deployment.ApiAuthorizerId,
                             ...parameters
                         },
