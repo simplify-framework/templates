@@ -48,10 +48,16 @@ try {
             }).then(function (uploadInfo) {
                 var parameters = {}
                 const TemplateURL = uploadInfo.Location
-                const metaData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
-                Object.keys(config.Deployment.Servers).forEach(function (f) {
-                    parameters[`${f}URL`] = metaData.apiConfig[f].GatewayUrl
-                })
+                if (fs.existsSync(path.join(__dirname, config.OutputFile))) {
+                    const metaData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
+                    Object.keys(config.Deployment.Servers).forEach(function (f) {
+                        parameters[`${f}URL`] = metaData.apiConfig[f].GatewayUrl
+                    })
+                } else {
+                    Object.keys(config.Deployment.Servers).forEach(function (f) {
+                        parameters[`${f}URL`] = "NO"
+                    })
+                }
                 simplify.createOrUpdateStackOnComplete({
                     adaptor: provider.getResource(),
                     ...{
