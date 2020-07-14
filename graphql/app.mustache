@@ -41,12 +41,13 @@ const resolvers = {
 const server = new ApolloServer({
     typeDefs, resolvers, context: ({ req }) => ({
         requestContext: req
-    })
+    }),
+    introspection: (process.env.INTROSPECTION === "YES") ? true : false
 })
 
 server.applyMiddleware({ app })
 
-if (process.env.LOCAL_DEBUG === "YES") {
+if (process.env.LOCAL_SERVER === "YES") {
     require('dotenv').config()
     app.listen({ port: 4000 }, () => {
         console.log(`GraphQL server is ready at http://localhost:4000${server.graphqlPath}`)

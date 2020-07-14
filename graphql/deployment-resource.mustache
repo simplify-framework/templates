@@ -5,7 +5,10 @@ Parameters:
     Type: String
   ResourceArn:
     Type: String
-
+  {{#Servers}}
+  {{Name}}URL:
+    Type: String
+  {{/Servers}}
 Conditions:
   HasResourceArn: !Not [ !Equals [ !Ref ResourceArn, 'NO' ] ]
 
@@ -71,7 +74,7 @@ Resources:
             OriginKeepaliveTimeout: 5
             OriginReadTimeout: 30
         {{#Servers}}
-        - DomainName: https://{{NameSnake}}.{{ENV_Region}}.{{ENV_Name}}.{{PROJECT_DomainName}}
+        - DomainName: !Ref {{Name}}URL
           Id: {{PROJECT_Name}}-{{Name}}
           OriginPath: /{{ENV_Name}}
           CustomOriginConfig:
@@ -120,6 +123,7 @@ Resources:
         ViewerCertificate:
           CloudFrontDefaultCertificate: false
         WebACLId: !If [HasResourceArn, !Ref ResourceArn, !Ref "AWS::NoValue"]
+
 Outputs:
   Region:
     Value: !Ref AWS::Region

@@ -7,7 +7,7 @@ const jsonify = require('../../Utilities/jsonify')
 
 module.exports.handler = function(event, context, callback) {
     {{#RemoteExecutionMode}}
-    if (process.env.LOCAL_DEBUG=="YES") {
+    if (process.env.LOCAL_SERVER=="YES") {
         require('../../../../Executions/{{Run.Name}}/src/index').handler(event, context, callback)
     } else {
         const parameters = require('./parameters.json')

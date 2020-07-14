@@ -12,6 +12,7 @@
         { "input": "policy-functions.mustache", "output": ".simplify-graphql/{{ENV_Name}}/policy-functions.json" },
         { "input": "policy-execute-api.mustache", "output": ".simplify-graphql/{{ENV_Name}}/policy-execute-api.json" },
         { "input": "deployment-resource.mustache", "output": ".simplify-graphql/{{ENV_Name}}/deployment-resource.yaml" },
+        { "input": "playground.mustache", "output": ".simplify-graphql/{{ENV_Name}}/playground.html" },
         { "input": "aws-setup.mustache", "output": ".simplify-graphql/{{ENV_Name}}/aws-setup.sh" },
         { "input": "aws-update.mustache", "output": ".simplify-graphql/{{ENV_Name}}/aws-update.sh" },
         { "input": "aws-cleanup.mustache", "output": ".simplify-graphql/{{ENV_Name}}/aws-cleanup.sh" },

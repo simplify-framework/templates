@@ -26,6 +26,7 @@ while (nodeArgs.length > 0) {
 try {
     var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
     const distYamlFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "deployment-resource.yaml")
+    const playgroundFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "playground.html")
     const deploymentName = `${config.ProjectName}-${process.env.DEPLOYMENT_ENV}-ExtResource`
     const bucketKey = config.Bucket.Key
     provider.setConfig(config).then(function () {
@@ -45,14 +46,20 @@ try {
                 adaptor: provider.getStorage(),
                 ...{ bucketKey: bucketKey, inputLocalFile: distYamlFile }
             }).then(function (uploadInfo) {
-                var TemplateURL = uploadInfo.Location
+                var parameters = {}
+                const TemplateURL = uploadInfo.Location
+                const metaData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
+                Object.keys(config.Deployment.Servers).forEach(function (f) {
+                    parameters[`${f}URL`] = metaData.apiConfig[f].GatewayUrl
+                })
                 simplify.createOrUpdateStackOnComplete({
                     adaptor: provider.getResource(),
                     ...{
                         stackName: deploymentName,
                         stackParameters: {
                             Environment: '{{ENV_Name}}',
-                            ResourceArn: 'NO'
+                            ResourceArn: 'NO',
+                            ...parameters
                         },
                         stackTemplate: TemplateURL
                     }
@@ -61,11 +68,17 @@ try {
                     stackData.Outputs.map(function (o) {
                         if (o.OutputKey == `ResourceName`) {
                             outputResult.ResourceName = o.OutputValue
-                        } else if (o.OutputKey == `ResourceRoleARN`) {
-                            outputResult.ResourceRoleARN = o.OutputValue
+                        } else if (o.OutputKey == `WebsiteURL`) {
+                            outputResult.WebsiteURL = o.OutputValue
                         }
                     })
                     simplify.consoleWithMessage(`${opName}-CreateDeployment`, `${outputResult.ResourceName}`)
+                    simplify.uploadLocalFile({
+                        adaptor: provider.getStorage(),
+                        ...{ bucketKey: bucketKey, inputLocalFile: playgroundFile }
+                    }).then(function (uploadInfo) {
+                        simplify.consoleWithMessage(`${opName}-PlayGroundURL`, `${outputResult.WebsiteURL}`)
+                    })
                 }, function (err) {
                     simplify.finishWithErrors(`${opName}-CreateDeployment`, err.message || err.StackId)
                 })
