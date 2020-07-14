@@ -26,7 +26,7 @@ while (nodeArgs.length > 0) {
 try {
     var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
     const distYamlFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "deployment-resource.yaml")
-    const playgroundFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "playground.html")
+    const publicFolder = path.join(__dirname, "../", "public")
     const deploymentName = `${config.ProjectName}-${process.env.DEPLOYMENT_ENV}-ExtResource`
     const bucketKey = config.Bucket.Key
     provider.setConfig(config).then(function () {
@@ -79,11 +79,11 @@ try {
                         }
                     })
                     simplify.consoleWithMessage(`${opName}-CreateDeployment`, `${outputResult.ResourceName}`)
-                    simplify.uploadLocalFile({
+                    simplify.uploadLocalDirectory({
                         adaptor: provider.getStorage(),
-                        ...{ bucketKey: bucketKey, inputLocalFile: playgroundFile }
+                        ...{ publicACL: true, bucketName: "{{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-website", inputDirectory: publicFolder }
                     }).then(function (uploadInfo) {
-                        simplify.consoleWithMessage(`${opName}-PlayGroundURL`, `${outputResult.WebsiteURL}`)
+                        simplify.consoleWithMessage(`${opName}-WebsiteUpload`, `PublicURL: ${outputResult.WebsiteURL}`)
                     })
                 }, function (err) {
                     simplify.finishWithErrors(`${opName}-CreateDeployment`, err.message || err.StackId)
