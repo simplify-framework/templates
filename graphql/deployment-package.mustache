@@ -7,7 +7,7 @@
         "stack-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json",
         "stack-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json --deletion",
         "website-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json",
-        "website-build": "cd public && npm install && npm run build-website",
+        "website-build": "cd StaticWeb && npm install && npm run build-website",
         "website-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json --deletion",
         "push-config": "bash .simplify-graphql/code-push.sh .env config",
         "push-code": "bash .simplify-graphql/code-push.sh .env push",

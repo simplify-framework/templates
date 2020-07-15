@@ -1,13 +1,18 @@
-const express = require('express')
+'use strict';
 
-const PORT = 3000
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const webpackConfig = require('./webpack.config');
 
-const app = express()
+const compiler = Webpack(webpackConfig);
+const devServerOptions = Object.assign({}, webpackConfig.devServer, {
+  open: true,
+  stats: {
+    colors: true,
+  },
+});
+const server = new WebpackDevServer(compiler, devServerOptions);
 
-app.use(express.static(__dirname + '/dist'));
-
-app.listen(PORT)
-
-console.log(
-  `Serving the Website on http://localhost:${PORT}/`,
-)
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Starting server on http://localhost:3000')
+})
