@@ -48,10 +48,10 @@ Resources:
         IndexDocument: index.html
         ErrorDocument: error.html
       BucketName: {{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-website
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
+      #BucketEncryption:
+      #  ServerSideEncryptionConfiguration:
+      #    - ServerSideEncryptionByDefault:
+      #        SSEAlgorithm: AES256
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
@@ -140,4 +140,4 @@ Outputs:
   #WebsiteURL:
   #  Value: !GetAtt [{{PROJECT_Name}}Website, DomainName]
   WebsiteURL:
-     Value: !Join ['', ['https://', !GetAtt [{{PROJECT_Name}}S3Bucket, DomainName]]]
+     Value: !Join ['', ['https://', !GetAtt [{{PROJECT_Name}}S3Bucket, DomainName], "/index.html"]]

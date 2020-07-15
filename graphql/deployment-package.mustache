@@ -6,8 +6,9 @@
         "generate-{{ENV_Name}}": "simplify-graphql -i schema.graphql --env {{ENV_Name}}",
         "stack-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json",
         "stack-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json --deletion",
-        "resource-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-resource.js --input deployment-input.json",
-        "resource-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-resource.js --input deployment-input.json --deletion",
+        "website-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json",
+        "website-build": "cd public && npm install && npm run build-website",
+        "website-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json --deletion",
         "push-config": "bash .simplify-graphql/code-push.sh .env config",
         "push-code": "bash .simplify-graphql/code-push.sh .env push",
         "account-setup": "bash .simplify-graphql/setup.sh --profile {{PROJECT_Profile}}",
@@ -22,7 +23,7 @@
     "license": "MIT",
     "private": true,
     "devDependencies": {
-        "simplify-sdk": "^0.1.30",
+        "simplify-sdk": "^0.1.31",
         "simplify-secops": "^0.1.5"
     }
 }

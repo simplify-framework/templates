@@ -1,0 +1,46 @@
+{
+  "name": "{{ProjectNameSnake}}-website",
+  "version": "0.1.0",
+  "description": "Simplify graphql-serverless architecture model (GSAM) - Website",
+  "main": "app.js",
+  "scripts": {
+    "build-website": "webpack -p --config webpack.config.js",
+    "start": "npm install && npm run build-website && LOCAL_SERVER=YES DEPLOYMENT_STAGE=latest node app.js",
+    "code-scan": "bash sonarqube-scanner.sh"
+  },
+  "keywords": [
+    "graphql",
+    "lambda",
+    "faas",
+    "aws"
+  ],
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      "**/*.env.js"
+    ]
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/node": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.4",
+    "license-checker-webpack-plugin": "^0.1.5",
+    "html-webpack-plugin": "^4.3.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.6.0",
+    "sass-loader": "^9.0.2",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-node-externals": "^2.3.0",
+    "simplify-sdk": "^0.1.31",
+    "dotenv": "8.2.0"
+  }
+}

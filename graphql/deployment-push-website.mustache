@@ -25,21 +25,27 @@ while (nodeArgs.length > 0) {
 }
 try {
     var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
-    const distYamlFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "deployment-resource.yaml")
-    const publicFolder = path.join(__dirname, "../", "public")
-    const deploymentName = `${config.ProjectName}-${process.env.DEPLOYMENT_ENV}-ExtResource`
+    const distYamlFile = path.join(__dirname, process.env.DEPLOYMENT_ENV, "deployment-website.yaml")
+    const publicFolder = path.join(__dirname, "..", "public", "dist")
+    const deploymentName = `${config.ProjectName}-${process.env.DEPLOYMENT_ENV}-WebResource`
     const bucketKey = config.Bucket.Key
     provider.setConfig(config).then(function () {
         if (configResourceDeletion) {
-            simplify.deleteStackOnComplete({
-                adaptor: provider.getResource(),
-                ...{
-                    stackName: deploymentName
-                }
-            }).then(function (stackData) {
-                simplify.consoleWithMessage(`${opName}-CleanupStack`, `${deploymentName}`)
-            }).catch(function(err) {
-                simplify.finishWithErrors(`${opName}-CleanupResource:`, err)
+            const bucketName = "{{PROJECT_NameSnake}}-{{PROJECT_Id}}-{{ENV_Name}}-website"
+            simplify.emptyBucketForDeletion({
+                adaptor: provider.getStorage(),
+                ...{ bucketName: bucketName }
+            }).then(function(data) {
+                simplify.deleteStackOnComplete({
+                    adaptor: provider.getResource(),
+                    ...{
+                        stackName: deploymentName
+                    }
+                }).then(function (stackData) {
+                    simplify.consoleWithMessage(`${opName}-CleanupStack`, `${deploymentName}`)
+                }).catch(function(err) {
+                    simplify.finishWithErrors(`${opName}-CleanupResource:`, err)
+                })
             })
         } else {
             simplify.uploadLocalFile({
