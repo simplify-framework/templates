@@ -6,6 +6,8 @@
         { "input": ".gitignore.mustache", "output": ".gitignore" },
         { "input": "docker-compose.mustache", "output": "docker-compose.yml" },
         { "input": "nginx.conf.mustache", "output": "nginx.conf" },
+        { "input": "function-build.mustache", "output": "Executions/.simplify-graphql/function-build.sh" },
+        { "input": "function-package.mustache", "output": "Executions/package.json" },
         { "input": "policy-relationship-role.mustache", "output": ".simplify-graphql/{{ENV_Name}}/policy-relationship-role.json" },
         { "input": "policy-assume-role.mustache", "output": ".simplify-graphql/{{ENV_Name}}/policy-assume-role.json" },
         { "input": "policy-deployment.mustache", "output": ".simplify-graphql/{{ENV_Name}}/policy-deployment.json" },
@@ -56,12 +58,13 @@
         { "input": "iso8601.mustache", "output": "{{ServerName}}/src/Utilities/iso8601.js" },
         { "input": "api-utils.mustache", "output": "{{ServerName}}/src/Utilities/api-utils.js" },
         { "input": "sigv4gw.mustache", "output": "{{ServerName}}/src/Utilities/sigv4gw.js" },
+        { "input": "jsonify.mustache", "output": "{{ServerName}}/src/Utilities/jsonify.js" },
         { "input": "schema.mustache", "output": "{{ServerName}}/src/schema.graphql" },
         { "input": "index.mustache", "output": "{{ServerName}}/src/index.js" },
         { "input": "deps.mustache", "output": "{{ServerName}}/src/deps.js" },
-        { "input": "function-index.mustache", "output": "{{ServerName}}/src/Functions/functions.js" },
+        { "input": "function-index.mustache", "output": "{{ServerName}}/src/Functions/index.js" },
         { "input": "app.mustache", "output": "{{ServerName}}/src/app.js" },
-        { "input": "app.env.mustache", "output": "{{ServerName}}/src/.env" },
+        { "input": "dot.env.mustache", "output": "{{ServerName}}/.env" },
         { "input": "model/.babelrc.mustache", "output": "{{ServerName}}/models/.babelrc" },
         { "input": "model/package.mustache", "output": "{{ServerName}}/models/package.json" },
         { "input": "model/dynamodb.mustache", "output": "{{ServerName}}/models/src/dynamodb.js" },
@@ -104,6 +107,7 @@
         { "input": "lambda/function-input.mustache", "output": "Executions/{{FunctionName}}/.simplify-graphql/{{ENV_Name}}/function-input.json" },
         { "input": "lambda/package-deps.mustache", "output": "Executions/{{FunctionName}}/deps/nodejs/node_modules/{{FunctionNameSnake}}-deps/package.json" },
         { "input": "layer-push.mustache", "output": "Executions/{{FunctionName}}/.simplify-graphql/layer-push.js" },
-        { "input": "hashbag.mustache", "output": "Executions/{{FunctionName}}/loaders/hashbag.js" }
+        { "input": "hashbag.mustache", "output": "Executions/{{FunctionName}}/loaders/hashbag.js" },
+        { "input": "dot.env.mustache", "output": "Executions/{{FunctionName}}/.env" }
     ]
 }

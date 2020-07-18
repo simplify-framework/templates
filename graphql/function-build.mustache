@@ -1,0 +1,22 @@
+#!/bin/bash
+# Simplify Automatic Deployment Script
+# Project: {{PROJECT_NamePascal}}
+# Deployment: {{PROJECT_Name}}
+# Region: {{ENV_Region}}
+# Profile: {{ENV_Profile}}
+# Version: {{PROJECT_Version}}
+INITIAL_DIR=$PWD
+
+declare -a DEPLOYMENT_PACKAGES=(
+{{#Functions}}
+    "./{{FunctionName}}"
+{{/Functions}})
+
+for i in "${!DEPLOYMENT_PACKAGES[@]}"; do
+    DeploymentPackageName=${DEPLOYMENT_PACKAGES[$i]}
+    DeploymentPackageKey=`echo "${DeploymentPackageName}" | tr '/' '_'`
+    cd ${INITIAL_DIR}/${DeploymentPackageName}
+    npm install && npm run build-code
+    cd src/ && npm install && npm link
+    cd ${INITIAL_DIR}
+done

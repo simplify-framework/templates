@@ -1,0 +1,22 @@
+{
+  "name": "{{ProjectNameSnake}}-functions",
+  "version": "0.1.0",
+  "description": "Simplify graphql-serverless architecture model (GSAM)",
+  "scripts": {
+    "build": "bash .simplify-graphql/function-build.sh"
+  },
+  "keywords": [
+    "graphql",
+    "lambda",
+    "faas",
+    "aws"
+  ],
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      "**/*.env.js"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

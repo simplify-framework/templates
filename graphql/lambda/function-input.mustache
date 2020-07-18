@@ -1,20 +1,19 @@
 {
-    "Profile": "{{ENV_Profile}}",
-    "Region": "{{ENV_Region}}",
-    "ProjectId": "{{PROJECT_Id}}",
-    "ProjectName": "{{PROJECT_Name}}",
-    "AccountId": "{{ENV_AccountId}}",
-    "Environment": "{{ENV_Name}}",
+    "Profile": "${PROFILE}",
+    "Region": "${DEPLOYMENT_REGION}",
+    "ProjectId": "${PROJECT_ID}",
+    "AccountId": "${ACCOUNT_ID}",
+    "Environment": "${DEPLOYMENT_ENV}",
     "Bucket": {
-        "Name": "{{ENV_Bucket}}-{{PROJECT_Id}}-{{ENV_Name}}",
+        "Name": "${DEPLOYMENT_BUCKET}-${PROJECT_ID}-${DEPLOYMENT_ENV}",
         "Key": "functions/${DATE_TODAY}"
     },
-    "OutputFile": "{{ENV_Name}}/{{FunctionNamePascal}}-meta.json",
+    "OutputFile": "${DEPLOYMENT_ENV}/{{FunctionNamePascal}}-meta.json",
     "LayerConfig": {
         "CompatibleRuntimes": [
             "{{Runtime}}"
         ],
-        "LayerName": "{{PROJECT_Name}}-{{ENV_Name}}-{{FunctionName}}"
+        "LayerName": "{{PROJECT_Name}}-${DEPLOYMENT_ENV}-{{FunctionName}}"
     },
     "Function": {
         "FunctionName": "{{FunctionName}}",
@@ -24,7 +23,7 @@
         "Role": "${Function{{FunctionNamePascal}}RoleArn}",
         "Runtime": "{{Runtime}}",
         "Tags": {
-            "GroupName": "{{PROJECT_NamePascal}}{{ENV_NamePascal}}"
+            "GroupName": "{{PROJECT_NamePascal}}-${DEPLOYMENT_ENV}"
         },
         "Timeout": 15,
         "TracingConfig": {

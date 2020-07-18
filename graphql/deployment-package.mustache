@@ -3,12 +3,13 @@
     "version": "{{PROJECT_Version}}",
     "description": "{{{PROJECT_Desc}}}",
     "scripts": {
-        "generate-{{ENV_Name}}": "simplify-graphql -i schema.graphql --env {{ENV_Name}}",
-        "stack-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json",
-        "stack-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-push.js --input deployment-input.json --deletion",
-        "website-deploy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json",
+        "update-env": "simplify-graphql -i schema.graphql --env {{ENV_Name}}",
+        "delete-env": "rm -rf `find . -type d -path \"**/.simplify-graphql/*\" -name {{ENV_Name}}`",
+        "stack-deploy": "node .simplify-graphql/deployment-push.js --input deployment-input.json",
+        "stack-destroy": "node .simplify-graphql/deployment-push.js --input deployment-input.json --deletion",
+        "website-deploy": "node .simplify-graphql/deployment-website.js --input deployment-input.json",
         "website-build": "cd StaticWeb && npm install && npm run build-website",
-        "website-destroy": "env DEPLOYMENT_ENV={{ENV_Name}} node .simplify-graphql/deployment-website.js --input deployment-input.json --deletion",
+        "website-destroy": "node .simplify-graphql/deployment-website.js --input deployment-input.json --deletion",
         "push-config": "bash .simplify-graphql/code-push.sh .env config",
         "push-code": "bash .simplify-graphql/code-push.sh .env push",
         "account-setup": "bash .simplify-graphql/setup.sh --profile {{PROJECT_Profile}}",
@@ -23,6 +24,7 @@
     "license": "MIT",
     "private": true,
     "devDependencies": {
+        "dotenv": "8.2.0",
         "simplify-sdk": "^0.1.31",
         "simplify-secops": "^0.1.5"
     }

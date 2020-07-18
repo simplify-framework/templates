@@ -7,8 +7,8 @@ const enforcementPackage = process.env.ENFORCEMENT_PACKAGE || '{{FunctionNameSna
 const allowedCanaries = [ "latest", "stable", "enforce" ]
 const getPackage = function(canary) {
     let runtimePackage = undefined
-    if (canary === 'stable') runtimePackage = require('{{FunctionNameSnake}}')
-    else if (canary === 'enforce') runtimePackage = require(`${enforcementPackage}`)
+    if (canary === 'stable') runtimePackage = __non_webpack_require__('{{FunctionNameSnake}}')
+    else if (canary === 'enforce') runtimePackage = __non_webpack_require__(`${enforcementPackage}`)
     else runtimePackage = require('./{{FunctionName}}')
     return runtimePackage
 }

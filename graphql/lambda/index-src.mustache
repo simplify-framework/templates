@@ -2,8 +2,9 @@
 /**
  * If compiled, use __non_webpack_require__ when require('a-package') that is underlying &
  * pre-installed in your runtime library such as 'aws-sdk' or in node_modules layers
+ * Embedded dependancy packaged into a single module named as: {{FunctionNameSnake}}-deps
+ * const debug = require('{{FunctionNameSnake}}-deps')['debug']
  **/
-const debug = require('{{FunctionNameSnake}}-deps')['debug']
 
 module.exports.handler = (event, context, callback) => {
     const {{Name}}Result = {

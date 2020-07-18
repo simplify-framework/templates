@@ -14,6 +14,7 @@ const provider = require('simplify-sdk/provider')
 var nodeArgs = process.argv.slice(2);
 var configResourceDeletion = false
 var configInputFile = process.env.DEPLOYMENT_INPUT || 'deployment-input.json'
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 while (nodeArgs.length > 0) {
     if (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") {
         configInputFile = nodeArgs[1]
