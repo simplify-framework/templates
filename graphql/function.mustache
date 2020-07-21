@@ -16,7 +16,7 @@ module.exports.handler = function(event, context, callback) {
             Payload: Buffer.from(jsonify.stringify(event), "utf-8")
         };
         lambda.invoke(params, function(err, data) {
-            callback(err, JSON.parse(data.Payload))
+            callback(data.FunctionError ? JSON.parse(data.Payload) : null, JSON.parse(data.Payload))
         });
     }
     {{/RemoteExecutionMode}}
