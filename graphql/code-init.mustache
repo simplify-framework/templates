@@ -18,7 +18,7 @@ if (nodeArgs.length > 1) {
 try {
     var config = simplify.getInputConfig(path.join(__dirname, process.env.DEPLOYMENT_ENV, configInputFile))
     var stackData = JSON.parse(fs.readFileSync(path.join(__dirname, config.OutputFile)))
-    const functionResources = [ ...config.Deployment.Servers, ...config.Deployment.Functions ]
+    const functionResources = { ...config.Deployment.Servers, ...config.Deployment.Functions }
     Object.keys(functionResources).forEach(function(f) {
         const fInputPath = path.join(__dirname, functionResources[f].FunctionInput)
         var fConfig = JSON.parse(fs.readFileSync(fInputPath))
