@@ -15,7 +15,6 @@ const provider = require('simplify-sdk/provider')
 var configInputFile = process.env.FUNCTION_INPUT || 'function-input.json'
 var configSrcDir = process.env.FUNCTION_SOURCE || 'build'
 var functionOps = process.env.FUNCTION_OPS || 'push'
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 process.env.ENFORCEMENT_PACKAGE = process.env.ENFORCEMENT_PACKAGE || ''
 process.env.DEPLOYMENT_STAGE = process.env.DEPLOYMENT_STAGE || 'latest'
 process.env.DEPLOYMENT_ENV = process.env.DEPLOYMENT_ENV || 'demo'
