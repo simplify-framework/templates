@@ -64,7 +64,7 @@
         { "input": "deps.mustache", "output": "{{ServerName}}/src/deps.js" },
         { "input": "function-index.mustache", "output": "{{ServerName}}/src/Functions/index.js" },
         { "input": "app.mustache", "output": "{{ServerName}}/src/app.js" },
-        { "input": "dot.env.mustache", "output": "{{ServerName}}/.env" },
+        { "input": "server.env.mustache", "output": "{{ServerName}}/.env" },
         { "input": "model/.babelrc.mustache", "output": "{{ServerName}}/models/.babelrc" },
         { "input": "model/package.mustache", "output": "{{ServerName}}/models/package.json" },
         { "input": "model/dynamodb.mustache", "output": "{{ServerName}}/models/src/dynamodb.js" },
@@ -108,6 +108,6 @@
         { "input": "lambda/package-deps.mustache", "output": "Executions/{{FunctionName}}/deps/nodejs/node_modules/{{FunctionNameSnake}}-deps/package.json" },
         { "input": "layer-push.mustache", "output": "Executions/{{FunctionName}}/.simplify-graphql/layer-push.js" },
         { "input": "hashbag.mustache", "output": "Executions/{{FunctionName}}/loaders/hashbag.js" },
-        { "input": "dot.env.mustache", "output": "Executions/{{FunctionName}}/.env" }
+        { "input": "function.env.mustache", "output": "Executions/{{FunctionName}}/.env" }
     ]
 }
