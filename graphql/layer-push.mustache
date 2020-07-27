@@ -17,7 +17,6 @@ var configSrcDir =  process.env.LAYER_SOURCE || 'layer'
 process.env.ENFORCEMENT_PACKAGE = process.env.ENFORCEMENT_PACKAGE || ''
 process.env.DEPLOYMENT_STAGE = process.env.DEPLOYMENT_STAGE || 'latest'
 process.env.DEPLOYMENT_ENV = process.env.DEPLOYMENT_ENV || 'demo'
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 while (nodeArgs.length > 1) {
     if (nodeArgs[0] == "--input" || nodeArgs[0] == "-i") {
         configInputFile =  nodeArgs[1]
