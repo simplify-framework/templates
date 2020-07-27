@@ -15,7 +15,7 @@
     "build-layer": "npm run build-deps && cd src/ && npm link {{NameSnake}}-deps && cd ../ && webpack -p --config webpack.config.layer.js",
     "push-layer": "env LAYER_SOURCE=../layer node -r dotenv/config .simplify-graphql/layer-push.js --input server-input.json",
     "build-deps": "npm run build-models && webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{NameSnake}}-deps && npm link",
-    "push-deps": "echo '* Use this command to deploy with deps layer!' && echo 'env LAYER_SOURCE=../deps node -r dotenv/config .simplify-graphql/layer-push.js --input server-input.json'",
+    "push-deps": "env LAYER_SOURCE=../deps node -r dotenv/config .simplify-graphql/layer-push.js --input server-input.json",
     "start": "cd src/ && npm install && npm link {{NameSnake}}-deps && env INTROSPECTION=YES LOCAL_SERVER=YES AWS_XRAY_CONTEXT_MISSING=LOG_ERROR node -r dotenv/config app.js dotenv_config_path=../.env",
     "code-scan": "bash sonarqube-scanner.sh",
     "test": "nyc --reporter=text mocha --require @babel/register --timeout 60000 \"./tests/*.spec.js*\""
