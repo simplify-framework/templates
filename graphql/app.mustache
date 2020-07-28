@@ -14,6 +14,7 @@ const { ApolloServer, gql } = require('{{NameSnake}}-deps')['apollo-server-expre
 const schema = fs.readFileSync(path.resolve(__dirname, 'schema.graphql'), 'utf8')
 const typeDefs = gql(schema);
 const app = express()
+if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require
 
 {{#Definitions}}
 {{#Paths}}

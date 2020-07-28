@@ -10,8 +10,9 @@ const path = require('path')
 const { StateExecution } = require('{{ServerNameSnake}}-deps')['simplify-sdk'].graphql
 const { {{DataSchema}} } = require('../Schemas/Models/{{DataSchema}}')
 const executionPath = path.join(__dirname, "../Functions")
+const executionName = "{{ServerNameSnake}}-functions"
 
-module.exports.{{Name}} = (parent, args, context, info) => new StateExecution({ executionPath, verbosity: true }).execute([
+module.exports.{{Name}} = (parent, args, context, info) => new StateExecution({ executionPath, executionName, verbosity: true }).execute([
     {{#Chains}}
     { Run: {{#Run}}"{{Name}}"{{/Run}}, Next: "{{Next}}", Other: "{{Other}}"{{#Retry}}, Retry: {{Retry}}{{/Retry}} }{{#hasMore}},{{/hasMore}}
     {{/Chains}}

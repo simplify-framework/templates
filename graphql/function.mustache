@@ -1,13 +1,13 @@
 'use strict';
 {{#RemoteExecutionMode}}
-const AWS = require('aws-sdk');
+const AWS = __non_webpack_require__('aws-sdk');
 const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 const jsonify = require('../../Utilities/jsonify')
 {{/RemoteExecutionMode}}
 
 module.exports.handler = function(event, context, callback) {
     {{#RemoteExecutionMode}}
-    if (process.env.MONOLITHIC_CODE=="YES") {
+    if (process.env.LOCAL_SERVER=="YES") {
         require('../../../../Executions/{{Run.Name}}/src/index').handler(event, context, callback)
     } else {
         const parameters = require('./parameters.json')

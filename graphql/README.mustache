@@ -4,6 +4,10 @@
 
 **Pre-requisites: Setup AWS provisioned account profile `{{PROJECT_Profile}}` with ACCESS_KEY_ID and ACCESS_KEY_SECRET**
 
+- Install simplify-graphql framework:
+
+    `npm install -g simplify-graphql@latest`
+
 - Create an IAM User named as `YourAccountUser` and generate Security credentials (Access keys)
 
     export ACCESS_KEY_ID= `********************`
@@ -46,6 +50,14 @@
 
     `aws iam put-user-policy --user-name YourAccountUser --policy-name AccountSetupAccessPolicy --policy-document file://user-role-policy.json`
 
+### Create new environment or switch to an existing environment:
+
+Using the simplify-graphql generation command with --env options:
+
+`simplify-graphql -i schema.graphql --env=new-or-existing-env`
+
+### Deploy environment, project code and more...
+
 1. Setup project account for AWS {{ENV_Name}} environment:
     - `npm install && npm audit fix`
     - `npm run account-setup`
@@ -55,18 +67,12 @@
     - `npm run push-code`
 4. Update .env configuration for AWS {{ENV_Name}} environment:
     - `npm run push-config`
-5. Develop your code, re-design your solution and then re-generate project code
-    - `npm run generate-{{ENV_Name}}`
+5. Develop your code, re-design your solution and then update project code
+    - `npm run update-env`
 6. Destroy project infrastructure resources on AWS {{ENV_Name}} environment:
     - `npm run stack-destroy`
 7. Cleanup project account for AWS {{ENV_Name}} environment:
     - `npm run account-cleanup`
-
-### Create new or switch to an environment:
-
-Using the simplify-graphql generation command with --env options:
-
-`simplify-graphql -i schema.graphql --env=new-or-existing-env`
 
 ### Security & Operation commands
 

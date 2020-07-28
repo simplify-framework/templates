@@ -41,6 +41,9 @@ try {
     if (process.env.DEPENDENCIES_PACKAGE) {
         layerConfig.LayerName = process.env.DEPENDENCIES_PACKAGE
     }
+    if (process.env.LAYER_NAME) {
+        layerConfig.LayerName = process.env.LAYER_NAME
+    }
     provider.setConfig(config).then(function() {
         const LAYER_NAME = layerConfig.LayerName.split('-').join('_').toUpperCase()
         simplify.uploadDirectoryAsZip({

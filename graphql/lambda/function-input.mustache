@@ -8,7 +8,7 @@
         "Name": "${DEPLOYMENT_BUCKET}-${PROJECT_ID}-${DEPLOYMENT_ENV}",
         "Key": "functions/${DATE_TODAY}"
     },
-    "OutputFile": "${DEPLOYMENT_ENV}/{{FunctionNamePascal}}-meta.json",
+    "OutputFile": "{{ENV_Name}}/{{FunctionNamePascal}}-meta.json",
     "LayerConfig": {
         "CompatibleRuntimes": [
             "{{Runtime}}"

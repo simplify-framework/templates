@@ -8,7 +8,7 @@
         "Name": "${DEPLOYMENT_BUCKET}-${PROJECT_ID}-${DEPLOYMENT_ENV}",
         "Key": "servers/${DATE_TODAY}"
     },
-    "OutputFile": "${DEPLOYMENT_ENV}/{{NamePascal}}-meta.json",
+    "OutputFile": "{{ENV_Name}}/{{NamePascal}}-meta.json",
     "LayerConfig": {
         "CompatibleRuntimes": [
             "{{Runtime}}"
@@ -36,7 +36,8 @@
                 "ENVIRONMENT": "${DEPLOYMENT_ENV}",
                 "PROJECT_ID": "${PROJECT_ID}",
                 "REGION": "${DEPLOYMENT_REGION}",
-                "INTROSPECTION": "${INTROSPECTION}"
+                "INTROSPECTION": "${INTROSPECTION}",
+                "MONOLITHIC_CODE": "${MONOLITHIC_CODE}"
             }
         }
     }

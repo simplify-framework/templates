@@ -35,7 +35,12 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Description: '{{Name}} GraphQL API Gateway'
-      Name: {{PROJECT_Name}}-{{ENV_Name}}-{{Name}}
+      Name:
+        Fn::Join:
+          - "-"
+          - - {{PROJECT_Name}}
+            - !Ref Environment
+            - {{Name}}
       Body:
         swagger: '2.0'
         info:
@@ -250,7 +255,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{ENV_Name}}
+          ENVIRONMENT: !Ref Environment
           PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
@@ -341,17 +346,21 @@ Resources:
           {{/isReadOnly}}
           Resource:
           - Fn::Sub:
-            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-${env}
             - region:
                 !Ref AWS::Region
               account:
                 !Ref AWS::AccountId
+              env:
+                !Ref Environment
           - Fn::Sub:
-            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-{{ENV_Name}}/index/*
+            - arn:aws:dynamodb:${region}:${account}:table/{{Name}}-{{PROJECT_Id}}-${env}/index/*
             - region:
                 !Ref AWS::Region
               account:
                 !Ref AWS::AccountId
+              env:
+                !Ref Environment
         {{/isEmpty}}
         {{#isEmpty}}
         - Effect: Deny
@@ -385,7 +394,8 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{PROJECT_Name}}-{{ENV_Name}}
+          - - {{PROJECT_Name}}
+            - !Ref Environment
             - {{Name}}Secret
       Description: Secret manager for {{Name}}LambdaFunction
       GenerateSecretString:
@@ -476,7 +486,12 @@ Resources:
       KeySchema: 
         - AttributeName: {{Key}}
           KeyType: HASH
-      TableName: {{Name}}-{{PROJECT_Id}}-{{ENV_Name}}
+      TableName:
+        Fn::Join:
+          - "-"
+          - - {{Name}}
+            - {{PROJECT_Id}}
+            - !Ref Environment
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes: 
         - IndexName: {{Index}}-index
@@ -503,7 +518,7 @@ Resources:
       Handler: index.handler      
       Environment:
         Variables:
-          ENVIRONMENT: {{ENV_Name}}
+          ENVIRONMENT: !Ref Environment
           PROJECT_ID: {{PROJECT_Id}}
       Role:
         Fn::GetAtt:
@@ -604,7 +619,8 @@ Resources:
       Name:
         Fn::Join:
           - "-"
-          - - {{PROJECT_Name}}-{{ENV_Name}}
+          - - {{PROJECT_Name}}
+            - !Ref Environment
             - {{FunctionName}}Secret
       Description: Secret manager for {{FunctionName}}LambdaFunction
       GenerateSecretString:

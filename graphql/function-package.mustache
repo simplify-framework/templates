@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "Simplify graphql-serverless architecture model (GSAM)",
   "scripts": {
-    "build": "bash .simplify-graphql/function-build.sh"
+    "build": "bash .simplify-graphql/function-build.sh",
+    "config": "node -r dotenv/config .simplify-graphql/function-build.js dotenv_config_path=../.env"
   },
   "keywords": [
     "graphql",
