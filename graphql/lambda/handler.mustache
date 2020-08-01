@@ -15,8 +15,12 @@ const getPackage = function(canary) {
 var {{FunctionName}} = getPackage(process.env.DEPLOYMENT_STAGE || 'latest')
 
 module.exports.handler = (event, context, callback) => {
-    if (allowedCanaries.indexOf((event || {})['x-canary-selection']) >=0 && process.env.DEPLOYMENT_STAGE === 'canary') {
-        {{FunctionName}} = getPackage(`${(event || {})['x-canary-selection']}`)
+    if (event.eventType === 'PING') {
+        callback(null, {})
+    } else {
+        if (allowedCanaries.indexOf((event || {})['x-canary-selection']) >=0 && process.env.DEPLOYMENT_STAGE === 'canary') {
+            {{FunctionName}} = getPackage(`${(event || {})['x-canary-selection']}`)
+        }
+        {{FunctionName}}.handler(event, context, callback)
     }
-    {{FunctionName}}.handler(event, context, callback)
 };

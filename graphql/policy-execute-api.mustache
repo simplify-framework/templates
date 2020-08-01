@@ -9,6 +9,7 @@
                 "execute-api:Invoke"
             ],
             "Resource": [
+                "arn:aws:execute-api:{{ENV_Region}}:{{ENV_AccountId}}:*/{{ENV_Name}}/POST/ping",
                 {{#Definitions}}
                 {{#Paths}}
                 "arn:aws:execute-api:{{ENV_Region}}:{{ENV_AccountId}}:*/{{ENV_Name}}/POST{{Path}}",

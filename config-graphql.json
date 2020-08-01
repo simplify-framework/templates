@@ -57,6 +57,7 @@
         { "input": "package-deps.mustache", "output": "{{ServerName}}/deps/nodejs/node_modules/{{NameSnake}}-deps/package.json" },
         { "input": "package-functions.mustache", "output": "{{ServerName}}/layer/nodejs/node_modules/{{NameSnake}}-functions/package.json" },
         { "input": "logger.mustache", "output": "{{ServerName}}/src/Utilities/logger.js" },
+        { "input": "ping.mustache", "output": "{{ServerName}}/src/Utilities/ping.js" },
         { "input": "iso8601.mustache", "output": "{{ServerName}}/src/Utilities/iso8601.js" },
         { "input": "api-utils.mustache", "output": "{{ServerName}}/src/Utilities/api-utils.js" },
         { "input": "sigv4gw.mustache", "output": "{{ServerName}}/src/Utilities/sigv4gw.js" },

@@ -10,7 +10,11 @@ const awsServerlessExpress = require('{{NameSnake}}-deps')['aws-serverless-expre
 const server = awsServerlessExpress.createServer(require('./app'));
 
 exports.handler = (event, context, callback) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    event.path = event.resource = '/graphql';
-    awsServerlessExpress.proxy(server, event, context);
+    if (event.path === '/ping' && event.httpMethod === 'POST') {
+        require('./Utilities/ping').wakeup(JSON.parse(event.body || "{}") || {}, callback)
+    } else {
+        console.log(`EVENT: ${JSON.stringify(event)}`);
+        event.path = event.resource = '/graphql';
+        awsServerlessExpress.proxy(server, event, context);
+    }
 };
