@@ -25,7 +25,7 @@ const operationFunctions = {
 {{#Resolvers}}
     {{OperationId}}: [ {{#Resolver}}{{#Chains}}{{#RemoteExecutionMode}}{{#Run}}"{{Name}}"{{/Run}}{{/RemoteExecutionMode}}{{^RemoteExecutionMode}}null{{/RemoteExecutionMode}}{{#hasMore}}, {{/hasMore}}{{/Chains}}{{/Resolver}} ]{{#hasMore}},{{/hasMore}}
 {{/Resolvers}}
-{{#hasMore}},{{/hasMore}}{{^hasMore}}// END{{/hasMore}}
+{{#hasMore}},{{/hasMore}}{{^hasMore}},// END{{/hasMore}}
 {{/Paths}}
 {{/Definitions}}
 }
