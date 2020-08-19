@@ -91,18 +91,7 @@ try {
                     parameters[`${fname}SecretKeyVault`] = config.Deployment.Functions[fname].SecretKeyVault || "NO"
                     parameters[`${fname}ManagedResourceArn`] = config.Deployment.Functions[fname].ManagedResourceArn || "NO"
                 })
-                simplify.createOrUpdateStackOnComplete({
-                    adaptor: provider.getResource(),
-                    ...{
-                        stackName: config.Deployment.Name,
-                        stackParameters: {
-                            Environment: `${process.env.DEPLOYMENT_ENV}`,
-                            ApiAuthorizerId: config.Deployment.ApiAuthorizerId,
-                            ...parameters
-                        },
-                        stackTemplate: TemplateURL
-                    }
-                }).then(function (stackData) {
+                const processStackData = function (stackData) {
                     stackData.apiConfig = { Region: config.Region, Profile: config.Profile }
                     let functionsCsvData = 'Region,Account,FunctionName,Version,LogRetention,KMS,SecureFunction,SecureLog\n'
                     try {
@@ -159,8 +148,30 @@ try {
                     } catch (err) {
                         simplify.finishWithErrors(`${opName}-UpdateFunctionInput`, err.message)
                     }
-                }, function (err) {
-                    simplify.finishWithErrors(`${opName}-CreateDeployment`, err.message || err.StackId)
+                }
+
+                simplify.createOrUpdateStackOnComplete({
+                    adaptor: provider.getResource(),
+                    ...{
+                        stackName: config.Deployment.Name,
+                        stackParameters: {
+                            Environment: `${process.env.DEPLOYMENT_ENV}`,
+                            ApiAuthorizerId: config.Deployment.ApiAuthorizerId,
+                            ...parameters
+                        },
+                        stackTemplate: TemplateURL
+                    }
+                }).then(stackData => processStackData(stackData)).catch(function (err) {
+                    if(`${err.message}`.toLowerCase().startsWith('no updates are to be performed')){
+                        const providerResource = provider.getResource()
+                        return providerResource.describeStacks({StackName: config.Deployment.Name}).promise().then(descOutput=>{
+                            if(!descOutput.Stacks || !descOutput.Stacks.length)
+                                throw `Stack [${config.Deployment.Name}] not found`
+                            processStackData(descOutput.Stacks[0])
+                        })
+                    } else {
+                        simplify.finishWithErrors(`${opName}-CreateDeployment`, err.message || err.StackId)
+                    }
                 })
             }, function (err) {
                 simplify.finishWithErrors(`${opName}-UploadDirectory`, err)
