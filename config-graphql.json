@@ -55,7 +55,7 @@
         { "input": "hashbag.mustache", "output": "{{ServerName}}/loaders/hashbag.js" },
         { "input": "package-src.mustache", "output": "{{ServerName}}/src/package.json" },
         { "input": "package-deps.mustache", "output": "{{ServerName}}/deps/nodejs/node_modules/{{NameSnake}}-deps/package.json" },
-        { "input": "package-functions.mustache", "output": "{{ServerName}}/layer/nodejs/node_modules/{{NameSnake}}-functions/package.json" },
+        { "input": "package-functions.mustache", "output": "{{ServerName}}/deps/nodejs/node_modules/{{NameSnake}}-functions/package.json" },
         { "input": "logger.mustache", "output": "{{ServerName}}/src/Utilities/logger.js" },
         { "input": "ping.mustache", "output": "{{ServerName}}/src/Utilities/ping.js" },
         { "input": "iso8601.mustache", "output": "{{ServerName}}/src/Utilities/iso8601.js" },
