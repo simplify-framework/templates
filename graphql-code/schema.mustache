@@ -1,0 +1,82 @@
+enum GraphQLEngineType { FARGATE LAMBDA KUBERNETES }
+enum GraphQLAuthMode { SIGV4 COGNITO NONE }
+enum GraphQLExecutionMode { LOCAL REMOTE }
+enum GraphQLEventType { EVENT_RULE DATA_SOURCE USER_EVENT }
+enum GraphQLDataAccess { READ_ONLY READ_WRITE }
+
+input GraphQLServerOptions {
+    AuthorizationId: String
+    BurstLimit: Int
+    RateLimit: Int 
+    QuotaLimit: Int
+    QuotaUnit: String
+}
+
+input GraphQLEndpointOptions { 
+    AuthMode: GraphQLAuthMode
+    HasApiKey: Boolean
+}
+
+input GraphQLDataTable {
+    Name: String
+    Key: String
+    Index: String
+    Access: GraphQLDataAccess
+}
+
+input FunctionInput {
+    Name: String
+    Mode: GraphQLExecutionMode
+    Runtime: String
+}
+
+input ChainInput {
+    Run: FunctionInput,
+    Next: String
+    Other: String
+    Retry: Int
+}
+
+directive @GraphQLResolverSet(
+    Name: String
+    Chains: [ChainInput]
+) on FIELD_DEFINITION
+
+directive @GraphQLResolver(
+    Name: String
+    Policy: String
+    Runtime: String
+    RuntimeCode: String
+    Chains: [ChainInput]
+) on OBJECT | FIELD_DEFINITION
+
+directive @GraphQLEndpoint (
+    Path: String!
+    Options: GraphQLEndpointOptions
+) on FIELD_DEFINITION
+
+directive @GraphQLServer (
+    Name: String!
+    Path: String
+    Engine: GraphQLEngineType
+    Options: GraphQLServerOptions
+) on OBJECT
+
+directive @GraphQLEvent (
+    Name: String!
+    Type: GraphQLEventType!
+    Function: String!
+    Value: String
+    Source: GraphQLEventType
+) on OBJECT
+
+directive @GraphQLDataSource (
+    Name: String
+    Engine: String
+    Tables: [ GraphQLDataTable ]
+) on OBJECT
+
+scalar DateTime
+
+# This GraphQL section is defined by users.
+{{{GRAPHQL_USER_DEFINITIONS}}}
