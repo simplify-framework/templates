@@ -12,7 +12,7 @@
     "push-config": "node -r dotenv/config .simplify-graphql/function-push.js --ops update --input server-input.json",
     "build-bin": "webpack -p --config webpack.config.js && cp src/schema.graphql build/schema.graphql",
     "push-bin": "env FUNCTION_SOURCE=../build node -r dotenv/config .simplify-graphql/function-push.js --input server-input.json",
-    "build-layer": "npm run build-deps && cd src/ && npm link {{NameSnake}}-deps && cd ../ && webpack -p --config webpack.config.layer.js && cd layer/nodejs/node_modules/{{NameSnake}}-functions && npm link",
+    "build-layer": "npm run build-deps && cd src/ && npm link {{NameSnake}}-deps && cd ../ && webpack -p --config webpack.config.layer.js && cd deps/nodejs/node_modules/{{NameSnake}}-functions && npm link",
     "push-layer": "env LAYER_SOURCE=../deps LAYER_NAME={{PROJECT_Name}}-{{ENV_Name}}-{{Name}}-functions node -r dotenv/config .simplify-graphql/layer-push.js --input server-input.json",
     "build-deps": "npm run build-models && webpack -p --config webpack.config.deps.js && cd deps/nodejs/node_modules/{{NameSnake}}-deps && npm link",
     "push-deps": "env LAYER_SOURCE=../deps LAYER_NAME={{PROJECT_Name}}-{{ENV_Name}}-{{Name}}-deps node -r dotenv/config .simplify-graphql/layer-push.js --input server-input.json",
