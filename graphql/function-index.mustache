@@ -10,6 +10,8 @@ if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require
 
 module.exports = {
 {{#Functions}}
+{{^isEmpty}}
     {{FunctionName}}: require("./{{FunctionName}}"){{#hasMore}},{{/hasMore}}
+{{/isEmpty}}
 {{/Functions}}
 }
