@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [        
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:FilterLogEvents",
+                "logs:GetLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:${DEPLOYMENT_REGION}:${DEPLOYMENT_ACCOUNT}:log-group:/aws/lambda/${FUNCTION_NAME}-${DEPLOYMENT_ENV}:log-stream:*"
+            ]
+        }
+    ]
+}

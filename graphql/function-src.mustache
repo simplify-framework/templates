@@ -1,0 +1,15 @@
+'use strict';
+{{#RemoteExecutionMode}}
+const AWS = __non_webpack_require__('aws-sdk');
+const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
+const jsonify = require('../../Utilities/jsonify')
+{{/RemoteExecutionMode}}
+
+module.exports.handler = function(event, context, callback) {
+    const {{FunctionName}}Result = {
+{{#DataValues}}
+        {{Name}}: {{#Value}}{{#isListType}}[ {{#isListStringType}}{{#Default}}"{{Value}}"{{#hasMore}}, {{/hasMore}}{{/Default}}{{/isListStringType}}{{^isListStringType}}{{^isNestedObject}}"{{{Default}}}"{{/isNestedObject}}{{/isListStringType}} ]{{/isListType}}{{^isListType}}{{#isObjectType}}{{#isNestedObject}}{ {{#Default}}{{Name}}: {{#Value}}{{#isScalarType}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isScalarType}}{{^isScalarType}}{{#isEnumObject}}"{{Default}}"{{/isEnumObject}}{{^isEnumObject}}{ {{#Default}}{{Name}}: {{#Value}}"{{Default}}"{{/Value}}{{#hasMore}}, {{/hasMore}}{{/Default}} }{{/isEnumObject}}{{/isScalarType}}{{/Value}}{{#hasMore}}, {{/hasMore}}{{/Default}} }{{/isNestedObject}}{{^isNestedObject}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isNestedObject}}{{/isObjectType}}{{^isObjectType}}{{#isQuotedType}}"{{Default}}"{{/isQuotedType}}{{^isQuotedType}}{{Default}}{{/isQuotedType}}{{/isObjectType}}{{/isListType}}{{/Value}}{{#hasMore}},{{/hasMore}}
+{{/DataValues}}
+    }
+    callback(null, {{#isResultListType}}[ {{FunctionName}}Result, event.args ].filter(obj => Object.keys(obj).length){{/isResultListType}}{{^isResultListType}}{{FunctionName}}Result{{/isResultListType}})
+}

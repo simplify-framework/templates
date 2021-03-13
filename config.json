@@ -1,0 +1,81 @@
+{
+    "Defaults": {
+        "Functions": "Functions"
+    },
+    "Deployments": [
+        { "input": ".env.mustache", "output": ".env" },
+        { "input": ".gitignore.mustache", "output": ".gitignore" },
+        { "input": "function-package.mustache", "output": "{{Functions}}/package.json" },
+        { "input": "policy-relationship-role.mustache", "output": ".simplify/{{ENV_Name}}/policy-relationship-role.json" },
+        { "input": "policy-assume-role.mustache", "output": ".simplify/{{ENV_Name}}/policy-assume-role.json" },
+        { "input": "policy-deployment.mustache", "output": ".simplify/{{ENV_Name}}/policy-deployment.json" },
+        { "input": "policy-functions.mustache", "output": ".simplify/{{ENV_Name}}/policy-functions.json" },
+        { "input": "policy-execute-api.mustache", "output": ".simplify/{{ENV_Name}}/policy-execute-api.json" },
+        { "input": "aws-setup.mustache", "output": ".simplify/{{ENV_Name}}/aws-setup.sh" },
+        { "input": "aws-update.mustache", "output": ".simplify/{{ENV_Name}}/aws-update.sh" },
+        { "input": "aws-cleanup.mustache", "output": ".simplify/{{ENV_Name}}/aws-cleanup.sh" },
+        { "input": "deployment-stack.mustache", "output": ".simplify/deployment-stack.yaml" },
+        { "input": "deployment-package.mustache", "output": "package.json" },
+        { "input": "verbal-design.mustache", "output": "verbal-design.txt" },
+        { "input": "README.mustache", "output": "README.md" }
+    ],
+    "GraphQLServers": [
+        { "input": ".babelrc.mustache", "output": "{{ServerName}}/.babelrc" },
+        { "input": "webpack.config.mustache", "output": "{{ServerName}}/webpack.config.js" },
+        { "input": "webpack.config.layer.mustache", "output": "{{ServerName}}/webpack.config.layer.js" },
+        { "input": "webpack.config.deps.mustache", "output": "{{ServerName}}/webpack.config.deps.js" },
+        { "input": "package.mustache", "output": "{{ServerName}}/package.json" },
+        { "input": "hashbag.mustache", "output": "{{ServerName}}/loaders/hashbag.js" },
+        { "input": "package-src.mustache", "output": "{{ServerName}}/src/package.json" },
+        { "input": "package-deps.mustache", "output": "{{ServerName}}/deps/nodejs/node_modules/{{NameSnake}}-deps/package.json" },
+        { "input": "package-functions.mustache", "output": "{{ServerName}}/deps/nodejs/node_modules/{{NameSnake}}-functions/package.json" },
+        { "input": "logger.mustache", "output": "{{ServerName}}/src/Utilities/logger.js" },
+        { "input": "ping.mustache", "output": "{{ServerName}}/src/Utilities/ping.js" },
+        { "input": "iso8601.mustache", "output": "{{ServerName}}/src/Utilities/iso8601.js" },
+        { "input": "api-utils.mustache", "output": "{{ServerName}}/src/Utilities/api-utils.js" },
+        { "input": "sigv4gw.mustache", "output": "{{ServerName}}/src/Utilities/sigv4gw.js" },
+        { "input": "jsonify.mustache", "output": "{{ServerName}}/src/Utilities/jsonify.js" },
+        { "input": "schema.mustache", "output": "{{ServerName}}/src/schema.graphql" },
+        { "input": "index.mustache", "output": "{{ServerName}}/src/index.js" },
+        { "input": "deps.mustache", "output": "{{ServerName}}/src/deps.js" },
+        { "input": "function-index.mustache", "output": "{{ServerName}}/src/Functions/index.js" },
+        { "input": "app.mustache", "output": "{{ServerName}}/src/app.js" },
+        { "input": "server.env.mustache", "output": "{{ServerName}}/.env" },
+        { "input": "model/.babelrc.mustache", "output": "{{ServerName}}/models/.babelrc" },
+        { "input": "model/package.mustache", "output": "{{ServerName}}/models/package.json" },
+        { "input": "model/dynamodb.mustache", "output": "{{ServerName}}/models/src/dynamodb.js" },
+        { "input": "model/cassandra.mustache", "output": "{{ServerName}}/models/src/cassandra.js" },
+        { "input": "model/index.mustache", "output": "{{ServerName}}/models/src/index.js" }
+    ],
+    "GraphQLDataInputs": [
+        { "input": "input.mustache", "output": "{{ServerName}}/src/Schemas/Inputs/{{dataName}}.js" }
+    ],
+    "GraphQLDataObjects": [
+        { "input": "model.mustache", "output": "{{ServerName}}/src/Schemas/Models/{{dataName}}.js" }
+    ],
+    "GraphQLEnumObjects": [
+        { "input": "enum.mustache", "output": "{{ServerName}}/src/Schemas/Models/{{dataName}}.js" }
+    ],
+    "GraphQLResolvers": [
+        { "input": "resolver.mustache", "output": "{{ServerName}}/src/Resolvers/{{StateName}}.js" },
+        { "input": "tests.spec.mustache", "output": "{{ServerName}}/tests/samples/{{StateName}}.spec.js" }
+    ],
+    "GraphQLFunctions": [
+        { "input": "function.mustache", "output": "{{ServerName}}/src/Functions/{{FunctionName}}{{#RemoteExecutionMode}}/index{{/RemoteExecutionMode}}.js" }
+    ],
+    "Executions": [
+        { "input": "lambda/deps.mustache", "output": "{{Functions}}/{{FunctionName}}/src/deps.js" },
+        { "input": "lambda/debug.mustache", "output": "{{Functions}}/{{FunctionName}}/src/debug.js" },
+        { "input": "lambda/handler.mustache", "output": "{{Functions}}/{{FunctionName}}/src/index.js" },
+        { "input": "lambda/index-src.mustache", "output": "{{Functions}}/{{FunctionName}}/src/{{FunctionName}}.js"},
+        { "input": "lambda/package-src.mustache", "output": "{{Functions}}/{{FunctionName}}/src/package.json" },
+        { "input": "lambda/webpack.config.mustache", "output": "{{Functions}}/{{FunctionName}}/webpack.config.js" },
+        { "input": "lambda/webpack.config.deps.mustache", "output": "{{Functions}}/{{FunctionName}}/webpack.config.deps.js" },
+        { "input": "lambda/webpack.config.layer.mustache", "output": "{{Functions}}/{{FunctionName}}/webpack.config.layer.js" },
+        { "input": "lambda/.babelrc.mustache", "output": "{{Functions}}/{{FunctionName}}/.babelrc" },
+        { "input": "lambda/package.mustache", "output": "{{Functions}}/{{FunctionName}}/package.json" },
+        { "input": "lambda/package-deps.mustache", "output": "{{Functions}}/{{FunctionName}}/deps/nodejs/node_modules/{{FunctionNameSnake}}-deps/package.json" },
+        { "input": "hashbag.mustache", "output": "{{Functions}}/{{FunctionName}}/loaders/hashbag.js" },
+        { "input": "function.env.mustache", "output": "{{Functions}}/{{FunctionName}}/.env" }
+    ]
+}

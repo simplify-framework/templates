@@ -1,0 +1,25 @@
+{
+    "Profile": "${DEPLOYMENT_PROFILE}",
+    "Region": "${DEPLOYMENT_REGION}",
+    "Bucket": {
+        "Name": "${DEPLOYMENT_BUCKET}-${DEPLOYMENT_REGION}",
+        "Key": "${FUNCTION_NAME}/builds/${DATE_TODAY}"
+    },
+    "OutputFolder": ".simplify",
+    "Function": {
+        "FunctionName": "${FUNCTION_NAME}-${DEPLOYMENT_ENV}",
+        "Handler": "${FUNCTION_HANDLER}",
+        "Role": "${FUNCTION_ROLE}",
+        "Runtime": "${FUNCTION_RUNTIME}",
+        "Environment": {
+            "Variables": {
+                "REGION": "${DEPLOYMENT_REGION}",
+                "ENVIRONEMNT": "${DEPLOYMENT_ENV}",
+                "LOG_GROUP_NAME": "/aws/lambda/${FUNCTION_NAME}-${DEPLOYMENT_ENV}",
+                "INTROSPECTION": "${INTROSPECTION}",
+                "MONOLITHIC_CODE": "${MONOLITHIC_CODE}"
+            }
+        },
+        "Layers": []
+    }
+}
