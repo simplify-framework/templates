@@ -29,6 +29,7 @@ export const config = function(config) {
             });
         }
         apiConfig.get = function(name) {
+            /* eslint-disable detect-object-injection */
             return apiConfig[name]
         }
         resolve(apiConfig)
