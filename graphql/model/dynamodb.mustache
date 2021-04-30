@@ -32,6 +32,7 @@ export class DataTable {
                 } else {
                     attrItem['M'] = {}
                     Object.keys(objValue).map(key => {
+                        /* eslint-disable detect-object-injection */
                         attrItem['M'][key] = recursiveParseItem(objValue[key])
                     })
                 }
@@ -49,6 +50,7 @@ export class DataTable {
             return attrItem
         }
         Object.keys(objItem).map(key => {
+            /* eslint-disable detect-object-injection */
             const objValue = objItem[key]
             attrResult[key] = recursiveParseItem(objValue)
         })
@@ -65,6 +67,7 @@ export class DataTable {
                             attrItem['M'] ? function() {
                                 let mResult = {}
                                 Object.keys(attrItem['M']).map(key => {
+                                    /* eslint-disable detect-object-injection */
                                     mResult[key] = recursiveParseAttrs(attrItem['M'][key])
                                 })
                                 return mResult
@@ -81,6 +84,7 @@ export class DataTable {
             return attrValue
         }
         Object.keys(attrItem).map(key => {
+            /* eslint-disable detect-object-injection */
             objItem[key] = recursiveParseAttrs(attrItem[key])
         })
         return objItem
