@@ -55,6 +55,7 @@ function buildCanonicalUri(uri) {
 }
 
 function buildCanonicalQueryString(queryParams) {
+    /* eslint-disable detect-object-injection */
     if (Object.keys(queryParams).length < 1) {
         return "";
     }
@@ -89,6 +90,7 @@ function buildCanonicalHeaders(headers) {
     sortedKeys.sort();
 
     for (let i = 0; i < sortedKeys.length; i++) {
+        /* eslint-disable detect-object-injection */
         canonicalHeaders +=
             sortedKeys[i].toLowerCase() + ":" + headers[sortedKeys[i]] + "\n";
     }
@@ -196,6 +198,7 @@ const sigV4Client = {
         return awsSigV4Client;
     },
     signRequest: function (awsSigV4Client, request) {
+        /* eslint-disable detect-object-injection */
         const verb = request.method.toUpperCase();        
         const queryParams = { ...request.queryParams };
         const headers = { ...request.headers };
