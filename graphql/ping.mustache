@@ -34,6 +34,7 @@ exports.wakeup = function(operations, callback) {
     let response = { ops: 0, invoked: 0, errors: 0 }
     operations.forEach(op => {
         (operationFunctions[op] || []).filter(x => x != null).forEach(opf => {
+            /* eslint-disable detect-non-literal-require */
             const parameters = require(`../Functions/${opf}/parameters.json`)
             var params = {
                 FunctionName: parameters.FunctionName, 
