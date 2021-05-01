@@ -11,7 +11,7 @@ const path = require('path')
 const DateTime = require('./Utilities/iso8601')
 const express = require('{{NameSnake}}-deps')['express']
 const { ApolloServer, gql } = require('{{NameSnake}}-deps')['apollo-server-express']
-const schema = fs.readFileSync(path.resolve(__dirname, 'schema.graphql'), 'utf8')
+const schema = fs.readFileSync('schema.graphql', 'utf8')
 const typeDefs = gql(schema);
 const app = express()
 if (typeof __non_webpack_require__ === 'undefined') global.__non_webpack_require__ = require

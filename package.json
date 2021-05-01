@@ -3,6 +3,9 @@
   "version": "0.2.1",
   "description": "Simplify graphql-templates for code generation",
   "main": "index.js",
+  "bin": {
+    "simplify-templates": "index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simplify-framework/templates.git"
@@ -19,6 +22,5 @@
   "bugs": {
     "url": "https://github.com/simplify-framework/templates/issues"
   },
-  "homepage": "https://github.com/simplify-framework/templates#README",
-  "dependencies": {}
+  "homepage": "https://github.com/simplify-framework/templates#README"
 }

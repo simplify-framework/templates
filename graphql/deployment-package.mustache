@@ -5,27 +5,22 @@
     "scripts": {
         "update-env": "simplify-graphql -i schema.graphql --env {{ENV_Name}}",
         "delete-env": "rm -rf `find . -type d -path \"**/.simplify-graphql/*\" -name {{ENV_Name}}`",
-        "stack-deploy": "node .simplify-graphql/deployment-push.js --input deployment-input.json",
-        "stack-destroy": "node .simplify-graphql/deployment-push.js --input deployment-input.json --deletion",
-        "website-deploy": "node .simplify-graphql/deployment-website.js --input deployment-input.json",
-        "website-build": "cd StaticWeb && npm install && npm run build-website",
-        "website-destroy": "node .simplify-graphql/deployment-website.js --input deployment-input.json --deletion",
-        "push-config": "bash .simplify-graphql/code-push.sh .env config",
-        "push-code": "bash .simplify-graphql/code-push.sh .env push",
+        "stack-deploy": "node node_modules/simplify-cli/cli.js deploy --stack CloudFormation",
+        "stack-destroy": "node node_modules/simplify-cli/cli.js destroy --stack CloudFormation",
         "account-setup": "bash .simplify-graphql/setup.sh --profile {{PROJECT_Profile}}",
         "account-update": "bash .simplify-graphql/update.sh --profile {{PROJECT_Profile}}",
         "account-cleanup": "bash .simplify-graphql/cleanup.sh --profile {{PROJECT_Profile}}",
-        "monitor-metric": "node node_modules/simplify-secops/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv metric -h 24 -t 300",
-        "security-check": "node node_modules/simplify-secops/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv verify",
-        "monitor-config": "node node_modules/simplify-secops/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv verify -e",
-        "security-patch": "node node_modules/simplify-secops/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv patch",
-        "take-snapshot": "node node_modules/simplify-secops/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv snapshot"
+        "monitor-metric": "node node_modules/simplify-security/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv metric -h 24 -t 300",
+        "security-check": "node node_modules/simplify-security/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv verify",
+        "monitor-config": "node node_modules/simplify-security/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv verify -e",
+        "security-patch": "node node_modules/simplify-security/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv patch",
+        "take-snapshot": "node node_modules/simplify-security/entrypoint.js -p {{ENV_Profile}} -i .simplify-graphql/{{ENV_Name}}/functions.csv snapshot"
     },
     "license": "MIT",
     "private": true,
     "devDependencies": {
         "dotenv": "8.2.0",
-        "simplify-sdk": "^0.1.49",
-        "simplify-secops": "^0.1.5"
+        "simplify-cli": "^0.1.35",
+        "simplify-security": "^0.1.14"
     }
 }

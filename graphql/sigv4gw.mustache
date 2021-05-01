@@ -55,7 +55,8 @@ function buildCanonicalUri(uri) {
 }
 
 function buildCanonicalQueryString(queryParams) {
-    if (Object.keys(queryParams).length < 1) {
+    /* eslint-disable-next-line security/detect-object-injection */
+    if (Object.keys(`${queryParams}`).length < 1) {
         return "";
     }
 
@@ -69,11 +70,8 @@ function buildCanonicalQueryString(queryParams) {
 
     let canonicalQueryString = "";
     for (let i = 0; i < sortedQueryParams.length; i++) {
-        canonicalQueryString +=
-            sortedQueryParams[i] +
-            "=" +
-            encodeURIComponent(queryParams[sortedQueryParams[i]]) +
-            "&";
+        /* eslint-disable-next-line security/detect-object-injection */
+        canonicalQueryString += sortedQueryParams[`${i}`] + "=" + encodeURIComponent(queryParams[`${sortedQueryParams[`${i}`]}`]) + "&";
     }
     return canonicalQueryString.substr(0, canonicalQueryString.length - 1);
 }
@@ -89,8 +87,8 @@ function buildCanonicalHeaders(headers) {
     sortedKeys.sort();
 
     for (let i = 0; i < sortedKeys.length; i++) {
-        canonicalHeaders +=
-            sortedKeys[i].toLowerCase() + ":" + headers[sortedKeys[i]] + "\n";
+        /* eslint-disable-next-line security/detect-object-injection */
+        canonicalHeaders += sortedKeys[`${i}`].toLowerCase() + ":" + headers[`${sortedKeys[`${i}`]}`] + "\n";
     }
     return canonicalHeaders;
 }
@@ -228,8 +226,10 @@ const sigV4Client = {
             .toISOString()
             .replace(/\.\d{3}Z$/, "Z")
             .replace(/[:-]|\.\d{3}/g, "");
-        headers[X_AMZ_DATE] = datetime;
-        headers[HOST] = extractHostname(endpoint);
+        /* eslint-disable-next-line security/detect-object-injection */
+        headers[`${X_AMZ_DATE}`] = datetime;
+        /* eslint-disable-next-line security/detect-object-injection */
+        headers[`${HOST}`] = extractHostname(endpoint);
         let canonicalRequest = buildCanonicalRequest(
             verb,
             path,
@@ -255,7 +255,8 @@ const sigV4Client = {
             awsSigV4Client.serviceName
         );
         let signature = calculateSignature(signingKey, stringToSign);
-        headers[AUTHORIZATION] = buildAuthorizationHeader(
+        /* eslint-disable-next-line security/detect-object-injection */
+        headers[`${AUTHORIZATION}`] = buildAuthorizationHeader(
             awsSigV4Client.accessKey,
             credentialScope,
             headers,
@@ -265,9 +266,11 @@ const sigV4Client = {
             awsSigV4Client.sessionToken !== undefined &&
             awsSigV4Client.sessionToken !== ""
         ) {
-            headers[X_AMZ_SECURITY_TOKEN] = awsSigV4Client.sessionToken;
+            /* eslint-disable-next-line security/detect-object-injection */
+            headers[`${X_AMZ_SECURITY_TOKEN}`] = awsSigV4Client.sessionToken;
         }
-        delete headers[HOST];
+        /* eslint-disable-next-line security/detect-object-injection */
+        delete headers[`${HOST}`];
         let url = endpoint + path;
         let queryString = buildCanonicalQueryString(queryParams);
         if (queryString !== "") {

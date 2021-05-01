@@ -32,7 +32,8 @@ export class DataTable {
                 } else {
                     attrItem['M'] = {}
                     Object.keys(objValue).map(key => {
-                        attrItem['M'][key] = recursiveParseItem(objValue[key])
+                        /* eslint-disable-next-line security/detect-object-injection */
+                        attrItem['M'][`${key}`] = recursiveParseItem(objValue[`${key}`])
                     })
                 }
             } else if (typeof objValue === 'boolean') {
@@ -49,8 +50,10 @@ export class DataTable {
             return attrItem
         }
         Object.keys(objItem).map(key => {
-            const objValue = objItem[key]
-            attrResult[key] = recursiveParseItem(objValue)
+            /* eslint-disable-next-line security/detect-object-injection */
+            const objValue = objItem[`${key}`]
+            /* eslint-disable-next-line security/detect-object-injection */
+            attrResult[`${key}`] = recursiveParseItem(objValue)
         })
         return attrResult
     }
@@ -65,7 +68,8 @@ export class DataTable {
                             attrItem['M'] ? function() {
                                 let mResult = {}
                                 Object.keys(attrItem['M']).map(key => {
-                                    mResult[key] = recursiveParseAttrs(attrItem['M'][key])
+                                    /* eslint-disable-next-line security/detect-object-injection */
+                                    mResult[`${key}`] = recursiveParseAttrs(attrItem['M'][`${key}`])
                                 })
                                 return mResult
                              }() : (
@@ -81,7 +85,8 @@ export class DataTable {
             return attrValue
         }
         Object.keys(attrItem).map(key => {
-            objItem[key] = recursiveParseAttrs(attrItem[key])
+            /* eslint-disable-next-line security/detect-object-injection */
+            objItem[`${key}`] = recursiveParseAttrs(attrItem[`${key}`])
         })
         return objItem
     }

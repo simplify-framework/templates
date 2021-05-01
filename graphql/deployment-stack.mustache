@@ -11,12 +11,14 @@ Parameters:
   {{Name}}ManagedResourceArn:
     Type: String
   {{/Servers}}
+  {{^IsSingleton}}
   {{#Functions}}
   {{FunctionName}}SecretKeyVault:
     Type: String
   {{FunctionName}}ManagedResourceArn:
     Type: String
   {{/Functions}}
+  {{/IsSingleton}}
 
 Conditions:
   HasApiAuthorizerId: !Not [ !Equals [ !Ref ApiAuthorizerId, 'NO' ] ]
@@ -24,10 +26,12 @@ Conditions:
   Has{{NamePascal}}SecretKeyVault: !Not [ !Equals [ !Ref {{Name}}SecretKeyVault, 'NO' ] ]
   Has{{NamePascal}}ManagedResourceArn: !Not [ !Equals [ !Ref {{Name}}ManagedResourceArn, 'NO' ] ]
   {{/Servers}}
+  {{^IsSingleton}}
   {{#Functions}}
   Has{{FunctionNamePascal}}SecretKeyVault: !Not [ !Equals [ !Ref {{FunctionName}}SecretKeyVault, 'NO' ] ]
   Has{{FunctionNamePascal}}ManagedResourceArn: !Not [ !Equals [ !Ref {{FunctionName}}ManagedResourceArn, 'NO' ] ]
   {{/Functions}}
+  {{/IsSingleton}}
 
 Resources:
 {{#Servers}}
@@ -587,6 +591,7 @@ Resources:
 
 {{/DataTables}}
 
+{{^IsSingleton}}
 {{#Functions}}
   {{FunctionName}}LambdaFunction:
     Type: AWS::Lambda::Function
@@ -760,6 +765,7 @@ Resources:
               secretname:
                 !Ref {{FunctionName}}Secret
 {{/Functions}}
+{{/IsSingleton}}
 
 Outputs:
   Region:
@@ -793,6 +799,7 @@ Outputs:
     Description: {{Name}} Execution Role ARN
     Value: !GetAtt {{Name}}LambdaExecutionRole.Arn
   {{/Servers}}
+  {{^IsSingleton}}
   {{#Functions}}
   {{FunctionName}}FunctionArn:
     Description: {{FunctionName}} Function ARN
@@ -804,3 +811,4 @@ Outputs:
     Description: {{FunctionName}} Execution Role ARN
     Value: !GetAtt {{FunctionName}}LambdaExecutionRole.Arn
   {{/Functions}}
+  {{/IsSingleton}}
