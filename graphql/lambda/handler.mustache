@@ -17,7 +17,7 @@ const functionVersion = "{{#Version}}{{Version}}{{/Version}}{{^Version}}latest{{
 
 module.exports.handler = (event, context, callback) => {
     if (event.eventType === 'PING') {
-        callback(null, {})
+        callback(null, { version: functionVersion })
     } else {
         if (allowedCanaries.indexOf((event || {})['x-canary-selection']) >=0 && process.env.DEPLOYMENT_STAGE === 'canary') {
             {{FunctionName}} = getPackage(`${(event || {})['x-canary-selection']}`)
