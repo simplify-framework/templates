@@ -12,7 +12,8 @@ const getPackage = function(canary) {
     else runtimePackage = require('./{{FunctionName}}')
     return runtimePackage
 }
-var {{FunctionName}} = getPackage(process.env.DEPLOYMENT_STAGE || 'latest')
+const {{FunctionName}} = getPackage(process.env.DEPLOYMENT_STAGE || 'latest')
+const functionVersion = "{{#Version}}{{Version}}{{/Version}}{{^Version}}latest{{/Version}}"
 
 module.exports.handler = (event, context, callback) => {
     if (event.eventType === 'PING') {

@@ -5,6 +5,7 @@
  * Embedded dependancy packaged into a single module named as: {{FunctionNameSnake}}-deps
  * const debug = require('{{FunctionNameSnake}}-deps')['debug']
  **/
+const functionVersion = "{{#Version}}{{Version}}{{/Version}}{{^Version}}latest{{/Version}}"
 
 module.exports.handler = (event, context, callback) => {
     const {{Name}}Result = {

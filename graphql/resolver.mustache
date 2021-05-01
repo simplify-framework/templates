@@ -11,6 +11,7 @@ const { StateExecution } = require('{{ServerNameSnake}}-deps')['simplify-sdk'].g
 const { {{DataSchema}} } = require('../Schemas/Models/{{DataSchema}}')
 const executionPath = path.join(__dirname, "../Functions")
 const executionName = "{{ServerNameSnake}}-functions"
+const resolverVersion = "{{#Version}}{{Version}}{{/Version}}{{^Version}}latest{{/Version}}"
 
 module.exports.{{Name}} = (parent, args, context, info) => new StateExecution({ executionPath, executionName, verbosity: process.env.LOG_VERBOSE=="NO" ? false : true }).execute([
     {{#Chains}}

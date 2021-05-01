@@ -1,6 +1,6 @@
 {
     "name": "{{FunctionNameSnake}}",
-    "version": "0.1.0",
+    "version": "{{#Version}}{{Version}}{{/Version}}{{^Version}}0.1.0{{/Version}}",
     "description": "Remote Function Execution For {{#Servers}}{{ServerName}}{{#hasMore}}, {{/hasMore}}{{/Servers}}",
     "main": "app.js",
     "scripts": {

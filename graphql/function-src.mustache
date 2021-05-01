@@ -4,6 +4,7 @@ const AWS = __non_webpack_require__('aws-sdk');
 const lambda = new AWS.Lambda({ apiVersion: '2015-03-31' });
 const jsonify = require('../../Utilities/jsonify')
 {{/RemoteExecutionMode}}
+const functionVersion = "{{#Version}}{{Version}}{{/Version}}{{^Version}}latest{{/Version}}"
 
 module.exports.handler = function(event, context, callback) {
     const {{FunctionName}}Result = {
